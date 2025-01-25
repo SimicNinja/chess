@@ -95,4 +95,35 @@ public class ChessPiece
 	{
 		return Objects.hash(color, type);
 	}
+
+	@Override
+	public String toString()
+	{
+		if(this.color == ChessGame.TeamColor.WHITE)
+		{
+			switch(this.type)
+			{
+				case KING: return "K";
+				case QUEEN: return "Q";
+				case BISHOP: return "B";
+				case KNIGHT: return "N";
+				case ROOK: return "R";
+				case PAWN: return "P";
+				default: throw new RuntimeException("Piece doesn't have a valid type!");
+			}
+		}
+		else
+		{
+			switch(this.type)
+			{
+				case KING: return "k";
+				case QUEEN: return "q";
+				case BISHOP: return "b";
+				case KNIGHT: return "n";
+				case ROOK: return "r";
+				case PAWN: return "p";
+				default: throw new RuntimeException("Piece doesn't have a valid type!");
+			}
+		}
+	}
 }
