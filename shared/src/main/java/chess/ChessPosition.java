@@ -37,6 +37,27 @@ public class ChessPosition
 		return col;
 	}
 
+	public boolean inBounds()
+	{
+		if(row < 0 || row > 8)
+		{
+			return false;
+		}
+		else if(col < 0 || col > 8)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	public ChessPosition offset(int rowOffset, int colOffset)
+	{
+		return new ChessPosition(this.row + rowOffset, this.col + colOffset);
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -52,5 +73,11 @@ public class ChessPosition
 	public int hashCode()
 	{
 		return Objects.hash(row, col);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "[" + row + ", " + col + ']';
 	}
 }

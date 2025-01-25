@@ -1,5 +1,8 @@
 package chess;
 
+import chess.moveCalculators.MoveCalculator;
+import chess.moveCalculators.RookMoveCalculator;
+
 import java.util.Collection;
 import java.util.Objects;
 
@@ -13,11 +16,22 @@ public class ChessPiece
 {
 	private final ChessGame.TeamColor color;
 	private final ChessPiece.PieceType type;
+	private final MoveCalculator calculator;
 
 	public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type)
 	{
 		this.color = pieceColor;
 		this.type = type;
+		this.calculator = createCalculator();
+	}
+
+	private MoveCalculator createCalculator()
+	{
+		switch(this.type)
+		{
+			case ROOK: return new RookMoveCalculator();
+			default: throw new RuntimeException("Piece doesn't have a valid type!");
+		}
 	}
 
 	/**
@@ -58,7 +72,7 @@ public class ChessPiece
 	 */
 	public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition)
 	{
-		throw new RuntimeException("Not implemented");
+		return calculator.pieceMoves(board, myPosition);
 	}
 
 	@Override

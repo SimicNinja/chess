@@ -63,4 +63,17 @@ public class ChessMove
 	{
 		return Objects.hash(start, end, promote);
 	}
+
+	@Override
+	public String toString()
+	{
+		if(promote != null)
+		{
+			return "{" + "Start" + start + ", End" + end + ", Promote:" + promote + '}';
+		}
+		else
+		{
+			return "{" + "Start" + start + ", End" + end + '}';
+		}
+	}
 }
