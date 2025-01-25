@@ -14,14 +14,24 @@ public class RookMoveCalculator implements MoveCalculator
 	@Override
 	public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition start)
 	{
-		ChessMove test = new ChessMove(start, new ChessPosition(start.getRow(), start.getColumn() + 1), null);
+		ChessPosition test = start.offset(0, 1);
 
-		while(test.getEndPosition().inBounds())
-		{
-			validMoves.add(test);
-			test = new ChessMove(start, test.getEndPosition().offset(0, 1), null);
-		}
+		checkDirection(0, 1, board, start);
+		checkDirection(0, -1, board, start);
+		checkDirection(1, 0, board, start);
+		checkDirection(-1, 0, board, start);
 
 		return validMoves;
+	}
+
+	private void checkDirection(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
+	{
+		ChessPosition current = start.offset(rowOffset, colOffset);
+
+		while(current.inBounds())
+		{
+			validMoves.add(new ChessMove(start, current, null));
+			current = current.offset(rowOffset, colOffset);
+		}
 	}
 }

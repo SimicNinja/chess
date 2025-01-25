@@ -39,11 +39,11 @@ public class ChessPosition
 
 	public boolean inBounds()
 	{
-		if(row < 0 || row > 8)
+		if(row < 1 || row > 8)
 		{
 			return false;
 		}
-		else if(col < 0 || col > 8)
+		else if(col < 1 || col > 8)
 		{
 			return false;
 		}
@@ -78,6 +78,6 @@ public class ChessPosition
 	@Override
 	public String toString()
 	{
-		return "[" + row + ", " + col + ']';
+		return row + ", " + col;
 	}
 }

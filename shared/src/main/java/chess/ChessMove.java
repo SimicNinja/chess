@@ -73,7 +73,7 @@ public class ChessMove
 		}
 		else
 		{
-			return "{" + "Start" + start + ", End" + end + '}';
+			return "{" + end + '}';
 		}
 	}
 }
