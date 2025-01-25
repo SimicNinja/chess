@@ -7,7 +7,7 @@ import chess.ChessPosition;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class RookMoveCalculator implements MoveCalculator
+public class RookMoveCalculator extends MoveCalculator
 {
 	private Collection<ChessMove> validMoves = new ArrayList<>();
 
@@ -16,22 +16,11 @@ public class RookMoveCalculator implements MoveCalculator
 	{
 		ChessPosition test = start.offset(0, 1);
 
-		checkDirection(0, 1, board, start);
-		checkDirection(0, -1, board, start);
-		checkDirection(1, 0, board, start);
-		checkDirection(-1, 0, board, start);
+		validMoves.addAll(checkDirection(0, 1, board, start));
+		validMoves.addAll(checkDirection(0, -1, board, start));
+		validMoves.addAll(checkDirection(1, 0, board, start));
+		validMoves.addAll(checkDirection(-1, 0, board, start));
 
 		return validMoves;
-	}
-
-	private void checkDirection(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
-	{
-		ChessPosition current = start.offset(rowOffset, colOffset);
-
-		while(current.inBounds())
-		{
-			validMoves.add(new ChessMove(start, current, null));
-			current = current.offset(rowOffset, colOffset);
-		}
 	}
 }

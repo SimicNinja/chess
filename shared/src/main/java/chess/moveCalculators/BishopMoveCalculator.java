@@ -6,7 +6,7 @@ import chess.ChessPosition;
 
 import java.util.Collection;
 
-public class BishopMoveCalculator implements MoveCalculator
+public class BishopMoveCalculator extends MoveCalculator
 {
 	private Collection<ChessMove> validMoves;
 
