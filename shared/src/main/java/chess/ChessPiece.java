@@ -1,6 +1,8 @@
 package chess;
 
+import chess.moveCalculators.BishopMoveCalculator;
 import chess.moveCalculators.MoveCalculator;
+import chess.moveCalculators.QueenMoveCalculator;
 import chess.moveCalculators.RookMoveCalculator;
 
 import java.util.Collection;
@@ -29,7 +31,12 @@ public class ChessPiece
 	{
 		switch(this.type)
 		{
+			case KING: return new QueenMoveCalculator();
+			case QUEEN: return new QueenMoveCalculator();
+			case BISHOP: return new BishopMoveCalculator();
+			case KNIGHT: return new QueenMoveCalculator();
 			case ROOK: return new RookMoveCalculator();
+			case PAWN: return new QueenMoveCalculator();
 			default: throw new RuntimeException("Piece doesn't have a valid type!");
 		}
 	}

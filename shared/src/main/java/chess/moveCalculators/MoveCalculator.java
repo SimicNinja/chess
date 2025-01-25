@@ -19,9 +19,13 @@ public abstract class MoveCalculator
 
 		ChessPosition current = start.offset(rowOffset, colOffset);
 
-		while(current.inBounds())
+		while(current.inBounds() && !board.containsAlly(current, board.getPiece(start)))
 		{
 			moves.add(new ChessMove(start, current, null));
+			if(board.containsEnemy(current, board.getPiece(start)))
+			{
+				break;
+			}
 			current = current.offset(rowOffset, colOffset);
 		}
 

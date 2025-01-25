@@ -22,7 +22,7 @@ public class ChessBoard
 	 */
 	public void addPiece(ChessPosition position, ChessPiece piece)
 	{
-		boardState[position.getRow()][position.getColumn()] = piece;
+		boardState[position.getRow() - 1][position.getColumn() - 1] = piece;
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class ChessBoard
 	 */
 	public ChessPiece getPiece(ChessPosition position)
 	{
- 		return boardState[position.getRow()][position.getColumn()];
+ 		return boardState[position.getRow() - 1][position.getColumn() - 1];
 	}
 
 	/**
@@ -44,5 +44,20 @@ public class ChessBoard
 	public void resetBoard()
 	{
 		throw new RuntimeException("Not implemented");
+	}
+
+	public boolean occupied(ChessPosition position)
+	{
+		return boardState[position.getRow() - 1][position.getColumn() - 1] != null;
+	}
+
+	public boolean containsAlly(ChessPosition position, ChessPiece piece)
+	{
+		return this.occupied(position) && getPiece(position).getTeamColor() == piece.getTeamColor();
+	}
+
+	public boolean containsEnemy(ChessPosition position, ChessPiece piece)
+	{
+		return this.occupied(position) && getPiece(position).getTeamColor() != piece.getTeamColor();
 	}
 }
