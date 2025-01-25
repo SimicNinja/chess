@@ -13,20 +13,34 @@ public abstract class MoveCalculator
 
 	public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition start);
 
+	protected ChessMove checkMove(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
+	{
+		ChessPosition current = start.offset(rowOffset, colOffset);
+
+		if(current.inBounds() && !board.containsAlly(current, board.getPiece(start)))
+		{
+			return new ChessMove(start, current, null);
+		}
+		return null;
+	}
+
 	protected Collection<ChessMove> checkDirection(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
 	{
 		Collection<ChessMove> moves = new ArrayList<>();
+		int rowMove = rowOffset;
+		int colMove = colOffset;
+		ChessMove current = checkMove(rowMove, colMove, board, start);
 
-		ChessPosition current = start.offset(rowOffset, colOffset);
-
-		while(current.inBounds() && !board.containsAlly(current, board.getPiece(start)))
+		while(current != null)
 		{
-			moves.add(new ChessMove(start, current, null));
-			if(board.containsEnemy(current, board.getPiece(start)))
+			moves.add(current);
+			if(board.containsEnemy(current.getEndPosition(), board.getPiece(start)))
 			{
 				break;
 			}
-			current = current.offset(rowOffset, colOffset);
+			rowMove += rowOffset;
+			colMove += colOffset;
+			current = checkMove(rowMove, colMove, board, start);
 		}
 
 		return moves;
