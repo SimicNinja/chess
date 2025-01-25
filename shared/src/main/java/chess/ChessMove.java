@@ -69,7 +69,7 @@ public class ChessMove
 	{
 		if(promote != null)
 		{
-			return "{" + "Start" + start + ", End" + end + ", Promote:" + promote + '}';
+			return "{" + end + " Promote:" + promote + '}';
 		}
 		else
 		{

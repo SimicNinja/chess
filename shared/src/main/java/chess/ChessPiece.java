@@ -31,9 +31,9 @@ public class ChessPiece
 			case KING: return new KingMoveCalculator();
 			case QUEEN: return new QueenMoveCalculator();
 			case BISHOP: return new BishopMoveCalculator();
-			case KNIGHT: return new QueenMoveCalculator();
+			case KNIGHT: return new KnightMoveCalculator();
 			case ROOK: return new RookMoveCalculator();
-			case PAWN: return new QueenMoveCalculator();
+			case PAWN: return new PawnMoveCalculator();
 			default: throw new RuntimeException("Piece doesn't have a valid type!");
 		}
 	}
