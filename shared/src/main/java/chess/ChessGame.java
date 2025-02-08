@@ -44,8 +44,7 @@ public class ChessGame
 	 */
 	public enum TeamColor
 	{
-		WHITE,
-		BLACK
+		WHITE, BLACK
 	}
 
 	/**
@@ -79,7 +78,7 @@ public class ChessGame
 	 */
 	public boolean isInCheck(TeamColor teamColor)
 	{
-		throw new RuntimeException("Not implemented");
+		return false;
 	}
 
 	/**

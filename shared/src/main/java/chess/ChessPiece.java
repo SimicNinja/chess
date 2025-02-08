@@ -79,6 +79,11 @@ public class ChessPiece
 		return calculator.pieceMoves(board, myPosition);
 	}
 
+	public Collection<ChessMove> pieceCapture(ChessBoard board, ChessPosition position)
+	{
+		return calculator.checkCaptures(board, position);
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{

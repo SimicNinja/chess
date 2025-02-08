@@ -1,17 +1,31 @@
 package chess.moveCalculators;
 
-import chess.ChessBoard;
-import chess.ChessMove;
-import chess.ChessPosition;
+import chess.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class MoveCalculator
 {
-	private Collection<ChessMove> validMoves;
+	protected ArrayList<ChessMove> validMoves = new ArrayList<>();
+	protected ArrayList<ChessMove> captureMoves = new ArrayList<>();
 
 	public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition start);
+
+	public Collection<ChessMove> checkCaptures(ChessBoard board, ChessPosition start)
+	{
+		pieceMoves(board, start);
+
+		for(ChessMove move: validMoves)
+		{
+			if(board.containsEnemy(move.getEndPosition(), board.getPiece(start)))
+			{
+				captureMoves.add(move);
+			}
+		}
+
+		return captureMoves;
+	}
 
 	protected ChessMove checkMove(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
 	{

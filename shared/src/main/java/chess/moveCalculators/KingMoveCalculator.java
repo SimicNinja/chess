@@ -9,8 +9,6 @@ import java.util.Collection;
 
 public class KingMoveCalculator extends MoveCalculator
 {
-	private Collection<ChessMove> validMoves = new ArrayList<>();
-
 	@Override
 	public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition start)
 	{

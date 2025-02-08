@@ -60,6 +60,9 @@ public class ChessBoard
 		return this.occupied(position) && getPiece(position).getTeamColor() == piece.getTeamColor();
 	}
 
+	/**
+	 * Checks if the given position contains a piece from the opposing team given a specific piece.
+	 */
 	public boolean containsEnemy(ChessPosition position, ChessPiece piece)
 	{
 		return this.occupied(position) && getPiece(position).getTeamColor() != piece.getTeamColor();
