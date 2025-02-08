@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -61,11 +62,74 @@ public class ChessBoard
 	}
 
 	/**
-	 * Checks if the given position contains a piece from the opposing team given a specific piece.
+	 * Checks is an enemy is located at the designate positon
+	 *
+	 * @param position The position that may contain an enemy
+	 * @param piece The piece you are moving
+	 * @return True if enemy piece is at position, otherwise false
 	 */
 	public boolean containsEnemy(ChessPosition position, ChessPiece piece)
 	{
 		return this.occupied(position) && getPiece(position).getTeamColor() != piece.getTeamColor();
+	}
+
+	/**
+	 * Implemented to make for each loops usable in ChessGame
+	 *
+	 * @param color The color of the team you are looking for
+	 * @return An iterator used to find all the pieces on the board of a given team/color
+	 */
+	public Iterable<ChessPiece> getTeamPieces(ChessGame.TeamColor color)
+	{
+		return () -> new ChessPieceIterator(color);
+	}
+
+	private class ChessPieceIterator implements Iterator<ChessPiece>
+	{
+		private final ChessGame.TeamColor targetTeam;
+		private int row = 0;
+		private int col = 0;
+
+		public ChessPieceIterator(ChessGame.TeamColor color)
+		{
+			targetTeam = color;
+		}
+
+		@Override
+		public boolean hasNext()
+		{
+			return row < 8;
+		}
+
+		@Override
+		public ChessPiece next()
+		{
+			ChessPiece current = boardState[row][col];
+			col++;
+			nextValid();
+			return current;
+		}
+
+		private void nextValid()
+		{
+			while(row < 8)
+			{
+				while(col < 8)
+				{
+					ChessPiece piece = ChessBoard.this.getPiece(new ChessPosition(row, col));
+
+					if(piece != null && piece.getTeamColor() == targetTeam)
+					{
+						return;
+					}
+
+					col++;
+				}
+
+				col = 0;
+				row++;
+			}
+		}
 	}
 
 	private int symmetry(int col)
