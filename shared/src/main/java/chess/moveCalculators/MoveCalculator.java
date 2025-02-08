@@ -16,7 +16,7 @@ public abstract class MoveCalculator
 	{
 		pieceMoves(board, start);
 
-		for(ChessMove move: validMoves)
+		for(ChessMove move : validMoves)
 		{
 			if(board.containsEnemy(move.getEndPosition(), board.getPiece(start)))
 			{

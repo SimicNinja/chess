@@ -79,12 +79,12 @@ public class ChessBoard
 	 * @param color The color of the team you are looking for
 	 * @return An iterator used to find all the pieces on the board of a given team/color
 	 */
-	public Iterable<ChessPiece> getTeamPieces(ChessGame.TeamColor color)
+	public Iterable<ChessPieceAndPosition> getTeamPieces(ChessGame.TeamColor color)
 	{
 		return () -> new ChessPieceIterator(color);
 	}
 
-	private class ChessPieceIterator implements Iterator<ChessPiece>
+	private class ChessPieceIterator implements Iterator<ChessPieceAndPosition>
 	{
 		private final ChessGame.TeamColor targetTeam;
 		private int row = 0;
@@ -102,12 +102,13 @@ public class ChessBoard
 		}
 
 		@Override
-		public ChessPiece next()
+		public ChessPieceAndPosition next()
 		{
 			ChessPiece current = boardState[row][col];
+			ChessPosition position = new ChessPosition(row, col);
 			col++;
 			nextValid();
-			return current;
+			return new ChessPieceAndPosition(current, position);
 		}
 
 		private void nextValid()

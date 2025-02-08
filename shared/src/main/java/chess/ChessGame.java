@@ -78,6 +78,17 @@ public class ChessGame
 	 */
 	public boolean isInCheck(TeamColor teamColor)
 	{
+		for(ChessPieceAndPosition piece : board.getTeamPieces(teamColor))
+		{
+			for(ChessMove move : piece.getPiece().pieceCapture(board, piece.getPosition()))
+			{
+				if(board.getPiece(move.getEndPosition()).getPieceType() == ChessPiece.PieceType.KING)
+				{
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
