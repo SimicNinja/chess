@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -69,14 +70,33 @@ public class ChessGame
 	public Collection<ChessMove> validMoves(ChessPosition startPosition)
 	{
 		ChessPiece piece = board.getPiece(startPosition);
-		Collection<ChessMove> validMoves = piece.pieceMoves(board, startPosition);
-		ChessPiece.PieceType type = piece.getPieceType();
+		Collection<ChessMove> validMoves = new ArrayList<>();
 
 		if(piece == null)
 		{
 			return null;
 		}
-		return null;
+
+		Collection<ChessMove> pieceMoves = piece.pieceMoves(board, startPosition);
+
+		for(ChessMove move: pieceMoves)
+		{
+			if(testMove(move, board))
+			{
+				validMoves.add(move);
+			}
+		}
+
+		return validMoves;
+	}
+
+	private boolean testMove(ChessMove move, ChessBoard board)
+	{
+		ChessBoard testBoard = new ChessBoard(board);
+		ChessPiece piece = testBoard.getPiece(move.getStartPosition());
+		testBoard.movePiece(move);
+
+		return !inCheck(piece.getTeamColor(), testBoard);
 	}
 
 	/**
@@ -97,6 +117,11 @@ public class ChessGame
 	 * @return True if the specified team is in check
 	 */
 	public boolean isInCheck(TeamColor teamColor)
+	{
+		return inCheck(teamColor, this.board);
+	}
+
+	private boolean inCheck(TeamColor teamColor, ChessBoard board)
 	{
 		for(ChessPieceAndPosition piece : board.getTeamPieces(otherTeam(teamColor)))
 		{

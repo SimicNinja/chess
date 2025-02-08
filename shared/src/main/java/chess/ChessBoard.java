@@ -17,6 +17,24 @@ public class ChessBoard
 
 	public ChessBoard() {}
 
+	public ChessBoard(ChessBoard original)
+	{
+		this.boardState = new ChessPiece[8][8];
+
+		for (int row = 0; row < 8; row++)
+		{
+			for (int col = 0; col < 8; col++)
+			{
+				ChessPiece piece = original.boardState[row][col];
+
+				if(piece != null)
+				{
+					this.boardState[row][col] = new ChessPiece(piece.getTeamColor(), piece.getPieceType());
+				}
+			}
+		}
+	}
+
 	/**
 	 * Adds a chess piece to the chessboard
 	 *
@@ -34,8 +52,8 @@ public class ChessBoard
 	public void movePiece(ChessMove move)
 	{
 		ChessPiece piece = getPiece(move.getStartPosition());
-		addPiece(move.getEndPosition(), piece);
-		removePiece(move.getStartPosition());
+		this.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), piece.getPieceType()));
+		this.removePiece(move.getStartPosition());
 	}
 
 	private void removePiece(ChessPosition position)
@@ -88,6 +106,7 @@ public class ChessBoard
 	{
 		return this.occupied(position) && getPiece(position).getTeamColor() != piece.getTeamColor();
 	}
+
 
 	/**
 	 * Implemented to make for each loops usable in ChessGame
