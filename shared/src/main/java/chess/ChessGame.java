@@ -77,7 +77,7 @@ public class ChessGame
 			return null;
 		}
 
-		Collection<ChessMove> pieceMoves = piece.pieceMoves(board, startPosition);
+		Collection<ChessMove> pieceMoves = piece.pieceMoves(board, startPosition); // For legibility & debugging purposes
 
 		for(ChessMove move: pieceMoves)
 		{
@@ -107,7 +107,18 @@ public class ChessGame
 	 */
 	public void makeMove(ChessMove move) throws InvalidMoveException
 	{
-		throw new RuntimeException("Not implemented");
+		ChessPiece piece = this.board.getPiece(move.getStartPosition());
+		Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
+
+		if(piece != null && validMoves.contains(move) && piece.getTeamColor() == getTeamTurn())
+		{
+			this.board.movePiece(move);
+			setTeamTurn(otherTeam(getTeamTurn()));
+		}
+		else
+		{
+			throw new InvalidMoveException("That move is illegal.");
+		}
 	}
 
 	/**
