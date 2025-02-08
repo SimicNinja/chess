@@ -90,33 +90,18 @@ public class ChessBoard
 		private final ChessGame.TeamColor targetTeam;
 		private int row = 0;
 		private int col = 0;
+		private boolean hasNext = false;
 
 		public ChessPieceIterator(ChessGame.TeamColor color)
 		{
 			targetTeam = color;
+			findNext();
 		}
 
 		@Override
 		public boolean hasNext()
 		{
-			while (row < 8)
-			{
-				while (col < 8)
-				{
-					ChessPiece piece = boardState[row][col];
-
-					if (piece != null && piece.getTeamColor() == targetTeam)
-					{
-						return true;
-					}
-
-					col++;
-				}
-
-				col = 0;
-				row++;
-			}
-			return false;
+			return hasNext;
 		}
 
 		@Override
@@ -128,7 +113,7 @@ public class ChessBoard
 			}
 
 			ChessPiece current = boardState[row][col];
-			ChessPosition position = new ChessPosition(row, col);
+			ChessPosition position = new ChessPosition(row + 1, col + 1);
 
 			col++;
 			if(col > 7)
@@ -136,8 +121,32 @@ public class ChessBoard
 				col = 0;
 				row++;
 			}
+			findNext();
 
 			return new ChessPieceAndPosition(current, position);
+		}
+
+		private void findNext()
+		{
+			hasNext = false;
+			while (row < 8)
+			{
+				while (col < 8)
+				{
+					ChessPiece piece = boardState[row][col];
+
+					if (piece != null && piece.getTeamColor() == targetTeam)
+					{
+						hasNext = true;
+						return;
+					}
+
+					col++;
+				}
+
+				col = 0;
+				row++;
+			}
 		}
 	}
 

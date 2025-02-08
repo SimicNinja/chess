@@ -39,6 +39,18 @@ public class ChessGame
 		color = team;
 	}
 
+	private TeamColor otherTeam(TeamColor team)
+	{
+		if(team == TeamColor.BLACK)
+		{
+			return TeamColor.WHITE;
+		}
+		else
+		{
+			return TeamColor.BLACK;
+		}
+	}
+
 	/**
 	 * Enum identifying the 2 possible teams in a chess game
 	 */
@@ -78,7 +90,7 @@ public class ChessGame
 	 */
 	public boolean isInCheck(TeamColor teamColor)
 	{
-		for(ChessPieceAndPosition piece : board.getTeamPieces(teamColor))
+		for(ChessPieceAndPosition piece : board.getTeamPieces(otherTeam(teamColor)))
 		{
 			for(ChessMove move : piece.getPiece().pieceCapture(board, piece.getPosition()))
 			{
