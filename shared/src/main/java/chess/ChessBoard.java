@@ -29,6 +29,21 @@ public class ChessBoard
 	}
 
 	/**
+	 * Applies ChessMove to the board. Assumes that the move is valid as logic is found in makeMove() in ChessGame.
+	 */
+	public void movePiece(ChessMove move)
+	{
+		ChessPiece piece = getPiece(move.getStartPosition());
+		addPiece(move.getEndPosition(), piece);
+		removePiece(move.getStartPosition());
+	}
+
+	private void removePiece(ChessPosition position)
+	{
+		boardState[position.getRow() - 1][position.getColumn() - 1] = null;
+	}
+
+	/**
 	 * Gets a chess piece on the chessboard
 	 *
 	 * @param position The position to get the piece from

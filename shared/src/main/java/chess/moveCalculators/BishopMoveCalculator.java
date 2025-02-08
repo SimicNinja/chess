@@ -4,7 +4,6 @@ import chess.ChessBoard;
 import chess.ChessMove;
 import chess.ChessPosition;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class BishopMoveCalculator extends MoveCalculator
@@ -12,11 +11,11 @@ public class BishopMoveCalculator extends MoveCalculator
 	@Override
 	public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition start)
 	{
-		validMoves.addAll(checkDirection(1, 1, board, start));
-		validMoves.addAll(checkDirection(1, -1, board, start));
-		validMoves.addAll(checkDirection(-1, 1, board, start));
-		validMoves.addAll(checkDirection(-1, -1, board, start));
+		pieceMoves.addAll(checkDirection(1, 1, board, start));
+		pieceMoves.addAll(checkDirection(1, -1, board, start));
+		pieceMoves.addAll(checkDirection(-1, 1, board, start));
+		pieceMoves.addAll(checkDirection(-1, -1, board, start));
 
-		return validMoves;
+		return pieceMoves;
 	}
 }

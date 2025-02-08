@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public abstract class MoveCalculator
 {
-	protected ArrayList<ChessMove> validMoves = new ArrayList<>();
+	protected ArrayList<ChessMove> pieceMoves = new ArrayList<>();
 	protected ArrayList<ChessMove> captureMoves = new ArrayList<>();
 
 	public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition start);
@@ -16,7 +16,7 @@ public abstract class MoveCalculator
 	{
 		pieceMoves(board, start);
 
-		for(ChessMove move : validMoves)
+		for(ChessMove move : pieceMoves)
 		{
 			if(board.containsEnemy(move.getEndPosition(), board.getPiece(start)))
 			{

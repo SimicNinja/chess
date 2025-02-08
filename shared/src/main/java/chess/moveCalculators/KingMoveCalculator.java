@@ -4,7 +4,6 @@ import chess.ChessBoard;
 import chess.ChessMove;
 import chess.ChessPosition;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class KingMoveCalculator extends MoveCalculator
@@ -20,10 +19,10 @@ public class KingMoveCalculator extends MoveCalculator
 			current = checkMove(directions[i][0], directions[i][1], board, start);
 			if(current != null)
 			{
-				validMoves.add(current);
+				pieceMoves.add(current);
 			}
 		}
 
-		return validMoves;
+		return pieceMoves;
 	}
 }

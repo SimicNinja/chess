@@ -68,7 +68,15 @@ public class ChessGame
 	 */
 	public Collection<ChessMove> validMoves(ChessPosition startPosition)
 	{
-		throw new RuntimeException("Not implemented");
+		ChessPiece piece = board.getPiece(startPosition);
+		Collection<ChessMove> validMoves = piece.pieceMoves(board, startPosition);
+		ChessPiece.PieceType type = piece.getPieceType();
+
+		if(piece == null)
+		{
+			return null;
+		}
+		return null;
 	}
 
 	/**
@@ -112,17 +120,18 @@ public class ChessGame
 	 */
 	public boolean isInCheckmate(TeamColor teamColor)
 	{
-		if(isInCheck(teamColor))
-		{
-			for (ChessPieceAndPosition piece : board.getTeamPieces(teamColor))
-			{
-				if(piece.getPiece().getPieceType() == ChessPiece.PieceType.KING && piece.getPiece().pieceMoves(board, piece.getPosition()) == null)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
+//		if(isInCheck(teamColor))
+//		{
+//			for (ChessPieceAndPosition piece : board.getTeamPieces(teamColor))
+//			{
+//				if(piece.getPiece().getPieceType() == ChessPiece.PieceType.KING && piece.getPiece().pieceMoves(board, piece.getPosition()) == null)
+//				{
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+		throw new RuntimeException("Not implemented");
 	}
 
 	/**
