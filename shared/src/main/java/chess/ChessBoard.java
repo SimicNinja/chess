@@ -2,6 +2,7 @@ package chess;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -98,30 +99,15 @@ public class ChessBoard
 		@Override
 		public boolean hasNext()
 		{
-			return row < 8;
-		}
-
-		@Override
-		public ChessPieceAndPosition next()
-		{
-			ChessPiece current = boardState[row][col];
-			ChessPosition position = new ChessPosition(row, col);
-			col++;
-			nextValid();
-			return new ChessPieceAndPosition(current, position);
-		}
-
-		private void nextValid()
-		{
-			while(row < 8)
+			while (row < 8)
 			{
-				while(col < 8)
+				while (col < 8)
 				{
-					ChessPiece piece = ChessBoard.this.getPiece(new ChessPosition(row, col));
+					ChessPiece piece = boardState[row][col];
 
-					if(piece != null && piece.getTeamColor() == targetTeam)
+					if (piece != null && piece.getTeamColor() == targetTeam)
 					{
-						return;
+						return true;
 					}
 
 					col++;
@@ -130,6 +116,28 @@ public class ChessBoard
 				col = 0;
 				row++;
 			}
+			return false;
+		}
+
+		@Override
+		public ChessPieceAndPosition next()
+		{
+			if(!hasNext())
+			{
+				throw new NoSuchElementException("No more chess pieces");
+			}
+
+			ChessPiece current = boardState[row][col];
+			ChessPosition position = new ChessPosition(row, col);
+
+			col++;
+			if(col > 7)
+			{
+				col = 0;
+				row++;
+			}
+
+			return new ChessPieceAndPosition(current, position);
 		}
 	}
 
