@@ -16,9 +16,9 @@ public abstract class MoveCalculator
 	{
 		pieceMoves(board, start);
 
-		for(ChessMove move : pieceMoves)
+		for (ChessMove move : pieceMoves)
 		{
-			if(board.containsEnemy(move.getEndPosition(), board.getPiece(start)))
+			if (board.containsEnemy(move.getEndPosition(), board.getPiece(start)))
 			{
 				captureMoves.add(move);
 			}
@@ -31,7 +31,7 @@ public abstract class MoveCalculator
 	{
 		ChessPosition current = start.offset(rowOffset, colOffset);
 
-		if(current.inBounds() && !board.containsAlly(current, board.getPiece(start)))
+		if (current.inBounds() && !board.containsAlly(current, board.getPiece(start)))
 		{
 			return new ChessMove(start, current, null);
 		}
@@ -45,10 +45,10 @@ public abstract class MoveCalculator
 		int colMove = colOffset;
 		ChessMove current = checkPieceMove(rowMove, colMove, board, start);
 
-		while(current != null)
+		while (current != null)
 		{
 			moves.add(current);
-			if(board.containsEnemy(current.getEndPosition(), board.getPiece(start)))
+			if (board.containsEnemy(current.getEndPosition(), board.getPiece(start)))
 			{
 				break;
 			}

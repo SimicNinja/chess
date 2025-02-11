@@ -15,7 +15,9 @@ public class ChessBoard
 {
 	private ChessPiece[][] boardState = new ChessPiece[8][8];
 
-	public ChessBoard() {}
+	public ChessBoard()
+	{
+	}
 
 	public ChessBoard(ChessBoard original)
 	{
@@ -27,7 +29,7 @@ public class ChessBoard
 			{
 				ChessPiece piece = original.boardState[row][col];
 
-				if(piece != null)
+				if (piece != null)
 				{
 					this.boardState[row][col] = new ChessPiece(piece.getTeamColor(), piece.getPieceType());
 				}
@@ -56,7 +58,7 @@ public class ChessBoard
 		ChessGame.TeamColor color = piece.getTeamColor();
 		ChessPosition end = move.getEndPosition();
 
-		switch(move.getPromotionPiece())
+		switch (move.getPromotionPiece())
 		{
 			case null:
 				this.addPiece(end, new ChessPiece(color, piece.getPieceType(), true));
@@ -87,6 +89,34 @@ public class ChessBoard
 		boardState[position.getRow() - 1][position.getColumn() - 1] = null;
 	}
 
+	private void moveRook(ChessPosition kingEnd, ChessGame.TeamColor kingColor)
+	{
+		if (kingEnd.getColumn() == 3)
+		{
+			if (kingColor == ChessGame.TeamColor.WHITE)
+			{
+				removePiece(new ChessPosition(1, 1));
+			}
+			else
+			{
+				removePiece(new ChessPosition(8, 1));
+			}
+			this.addPiece(kingEnd.offset(0, 1), new ChessPiece(kingColor, ChessPiece.PieceType.ROOK, true));
+		}
+		else if (kingEnd.getColumn() == 7)
+		{
+			if (kingColor == ChessGame.TeamColor.WHITE)
+			{
+				removePiece(new ChessPosition(1, 8));
+			}
+			else
+			{
+				removePiece(new ChessPosition(8, 8));
+			}
+			this.addPiece(kingEnd.offset(0, -1), new ChessPiece(kingColor, ChessPiece.PieceType.ROOK, true));
+		}
+	}
+
 	/**
 	 * Gets a chess piece on the chessboard
 	 *
@@ -96,7 +126,7 @@ public class ChessBoard
 	 */
 	public ChessPiece getPiece(ChessPosition position)
 	{
- 		return boardState[position.getRow() - 1][position.getColumn() - 1];
+		return boardState[position.getRow() - 1][position.getColumn() - 1];
 	}
 
 	/**
@@ -125,7 +155,7 @@ public class ChessBoard
 	 * Checks is an enemy is located at the designate positon
 	 *
 	 * @param position The position that may contain an enemy
-	 * @param piece The piece you are moving
+	 * @param piece    The piece you are moving
 	 * @return True if enemy piece is at position, otherwise false
 	 */
 	public boolean containsEnemy(ChessPosition position, ChessPiece piece)
@@ -138,11 +168,11 @@ public class ChessBoard
 		ChessBoard startingBoard = new ChessBoard();
 		startingBoard.resetBoard();
 
-		for(ChessPieceAndPosition piece : startingBoard.getTeamPieces(testPiece.getTeamColor()))
+		for (ChessPieceAndPosition piece : startingBoard.getTeamPieces(testPiece.getTeamColor()))
 		{
-			if(piece.getPiece().getPieceType() == testPiece.getPieceType() && position.equals(piece.getPosition()))
+			if (piece.getPiece().getPieceType() == testPiece.getPieceType() && position.equals(piece.getPosition()))
 			{
-					return true;
+				return true;
 			}
 		}
 
@@ -227,7 +257,7 @@ public class ChessBoard
 
 	private void pawnRow(int row)
 	{
-		for(int col = 1; col < 9; col++)
+		for (int col = 1; col < 9; col++)
 		{
 			addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.PAWN));
 		}
@@ -235,9 +265,9 @@ public class ChessBoard
 
 	private void powerRow(int row)
 	{
-		for(int col = 1; col < 9; col++)
+		for (int col = 1; col < 9; col++)
 		{
-			switch(col)
+			switch (col)
 			{
 				case 1:
 					addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.ROOK));
@@ -266,7 +296,7 @@ public class ChessBoard
 
 	private ChessGame.TeamColor determineColor(int row)
 	{
-		if(row > 4)
+		if (row > 4)
 		{
 			return ChessGame.TeamColor.BLACK;
 		}
@@ -277,12 +307,12 @@ public class ChessBoard
 	public String toString()
 	{
 		String out = "\n";
-		for(int row = 8; row > 0; row--)
+		for (int row = 8; row > 0; row--)
 		{
-			for(int col = 1; col < 9; col++)
+			for (int col = 1; col < 9; col++)
 			{
 				ChessPiece piece = getPiece(new ChessPosition(row, col));
-				if(piece == null)
+				if (piece == null)
 				{
 					out = out + "| ";
 				}

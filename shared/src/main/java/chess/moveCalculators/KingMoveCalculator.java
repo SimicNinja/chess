@@ -9,13 +9,13 @@ public class KingMoveCalculator extends MoveCalculator
 	@Override
 	public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition start)
 	{
-		int[][] directions = {{0,1}, {1,0}, {0,-1}, {-1,0}, {1,1}, {1,-1}, {-1,1}, {-1,-1}};
+		int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 		ChessMove current;
 
-		for(int i = 0; i < directions.length; i++)
+		for (int i = 0; i < directions.length; i++)
 		{
 			current = checkPieceMove(directions[i][0], directions[i][1], board, start);
-			if(current != null)
+			if (current != null)
 			{
 				pieceMoves.add(current);
 			}
@@ -23,19 +23,19 @@ public class KingMoveCalculator extends MoveCalculator
 
 		ChessPiece king = board.getPiece(start);
 
-		if(!king.getHasMoved() && board.inStartingPosition(king, start))
+		if (!king.getHasMoved() && board.inStartingPosition(king, start))
 		{
 			//Variables for readability; 1 & 8 for what the starting column should be.
-			ChessPiece rook1 = board.getPiece(start.offset(0, 3));
-			ChessPiece rook8 = board.getPiece(start.offset(0, -4));
+			ChessPiece rook1 = board.getPiece(start.offset(0, -4));
+			ChessPiece rook8 = board.getPiece(start.offset(0, 3));
 
-			if(eligibleRook(rook1) && isPathClear(board, start, -1) && isPathSafe(board, start, -1))
+			if (eligibleRook(rook1) && isPathClear(board, start, -1) && isPathSafe(board, start, -1))
 			{
-				pieceMoves.add(new ChessMove(start, start.offset(0, -2), null));
+				pieceMoves.add(new ChessMove(start, start.offset(0, -2), null, true));
 			}
-			if(eligibleRook(rook8) && isPathSafe(board, start, 1) && isPathSafe(board, start, 1))
+			if (eligibleRook(rook8) && isPathSafe(board, start, 1) && isPathSafe(board, start, 1))
 			{
-				pieceMoves.add(new ChessMove(start, start.offset(0, 2), null));
+				pieceMoves.add(new ChessMove(start, start.offset(0, 2), null, true));
 			}
 		}
 
@@ -51,9 +51,9 @@ public class KingMoveCalculator extends MoveCalculator
 	{
 		ChessPosition temp = kingStart.offset(0, colDirection);
 
-		while(temp.inBounds())
+		while (temp.inBounds())
 		{
-			if(board.occupied(temp) && board.getPiece(temp).getPieceType() != ChessPiece.PieceType.ROOK)
+			if (board.occupied(temp) && board.getPiece(temp).getPieceType() != ChessPiece.PieceType.ROOK)
 			{
 				return false;
 			}
@@ -71,12 +71,6 @@ public class KingMoveCalculator extends MoveCalculator
 		ChessMove move1 = new ChessMove(kingStart, kingStart.offset(0, colDirection), null);
 		ChessMove move2 = new ChessMove(kingStart, kingStart.offset(0, colDirection * 2), null);
 
-		//return !game.isInCheck(color) && game.testMove(move1, board) && game.testMove(move2, board);
-		if(!game.isInCheck(color))
-			if(game.testMove(move1, board))
-				if(game.testMove(move2, board))
-					return true;
-
-		return false;
+		return !game.isInCheck(color) && game.testMove(move1, board) && game.testMove(move2, board);
 	}
 }

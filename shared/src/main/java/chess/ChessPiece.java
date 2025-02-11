@@ -36,15 +36,22 @@ public class ChessPiece
 
 	private MoveCalculator createCalculator()
 	{
-		switch(this.type)
+		switch (this.type)
 		{
-			case KING: return new KingMoveCalculator();
-			case QUEEN: return new QueenMoveCalculator();
-			case BISHOP: return new BishopMoveCalculator();
-			case KNIGHT: return new KnightMoveCalculator();
-			case ROOK: return new RookMoveCalculator();
-			case PAWN: return new PawnMoveCalculator();
-			default: throw new RuntimeException("Piece doesn't have a valid type!");
+			case KING:
+				return new KingMoveCalculator();
+			case QUEEN:
+				return new QueenMoveCalculator();
+			case BISHOP:
+				return new BishopMoveCalculator();
+			case KNIGHT:
+				return new KnightMoveCalculator();
+			case ROOK:
+				return new RookMoveCalculator();
+			case PAWN:
+				return new PawnMoveCalculator();
+			default:
+				throw new RuntimeException("Piece doesn't have a valid type!");
 		}
 	}
 
@@ -119,30 +126,44 @@ public class ChessPiece
 	@Override
 	public String toString()
 	{
-		if(this.color == ChessGame.TeamColor.WHITE)
+		if (this.color == ChessGame.TeamColor.WHITE)
 		{
-			switch(this.type)
+			switch (this.type)
 			{
-				case KING: return "K";
-				case QUEEN: return "Q";
-				case BISHOP: return "B";
-				case KNIGHT: return "N";
-				case ROOK: return "R";
-				case PAWN: return "P";
-				default: throw new RuntimeException("Piece doesn't have a valid type!");
+				case KING:
+					return "K";
+				case QUEEN:
+					return "Q";
+				case BISHOP:
+					return "B";
+				case KNIGHT:
+					return "N";
+				case ROOK:
+					return "R";
+				case PAWN:
+					return "P";
+				default:
+					throw new RuntimeException("Piece doesn't have a valid type!");
 			}
 		}
 		else
 		{
-			switch(this.type)
+			switch (this.type)
 			{
-				case KING: return "k";
-				case QUEEN: return "q";
-				case BISHOP: return "b";
-				case KNIGHT: return "n";
-				case ROOK: return "r";
-				case PAWN: return "p";
-				default: throw new RuntimeException("Piece doesn't have a valid type!");
+				case KING:
+					return "k";
+				case QUEEN:
+					return "q";
+				case BISHOP:
+					return "b";
+				case KNIGHT:
+					return "n";
+				case ROOK:
+					return "r";
+				case PAWN:
+					return "p";
+				default:
+					throw new RuntimeException("Piece doesn't have a valid type!");
 			}
 		}
 	}

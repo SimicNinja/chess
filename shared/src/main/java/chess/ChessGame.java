@@ -48,7 +48,7 @@ public class ChessGame
 
 	private TeamColor otherTeam(TeamColor team)
 	{
-		if(team == TeamColor.BLACK)
+		if (team == TeamColor.BLACK)
 		{
 			return TeamColor.WHITE;
 		}
@@ -78,16 +78,16 @@ public class ChessGame
 		ChessPiece piece = board.getPiece(startPosition);
 		Collection<ChessMove> validMoves = new ArrayList<>();
 
-		if(piece == null)
+		if (piece == null)
 		{
 			return null;
 		}
 
 		Collection<ChessMove> pieceMoves = piece.pieceMoves(board, startPosition); // For legibility & debugging purposes
 
-		for(ChessMove move: pieceMoves)
+		for (ChessMove move : pieceMoves)
 		{
-			if(testMove(move, board))
+			if (testMove(move, board))
 			{
 				validMoves.add(move);
 			}
@@ -116,7 +116,7 @@ public class ChessGame
 		ChessPiece piece = this.board.getPiece(move.getStartPosition());
 		Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
 
-		if(piece != null && validMoves.contains(move) && piece.getTeamColor() == getTeamTurn())
+		if (piece != null && validMoves.contains(move) && piece.getTeamColor() == getTeamTurn())
 		{
 			this.board.movePiece(move);
 			setTeamTurn(otherTeam(getTeamTurn()));
@@ -140,11 +140,11 @@ public class ChessGame
 
 	private boolean inCheck(TeamColor teamColor, ChessBoard board)
 	{
-		for(ChessPieceAndPosition piece : board.getTeamPieces(otherTeam(teamColor)))
+		for (ChessPieceAndPosition piece : board.getTeamPieces(otherTeam(teamColor)))
 		{
-			for(ChessMove move : piece.getPiece().pieceCapture(board, piece.getPosition()))
+			for (ChessMove move : piece.getPiece().pieceCapture(board, piece.getPosition()))
 			{
-				if(board.getPiece(move.getEndPosition()).getPieceType() == ChessPiece.PieceType.KING)
+				if (board.getPiece(move.getEndPosition()).getPieceType() == ChessPiece.PieceType.KING)
 				{
 					return true;
 				}
@@ -179,9 +179,9 @@ public class ChessGame
 
 	private boolean noTeamMoves(TeamColor color)
 	{
-		for(ChessPieceAndPosition piece : board.getTeamPieces(color))
+		for (ChessPieceAndPosition piece : board.getTeamPieces(color))
 		{
-			if(!validMoves(piece.getPosition()).isEmpty())
+			if (!validMoves(piece.getPosition()).isEmpty())
 			{
 				return false;
 			}
