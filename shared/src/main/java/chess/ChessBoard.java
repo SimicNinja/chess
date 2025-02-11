@@ -59,19 +59,19 @@ public class ChessBoard
 		switch(move.getPromotionPiece())
 		{
 			case null:
-				this.addPiece(end, new ChessPiece(color, piece.getPieceType()));
+				this.addPiece(end, new ChessPiece(color, piece.getPieceType(), true));
 				break;
 			case QUEEN:
-				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.QUEEN));
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.QUEEN, true));
 				break;
 			case KNIGHT:
-				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.KNIGHT));
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.KNIGHT, true));
 				break;
 			case BISHOP:
-				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.BISHOP));
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.BISHOP, true));
 				break;
 			case ROOK:
-				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.ROOK));
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.ROOK, true));
 				break;
 			case KING:
 				break;

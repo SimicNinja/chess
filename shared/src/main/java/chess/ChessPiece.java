@@ -16,11 +16,21 @@ public class ChessPiece
 	private final ChessGame.TeamColor color;
 	private final ChessPiece.PieceType type;
 	private final MoveCalculator calculator;
+	private final boolean hasMoved;
 
 	public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type)
 	{
 		this.color = pieceColor;
 		this.type = type;
+		this.hasMoved = false;
+		this.calculator = createCalculator();
+	}
+
+	public ChessPiece(ChessGame.TeamColor color, ChessPiece.PieceType type, boolean moved)
+	{
+		this.color = color;
+		this.type = type;
+		this.hasMoved = moved;
 		this.calculator = createCalculator();
 	}
 
@@ -65,6 +75,11 @@ public class ChessPiece
 	public PieceType getPieceType()
 	{
 		return this.type;
+	}
+
+	public boolean getHasMoved()
+	{
+		return this.hasMoved;
 	}
 
 	/**
