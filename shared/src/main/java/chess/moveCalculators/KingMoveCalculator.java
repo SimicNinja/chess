@@ -44,7 +44,7 @@ public class KingMoveCalculator extends MoveCalculator
 
 	private boolean eligibleRook(ChessPiece rook)
 	{
-		return rook.getPieceType() == ChessPiece.PieceType.ROOK && !rook.getHasMoved();
+		return rook != null && rook.getPieceType() == ChessPiece.PieceType.ROOK && !rook.getHasMoved();
 	}
 
 	private boolean isPathClear(ChessBoard board, ChessPosition kingStart, int colDirection)
@@ -71,6 +71,12 @@ public class KingMoveCalculator extends MoveCalculator
 		ChessMove move1 = new ChessMove(kingStart, kingStart.offset(0, colDirection), null);
 		ChessMove move2 = new ChessMove(kingStart, kingStart.offset(0, colDirection * 2), null);
 
-		return !game.isInCheck(color) && game.testMove(move1, board) && game.testMove(move2, board);
+		//return !game.isInCheck(color) && game.testMove(move1, board) && game.testMove(move2, board);
+		if(!game.isInCheck(color))
+			if(game.testMove(move1, board))
+				if(game.testMove(move2, board))
+					return true;
+
+		return false;
 	}
 }

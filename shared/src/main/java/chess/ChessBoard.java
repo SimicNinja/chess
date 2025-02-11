@@ -140,9 +140,9 @@ public class ChessBoard
 
 		for(ChessPieceAndPosition piece : startingBoard.getTeamPieces(testPiece.getTeamColor()))
 		{
-			if(piece.getPiece().getPieceType() == testPiece.getPieceType() && piece.getPosition() == position)
+			if(piece.getPiece().getPieceType() == testPiece.getPieceType() && position.equals(piece.getPosition()))
 			{
-				return true;
+					return true;
 			}
 		}
 
