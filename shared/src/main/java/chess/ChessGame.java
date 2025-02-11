@@ -156,18 +156,7 @@ public class ChessGame
 	 */
 	public boolean isInCheckmate(TeamColor teamColor)
 	{
-		if(isInCheck(teamColor))
-		{
-			for(ChessPieceAndPosition piece : board.getTeamPieces(teamColor))
-			{
-				if(!validMoves(piece.getPosition()).isEmpty())
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
+		return isInCheck(teamColor) && noTeamMoves(teamColor);
 	}
 
 	/**
@@ -179,7 +168,19 @@ public class ChessGame
 	 */
 	public boolean isInStalemate(TeamColor teamColor)
 	{
-		throw new RuntimeException("Not implemented");
+		return !isInCheck(teamColor) && noTeamMoves(teamColor);
+	}
+
+	private boolean noTeamMoves(TeamColor color)
+	{
+		for(ChessPieceAndPosition piece : board.getTeamPieces(color))
+		{
+			if(!validMoves(piece.getPosition()).isEmpty())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
