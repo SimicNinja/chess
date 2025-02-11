@@ -133,6 +133,21 @@ public class ChessBoard
 		return this.occupied(position) && getPiece(position).getTeamColor() != piece.getTeamColor();
 	}
 
+	public boolean inStartingPosition(ChessPiece testPiece, ChessPosition position)
+	{
+		ChessBoard startingBoard = new ChessBoard();
+		startingBoard.resetBoard();
+
+		for(ChessPieceAndPosition piece : startingBoard.getTeamPieces(testPiece.getTeamColor()))
+		{
+			if(piece.getPiece().getPieceType() == testPiece.getPieceType() && piece.getPosition() == position)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * Implemented to make for each loops usable in ChessGame
@@ -210,20 +225,6 @@ public class ChessBoard
 		}
 	}
 
-	private int symmetry(int col)
-	{
-		return 9 - col;
-	}
-
-	private ChessGame.TeamColor determineColor(int row)
-	{
-		if(row > 4)
-		{
-			return ChessGame.TeamColor.BLACK;
-		}
-		return ChessGame.TeamColor.WHITE;
-	}
-
 	private void pawnRow(int row)
 	{
 		for(int col = 1; col < 9; col++)
@@ -256,6 +257,20 @@ public class ChessBoard
 					break;
 			}
 		}
+	}
+
+	private int symmetry(int col)
+	{
+		return 9 - col;
+	}
+
+	private ChessGame.TeamColor determineColor(int row)
+	{
+		if(row > 4)
+		{
+			return ChessGame.TeamColor.BLACK;
+		}
+		return ChessGame.TeamColor.WHITE;
 	}
 
 	@Override

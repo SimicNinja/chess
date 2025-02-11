@@ -16,7 +16,7 @@ public class KnightMoveCalculator extends MoveCalculator
 
 		for(int[] direction : directions)
 		{
-			current = checkMove(direction[0], direction[1], board, start);
+			current = checkPieceMove(direction[0], direction[1], board, start);
 			if (current != null)
 			{
 				pieceMoves.add(current);

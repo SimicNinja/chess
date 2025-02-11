@@ -16,10 +16,10 @@ public class PawnMoveCalculator extends MoveCalculator
 			invert = -1;
 		}
 
-		ChessMove forward = checkMove(invert, 0, board, start);
-		ChessMove positiveDiagonal = checkMove(invert, 1, board, start);
-		ChessMove negativeDiagonal = checkMove(invert, -1, board, start);
-		ChessMove doubleFoward = checkMove(2 * invert, 0, board, start);
+		ChessMove forward = checkPieceMove(invert, 0, board, start);
+		ChessMove positiveDiagonal = checkPieceMove(invert, 1, board, start);
+		ChessMove negativeDiagonal = checkPieceMove(invert, -1, board, start);
+		ChessMove doubleFoward = checkPieceMove(2 * invert, 0, board, start);
 
 		pieceMoves.add(forward);
 		pieceMoves.add(positiveDiagonal);
@@ -46,7 +46,7 @@ public class PawnMoveCalculator extends MoveCalculator
 	}
 
 	@Override
-	protected ChessMove checkMove(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
+	protected ChessMove checkPieceMove(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
 	{
 		ChessPosition current = start.offset(rowOffset, colOffset);
 		ChessMove move = new ChessMove(start, current, null);

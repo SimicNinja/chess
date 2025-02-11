@@ -22,6 +22,12 @@ public class ChessGame
 		board.resetBoard();
 	}
 
+	public ChessGame(ChessBoard board)
+	{
+		color = TeamColor.WHITE;
+		this.board = board;
+	}
+
 	/**
 	 * @return Which team's turn it is
 	 */
@@ -90,7 +96,7 @@ public class ChessGame
 		return validMoves;
 	}
 
-	private boolean testMove(ChessMove move, ChessBoard board)
+	public boolean testMove(ChessMove move, ChessBoard board)
 	{
 		ChessBoard testBoard = new ChessBoard(board);
 		ChessPiece piece = testBoard.getPiece(move.getStartPosition());

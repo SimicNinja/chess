@@ -27,7 +27,7 @@ public abstract class MoveCalculator
 		return captureMoves;
 	}
 
-	protected ChessMove checkMove(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
+	protected ChessMove checkPieceMove(int rowOffset, int colOffset, ChessBoard board, ChessPosition start)
 	{
 		ChessPosition current = start.offset(rowOffset, colOffset);
 
@@ -43,7 +43,7 @@ public abstract class MoveCalculator
 		Collection<ChessMove> moves = new ArrayList<>();
 		int rowMove = rowOffset;
 		int colMove = colOffset;
-		ChessMove current = checkMove(rowMove, colMove, board, start);
+		ChessMove current = checkPieceMove(rowMove, colMove, board, start);
 
 		while(current != null)
 		{
@@ -54,7 +54,7 @@ public abstract class MoveCalculator
 			}
 			rowMove += rowOffset;
 			colMove += colOffset;
-			current = checkMove(rowMove, colMove, board, start);
+			current = checkPieceMove(rowMove, colMove, board, start);
 		}
 
 		return moves;
