@@ -156,18 +156,18 @@ public class ChessGame
 	 */
 	public boolean isInCheckmate(TeamColor teamColor)
 	{
-//		if(isInCheck(teamColor))
-//		{
-//			for (ChessPieceAndPosition piece : board.getTeamPieces(teamColor))
-//			{
-//				if(piece.getPiece().getPieceType() == ChessPiece.PieceType.KING && piece.getPiece().pieceMoves(board, piece.getPosition()) == null)
-//				{
-//					return true;
-//				}
-//			}
-//		}
-//		return false;
-		throw new RuntimeException("Not implemented");
+		if(isInCheck(teamColor))
+		{
+			for(ChessPieceAndPosition piece : board.getTeamPieces(teamColor))
+			{
+				if(!validMoves(piece.getPosition()).isEmpty())
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/**
