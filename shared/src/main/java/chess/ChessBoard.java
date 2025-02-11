@@ -51,8 +51,34 @@ public class ChessBoard
 	 */
 	public void movePiece(ChessMove move)
 	{
+		//Readability variables
 		ChessPiece piece = getPiece(move.getStartPosition());
-		this.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), piece.getPieceType()));
+		ChessGame.TeamColor color = piece.getTeamColor();
+		ChessPosition end = move.getEndPosition();
+
+		switch(move.getPromotionPiece())
+		{
+			case null:
+				this.addPiece(end, new ChessPiece(color, piece.getPieceType()));
+				break;
+			case QUEEN:
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.QUEEN));
+				break;
+			case KNIGHT:
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.KNIGHT));
+				break;
+			case BISHOP:
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.BISHOP));
+				break;
+			case ROOK:
+				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.ROOK));
+				break;
+			case KING:
+				break;
+			case PAWN:
+				break;
+		}
+
 		this.removePiece(move.getStartPosition());
 	}
 
