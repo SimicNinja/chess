@@ -12,10 +12,10 @@ public class KingMoveCalculator extends MoveCalculator
 		int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 		ChessMove current;
 
-		for (int i = 0; i < directions.length; i++)
+		for(int i = 0; i < directions.length; i++)
 		{
 			current = checkPieceMove(directions[i][0], directions[i][1], board, start);
-			if (current != null)
+			if(current != null)
 			{
 				pieceMoves.add(current);
 			}
@@ -23,37 +23,42 @@ public class KingMoveCalculator extends MoveCalculator
 
 		ChessPiece king = board.getPiece(start);
 
-		if (!king.getHasMoved() && board.inStartingPosition(king, start))
+		if(!king.getHasMoved() && board.inStartingPosition(king, start))
 		{
 			//Variables for readability; 1 & 8 for what the starting column should be.
 			ChessPiece rook1 = board.getPiece(start.offset(0, -4));
 			ChessPiece rook8 = board.getPiece(start.offset(0, 3));
 
-			if (eligibleRook(rook1) && isPathClear(board, start, -1) && isPathSafe(board, start, -1))
+			if(eligibleRook(rook1, king.getTeamColor()) && isPathClear(board, start, -1) && isPathSafe(board, start, -1))
 			{
-				pieceMoves.add(new ChessMove(start, start.offset(0, -2), null, true));
+				pieceMoves.add(new ChessMove(start, start.offset(0, -2), null));
 			}
-			if (eligibleRook(rook8) && isPathSafe(board, start, 1) && isPathSafe(board, start, 1))
+			if(eligibleRook(rook8, king.getTeamColor()) && isPathClear(board, start, 1) && isPathSafe(board, start, 1))
 			{
-				pieceMoves.add(new ChessMove(start, start.offset(0, 2), null, true));
+				pieceMoves.add(new ChessMove(start, start.offset(0, 2), null));
 			}
 		}
 
 		return pieceMoves;
 	}
 
-	private boolean eligibleRook(ChessPiece rook)
+	private boolean eligibleRook(ChessPiece rook, ChessGame.TeamColor color)
 	{
-		return rook != null && rook.getPieceType() == ChessPiece.PieceType.ROOK && !rook.getHasMoved();
+		boolean flag = false;
+		if(rook != null && rook.getPieceType() == ChessPiece.PieceType.ROOK && !rook.getHasMoved() && rook.getTeamColor() == color)
+		{
+			flag = true;
+		}
+		return flag;
 	}
 
 	private boolean isPathClear(ChessBoard board, ChessPosition kingStart, int colDirection)
 	{
 		ChessPosition temp = kingStart.offset(0, colDirection);
 
-		while (temp.inBounds())
+		while(temp.inBounds())
 		{
-			if (board.occupied(temp) && board.getPiece(temp).getPieceType() != ChessPiece.PieceType.ROOK)
+			if(board.occupied(temp) && board.getPiece(temp).getPieceType() != ChessPiece.PieceType.ROOK)
 			{
 				return false;
 			}

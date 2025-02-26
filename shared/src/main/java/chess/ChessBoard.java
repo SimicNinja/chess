@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import static java.lang.Math.abs;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -23,13 +24,13 @@ public class ChessBoard
 	{
 		this.boardState = new ChessPiece[8][8];
 
-		for (int row = 0; row < 8; row++)
+		for(int row = 0; row < 8; row++)
 		{
-			for (int col = 0; col < 8; col++)
+			for(int col = 0; col < 8; col++)
 			{
 				ChessPiece piece = original.boardState[row][col];
 
-				if (piece != null)
+				if(piece != null)
 				{
 					this.boardState[row][col] = new ChessPiece(piece.getTeamColor(), piece.getPieceType());
 				}
@@ -56,9 +57,10 @@ public class ChessBoard
 		//Readability variables
 		ChessPiece piece = getPiece(move.getStartPosition());
 		ChessGame.TeamColor color = piece.getTeamColor();
+		ChessPosition start = move.getStartPosition();
 		ChessPosition end = move.getEndPosition();
 
-		switch (move.getPromotionPiece())
+		switch(move.getPromotionPiece())
 		{
 			case null:
 				this.addPiece(end, new ChessPiece(color, piece.getPieceType(), true));
@@ -75,10 +77,18 @@ public class ChessBoard
 			case ROOK:
 				this.addPiece(end, new ChessPiece(color, ChessPiece.PieceType.ROOK, true));
 				break;
-			case KING:
+			case KING, PAWN:
 				break;
-			case PAWN:
-				break;
+		}
+
+
+		if(piece.getPieceType() == ChessPiece.PieceType.KING && abs(start.getColumn() - end.getColumn()) > 1)
+		{
+			moveRook(end, color);
+		}
+		else if(piece.getPieceType() == ChessPiece.PieceType.PAWN)
+		{
+			//En Passant Move Implementation
 		}
 
 		this.removePiece(move.getStartPosition());
@@ -91,9 +101,9 @@ public class ChessBoard
 
 	private void moveRook(ChessPosition kingEnd, ChessGame.TeamColor kingColor)
 	{
-		if (kingEnd.getColumn() == 3)
+		if(kingEnd.getColumn() == 3)
 		{
-			if (kingColor == ChessGame.TeamColor.WHITE)
+			if(kingColor == ChessGame.TeamColor.WHITE)
 			{
 				removePiece(new ChessPosition(1, 1));
 			}
@@ -103,9 +113,9 @@ public class ChessBoard
 			}
 			this.addPiece(kingEnd.offset(0, 1), new ChessPiece(kingColor, ChessPiece.PieceType.ROOK, true));
 		}
-		else if (kingEnd.getColumn() == 7)
+		else if(kingEnd.getColumn() == 7)
 		{
-			if (kingColor == ChessGame.TeamColor.WHITE)
+			if(kingColor == ChessGame.TeamColor.WHITE)
 			{
 				removePiece(new ChessPosition(1, 8));
 			}
@@ -168,9 +178,9 @@ public class ChessBoard
 		ChessBoard startingBoard = new ChessBoard();
 		startingBoard.resetBoard();
 
-		for (ChessPieceAndPosition piece : startingBoard.getTeamPieces(testPiece.getTeamColor()))
+		for(ChessPieceAndPosition piece : startingBoard.getTeamPieces(testPiece.getTeamColor()))
 		{
-			if (piece.getPiece().getPieceType() == testPiece.getPieceType() && position.equals(piece.getPosition()))
+			if(piece.getPiece().getPieceType() == testPiece.getPieceType() && position.equals(piece.getPosition()))
 			{
 				return true;
 			}
@@ -234,13 +244,13 @@ public class ChessBoard
 		private void findNext()
 		{
 			hasNext = false;
-			while (row < 8)
+			while(row < 8)
 			{
-				while (col < 8)
+				while(col < 8)
 				{
 					ChessPiece piece = boardState[row][col];
 
-					if (piece != null && piece.getTeamColor() == targetTeam)
+					if(piece != null && piece.getTeamColor() == targetTeam)
 					{
 						hasNext = true;
 						return;
@@ -257,7 +267,7 @@ public class ChessBoard
 
 	private void pawnRow(int row)
 	{
-		for (int col = 1; col < 9; col++)
+		for(int col = 1; col < 9; col++)
 		{
 			addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.PAWN));
 		}
@@ -265,9 +275,9 @@ public class ChessBoard
 
 	private void powerRow(int row)
 	{
-		for (int col = 1; col < 9; col++)
+		for(int col = 1; col < 9; col++)
 		{
-			switch (col)
+			switch(col)
 			{
 				case 1:
 					addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.ROOK));
@@ -296,7 +306,7 @@ public class ChessBoard
 
 	private ChessGame.TeamColor determineColor(int row)
 	{
-		if (row > 4)
+		if(row > 4)
 		{
 			return ChessGame.TeamColor.BLACK;
 		}
@@ -307,12 +317,12 @@ public class ChessBoard
 	public String toString()
 	{
 		String out = "\n";
-		for (int row = 8; row > 0; row--)
+		for(int row = 8; row > 0; row--)
 		{
-			for (int col = 1; col < 9; col++)
+			for(int col = 1; col < 9; col++)
 			{
 				ChessPiece piece = getPiece(new ChessPosition(row, col));
-				if (piece == null)
+				if(piece == null)
 				{
 					out = out + "| ";
 				}
@@ -329,7 +339,7 @@ public class ChessBoard
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o == null || getClass() != o.getClass())
+		if(o == null || getClass() != o.getClass())
 		{
 			return false;
 		}

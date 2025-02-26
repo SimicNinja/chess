@@ -12,23 +12,22 @@ public class ChessMove
 {
 	private final ChessPosition start, end;
 	private final ChessPiece.PieceType promote;
-	private final boolean specialMove;
+//	private final boolean specialMove;
 
 	public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece)
 	{
 		this.start = startPosition;
 		this.end = endPosition;
 		this.promote = promotionPiece;
-		this.specialMove = false;
 	}
 
-	public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, boolean flag)
-	{
-		this.start = startPosition;
-		this.end = endPosition;
-		this.promote = promotionPiece;
-		this.specialMove = flag;
-	}
+//	public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, boolean flag)
+//	{
+//		this.start = startPosition;
+//		this.end = endPosition;
+//		this.promote = promotionPiece;
+//		this.specialMove = flag;
+//	}
 
 	/**
 	 * @return ChessPosition of starting location
