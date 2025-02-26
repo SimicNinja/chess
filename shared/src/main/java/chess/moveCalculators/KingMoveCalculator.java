@@ -12,9 +12,9 @@ public class KingMoveCalculator extends MoveCalculator
 		int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 		ChessMove current;
 
-		for(int i = 0; i < directions.length; i++)
+		for(int[] direction : directions)
 		{
-			current = checkPieceMove(directions[i][0], directions[i][1], board, start);
+			current = checkPieceMove(direction[0], direction[1], board, start);
 			if(current != null)
 			{
 				pieceMoves.add(current);
@@ -44,12 +44,7 @@ public class KingMoveCalculator extends MoveCalculator
 
 	private boolean eligibleRook(ChessPiece rook, ChessGame.TeamColor color)
 	{
-		boolean flag = false;
-		if(rook != null && rook.getPieceType() == ChessPiece.PieceType.ROOK && !rook.getHasMoved() && rook.getTeamColor() == color)
-		{
-			flag = true;
-		}
-		return flag;
+		return rook != null && rook.getPieceType() == ChessPiece.PieceType.ROOK && !rook.getHasMoved() && rook.getTeamColor() == color;
 	}
 
 	private boolean isPathClear(ChessBoard board, ChessPosition kingStart, int colDirection)
