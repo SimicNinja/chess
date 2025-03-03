@@ -11,11 +11,16 @@ public class UserDAO
 
 	public UserData getUser(String username)
 	{
-		return userMap.get(username);
+		UserData user = userMap.get(username);
+		return user;
 	}
 
-	public void createUser(String username, String password, String email)
+	public void createUser(String username, String password, String email) throws DataAccessException
 	{
+		if(username == null || username.isEmpty() || password == null || password.isEmpty() || email == null || email.isEmpty())
+		{
+			throw new DataAccessException("You must provide a username, password, & email.");
+		}
 		userMap.put(username, new UserData(username, password, email));
 	}
 }
