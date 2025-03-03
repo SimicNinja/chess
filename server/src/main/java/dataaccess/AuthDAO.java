@@ -11,9 +11,10 @@ public class AuthDAO
 {
 	private Map<String, AuthData> authMap = new HashMap<>();
 
-	public void createAuth(String username)
+	public String createAuth(String username)
 	{
 		String authToken = UUID.randomUUID().toString();
 		authMap.put(authToken, new AuthData(authToken, username));
+		return authToken;
 	}
 }

@@ -1,22 +1,29 @@
 package service;
 
+import dataaccess.AuthDAO;
 import dataaccess.UserDAO;
 import model.UserData;
 
 public class UserManagement
 {
-	private UserDAO users = new UserDAO();
+	public UserDAO users = new UserDAO();
+	public AuthDAO authorizations = new AuthDAO();
 
 	public RegisterResult register(UserData registerRequest)
 	{
-		if(users.getUser(registerRequest.username()) == null)
+		String username = registerRequest.username();
+		if(users.getUser(username) == null)
 		{
-			return null;
+
+			users.createUser(username, registerRequest.password(), registerRequest.email());
+			String authToken = authorizations.createAuth(username);
+			return new RegisterResult(username, authToken);
 		}
+		//Error Handling
 		return null;
 	}
 //	public LoginResult login(LoginRequest loginRequest) {}
 //	public void logout(LogoutRequest logoutRequest) {}
 
-	record RegisterResult(String username, String authToken){}
+	public record RegisterResult(String username, String authToken){}
 }
