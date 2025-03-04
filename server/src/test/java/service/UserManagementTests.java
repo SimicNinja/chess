@@ -2,33 +2,56 @@ package service;
 
 import dataaccess.DataAccessException;
 import model.UserData;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import server.Server;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserManagementTests
 {
-	@Test
-	@DisplayName("Successful User Registration")
-	public void lickyFrog()
-	{
-		UserData frog = new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com");
-		UserManagement userService = new UserManagement();
+	private static UserManagement userService;
 
-		UserManagement.RegisterResult result = null;
+	@BeforeAll
+	public static void init()
+	{
+		userService = new UserManagement();
+	}
+
+	@BeforeEach
+	public void setup()
+	{
 		try
 		{
-			result = userService.register(frog);
+			userService.clearApplication();
+			userService.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 		}
 		catch(DataAccessException e)
 		{
 			throw new RuntimeException(e);
 		}
+	}
 
-		assertNotNull(result, "Result should not be null.");
-		assertEquals("LickyFrog", result.username(), "Username should match the registered user.");
-		assertNotNull(result.authToken(), "AuthToken should not be null.");
+	@Test
+	@DisplayName("Successful User Registration")
+	public void lickyFrog()
+	{
+		userService.clearApplication();
+
+		try
+		{
+			UserManagement.LoginResult result = userService.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
+
+			assertNotNull(result, "Result should not be null.");
+			assertEquals("LickyFrog", result.username(), "Username should match the registered user.");
+			assertNotNull(result.authToken(), "AuthToken should not be null.");
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Test
@@ -36,31 +59,60 @@ public class UserManagementTests
 	public void missingPassword()
 	{
 		UserData noPasswordStan = new UserData("Stan", "", "stan.lee@hotmail.com");
-		UserManagement userService = new UserManagement();
 
-		Exception exception = assertThrows(DataAccessException.class, () ->	userService.register(noPasswordStan));
+		Exception e= assertThrows(DataAccessException.class, () ->	userService.register(noPasswordStan));
 
-		assertTrue(exception.getMessage().contains("You must provide a username, password, & email."));
+		assertTrue(e.getMessage().contains("You must provide a username, password, & email."));
 	}
 
 	@Test
 	@DisplayName("Duplicate User")
 	public void secondFrog()
 	{
-		UserData frog = new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com");
 		UserData secondFrog = new UserData("LickyFrog", "brownTreeFrog", "florida@gmail.com");
-		UserManagement userService = new UserManagement();
 
+		Exception exception = assertThrows(DataAccessException.class, () ->	userService.register(secondFrog));
+
+		assertTrue(exception.getMessage().contains("already exists"));
+	}
+
+	@Test
+	@DisplayName("Successful Login")
+	public void loginTest()
+	{
 		try
 		{
-			userService.register(frog);
+			UserManagement.LoginResult result = userService.login(new Server.LoginRequest("LickyFrog", "greenTreeFrog"));
+
+			assertNotNull(result);
+			assertEquals("LickyFrog", result.username());
+			assertNotNull(result.authToken());
 		}
 		catch(DataAccessException e)
 		{
 			throw new RuntimeException(e);
 		}
-		Exception exception = assertThrows(DataAccessException.class, () ->	userService.register(secondFrog));
+	}
 
-		assertTrue(exception.getMessage().contains("already exists"));
+	@Test
+	@DisplayName("Wrong Password")
+	public void badPasswordTest()
+	{
+		Server.LoginRequest wrongPassword = new Server.LoginRequest("LickyFrog", "brownTreeFrog");
+
+		Exception e = assertThrows(DataAccessException.class, () ->	userService.login(wrongPassword));
+
+		assertTrue(e.getMessage().contains("You must provide the correct password for LickyFrog"));
+	}
+
+	@Test
+	@DisplayName("Non-existent User")
+	public void noUserTest()
+	{
+		Server.LoginRequest unregisteredUser = new Server.LoginRequest("JohnDoe", "brownTreeFrog");
+
+		Exception e = assertThrows(DataAccessException.class, () ->	userService.login(unregisteredUser));
+
+		assertTrue(e.getMessage().contains("User JohnDoe does not exist."));
 	}
 }

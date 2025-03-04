@@ -47,7 +47,7 @@ public class Server
 
 		try
 		{
-			UserManagement.RegisterResult result = userService.register(registerRequest);
+			UserManagement.LoginResult result = userService.register(registerRequest);
 			response.status(200);
 			return new Gson().toJson(result);
 		}
@@ -72,4 +72,5 @@ public class Server
 	}
 
 	public record JSONResponse(String message) {}
+	public record LoginRequest(String username, String password) {}
 }
