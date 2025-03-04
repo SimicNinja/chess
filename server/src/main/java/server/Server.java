@@ -6,6 +6,8 @@ import service.UserManagement;
 import spark.*;
 import com.google.gson.Gson;
 
+import java.io.Reader;
+
 public class Server
 {
 	private UserManagement userService = new UserManagement();
@@ -20,6 +22,7 @@ public class Server
 		Spark.delete("/db", this::clear);
 		Spark.post("/user", this::addUser);
 		Spark.post("/session", this::login);
+		Spark.delete("/session", this::logout);
 
 		//This line initializes the server and can be removed once you have a functioning endpoint
 		Spark.init();
@@ -38,8 +41,7 @@ public class Server
 	{
 		userService.clearApplication();
 		//gameService.clearApplication();
-		response.status(200);
-		return new Gson().toJson(new JSONResponse(""));
+		return http200(response);
 	}
 
 	private Object addUser(Request request, Response response)
@@ -93,6 +95,35 @@ public class Server
 				return http500(e, response);
 			}
 		}
+	}
+
+	private Object logout(Request request, Response response)
+	{
+		String authToken = request.headers("authorization");
+
+		try
+		{
+			userService.logout(authToken);
+			return http200(response);
+		}
+		catch(DataAccessException e)
+		{
+			if(e.getMessage().contains("no authorization token"))
+			{
+				response.status(401);
+				return new Gson().toJson(new JSONResponse("Error: unauthorized"));
+			}
+			else
+			{
+				return http500(e, response);
+			}
+		}
+	}
+
+	private Object http200(Response response)
+	{
+		response.status(200);
+		return new Gson().toJson(new JSONResponse(""));
 	}
 
 	private Object http500(DataAccessException e, Response response)

@@ -72,6 +72,7 @@ public class StandardAPITests {
     public void successLogin() {
         TestAuthResult loginResult = serverFacade.login(existingUser);
 
+
         assertHttpOk(loginResult);
         Assertions.assertEquals(existingUser.getUsername(), loginResult.getUsername(),
                 "Response did not give the same username as user");
