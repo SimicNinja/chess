@@ -46,6 +46,7 @@ public class StandardAPITests {
 
     @BeforeEach
     public void setup() {
+        //
         serverFacade.clear();
 
         //one user already logged in
