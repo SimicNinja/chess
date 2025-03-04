@@ -17,6 +17,7 @@ public class Server
 		Spark.staticFiles.location("web");
 
 		// Register your endpoints and handle exceptions here.
+		Spark.delete("/db", this::clear);
 		Spark.post("/user", this::addUser);
 
 		//This line initializes the server and can be removed once you have a functioning endpoint
@@ -30,6 +31,14 @@ public class Server
 	{
 		Spark.stop();
 		Spark.awaitStop();
+	}
+
+	private Object clear(Request request, Response response)
+	{
+		userService.clearApplication();
+		//gameService.clearApplication();
+		response.status(200);
+		return new Gson().toJson(new JSONResponse(""));
 	}
 
 	private Object addUser(Request request, Response response)
@@ -47,19 +56,20 @@ public class Server
 			if(e.getMessage().contains("must provide"))
 			{
 				response.status(400);
-				return new Gson().toJson(new ErrorResponse("Error: bad request"));
+				return new Gson().toJson(new JSONResponse("Error: bad request"));
 			}
 			else if(e.getMessage().contains("already exists."))
 			{
 				response.status(403);
-				return new Gson().toJson(new ErrorResponse("Error: already taken"));
+				return new Gson().toJson(new JSONResponse("Error: already taken"));
 			}
 			else
 			{
 				response.status(500);
-				return new Gson().toJson(new ErrorResponse("Error: " + e.getMessage()));			}
+				return new Gson().toJson(new JSONResponse("Error: " + e.getMessage()));
+			}
 		}
 	}
 
-	public record ErrorResponse(String message) {}
+	public record JSONResponse(String message) {}
 }

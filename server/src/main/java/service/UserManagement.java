@@ -24,5 +24,11 @@ public class UserManagement
 //	public LoginResult login(LoginRequest loginRequest) {}
 //	public void logout(LogoutRequest logoutRequest) {}
 
+	public void clearApplication()
+	{
+		users.clear();
+		authorizations.clear();
+	}
+
 	public record RegisterResult(String username, String authToken){}
 }

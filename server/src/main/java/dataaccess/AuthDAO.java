@@ -17,4 +17,14 @@ public class AuthDAO
 		authMap.put(authToken, new AuthData(authToken, username));
 		return authToken;
 	}
+
+	public void clear()
+	{
+		authMap.clear();
+	}
+
+	public boolean isEmpty()
+	{
+		return authMap.isEmpty();
+	}
 }

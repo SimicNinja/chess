@@ -23,4 +23,14 @@ public class UserDAO
 		}
 		userMap.put(username, new UserData(username, password, email));
 	}
+
+	public void clear()
+	{
+		userMap.clear();
+	}
+
+	public boolean isEmpty()
+	{
+		return userMap.isEmpty();
+	}
 }
