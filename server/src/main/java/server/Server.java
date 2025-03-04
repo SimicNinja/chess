@@ -19,6 +19,7 @@ public class Server
 		// Register your endpoints and handle exceptions here.
 		Spark.delete("/db", this::clear);
 		Spark.post("/user", this::addUser);
+		Spark.post("/session", this::login);
 
 		//This line initializes the server and can be removed once you have a functioning endpoint
 		Spark.init();
@@ -65,10 +66,39 @@ public class Server
 			}
 			else
 			{
-				response.status(500);
-				return new Gson().toJson(new JSONResponse("Error: " + e.getMessage()));
+				return http500(e, response);
 			}
 		}
+	}
+
+	private Object login(Request request, Response response)
+	{
+		LoginRequest loginRequest = new Gson().fromJson(request.body(), LoginRequest.class);
+
+		try
+		{
+			UserManagement.LoginResult result = userService.login(loginRequest);
+			response.status(200);
+			return new Gson().toJson(result);
+		}
+		catch(DataAccessException e)
+		{
+			if(e.getMessage().contains("correct password") || e.getMessage().contains("does not exist"))
+			{
+				response.status(401);
+				return new Gson().toJson(new JSONResponse("Error: unauthorized"));
+			}
+			else
+			{
+				return http500(e, response);
+			}
+		}
+	}
+
+	private Object http500(DataAccessException e, Response response)
+	{
+		response.status(500);
+		return new Gson().toJson(new JSONResponse("Error: " + e.getMessage()));
 	}
 
 	public record JSONResponse(String message) {}
