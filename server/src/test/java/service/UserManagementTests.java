@@ -101,7 +101,6 @@ public class UserManagementTests
 		Server.LoginRequest wrongPassword = new Server.LoginRequest("LickyFrog", "brownTreeFrog");
 
 		Exception e = assertThrows(DataAccessException.class, () ->	userService.login(wrongPassword));
-
 		assertTrue(e.getMessage().contains("You must provide the correct password for LickyFrog"));
 	}
 
@@ -112,7 +111,49 @@ public class UserManagementTests
 		Server.LoginRequest unregisteredUser = new Server.LoginRequest("JohnDoe", "brownTreeFrog");
 
 		Exception e = assertThrows(DataAccessException.class, () ->	userService.login(unregisteredUser));
-
 		assertTrue(e.getMessage().contains("User JohnDoe does not exist."));
+	}
+
+	@Test
+	@DisplayName("Successful Logout")
+	public void logoutTest()
+	{
+		userService.clearApplication();
+
+		try
+		{
+			userService.users.createUser("Stan", "1324", "stan.lee@hotmail.com");
+			String authToken = userService.authorizations.createAuth("Stan");
+
+			userService.logout(authToken);
+
+			assertTrue(userService.authorizations.isEmpty(), "Authorizations isn't empty.");
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Test
+	@DisplayName("Double Logout")
+	public void doubleLogoutTest()
+	{
+		userService.clearApplication();
+
+		try
+		{
+			userService.users.createUser("Stan", "1324", "stan.lee@hotmail.com");
+			String authToken = userService.authorizations.createAuth("Stan");
+
+			userService.logout(authToken);
+
+			Exception e = assertThrows(DataAccessException.class, () ->	userService.logout(authToken));
+			assertTrue(e.getMessage().contains("no authorization token"));
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

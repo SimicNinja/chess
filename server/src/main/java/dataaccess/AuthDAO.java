@@ -18,6 +18,20 @@ public class AuthDAO
 		return authToken;
 	}
 
+	public void authorizeToken(String authToken) throws DataAccessException
+	{
+		if(!authMap.containsKey(authToken))
+		{
+			throw new DataAccessException("There is no authorization token " + authToken + " stored in cache.");
+		}
+	}
+
+	public void deleteAuthData(String authToken) throws DataAccessException
+	{
+		authorizeToken(authToken);
+		authMap.remove(authToken);
+	}
+
 	public void clear()
 	{
 		authMap.clear();

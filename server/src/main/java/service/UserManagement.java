@@ -50,7 +50,10 @@ public class UserManagement
 		return new LoginResult(username, authorizations.createAuth(username));
 	}
 
-//	public void logout(LogoutRequest logoutRequest) {}
+	public void logout(String authToken) throws DataAccessException
+	{
+		authorizations.deleteAuthData(authToken);
+	}
 
 	public void clearApplication()
 	{
