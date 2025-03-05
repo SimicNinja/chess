@@ -50,6 +50,10 @@ public class GameManagement
 		{
 			return ChessGame.TeamColor.WHITE;
 		}
+		else if(color != ChessGame.TeamColor.WHITE && color != ChessGame.TeamColor.BLACK)
+		{
+			throw new DataAccessException("Invalid team color.");
+		}
 		throw new DataAccessException("Another user has already claimed the " + color + " team in this game.");
 	}
 

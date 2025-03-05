@@ -27,7 +27,7 @@ public class Server
 		Spark.post("/session", this::login);
 		Spark.delete("/session", this::logout);
 		Spark.post("/game", this::newGame);
-//		Spark.put("/game", this::joinGame);
+		Spark.put("/game", this::joinGame);
 
 		//This line initializes the server and can be removed once you have a functioning endpoint
 		Spark.init();
@@ -113,41 +113,39 @@ public class Server
 		}
 	}
 
-//	private Object joinGame(Request request, Response response)
-//	{
-//		String authToken = request.headers("authorization");
-//		JoinGameRequest deserialize = new Gson().fromJson(request.body(), JoinGameRequest.class);
-//		JoinGameRequest joinRequest = new JoinGameRequest(authToken, deserialize.playerColor, deserialize.gameID);
-//
-//		try
-//		{
-//			gameManager.joinGame(joinRequest);
-//			return http200(response);
-//		}
-//		catch(DataAccessException e)
-//		{
-//			if(e.getMessage().contains("no authorization token"))
-//			{
-//				response.status(401);
-//				return new Gson().toJson(new JSONResponse("Error: unauthorized"));
-//			}
-//		}
-//	}
+	private Object joinGame(Request request, Response response)
+	{
+		String authToken = request.headers("authorization");
+		JoinGameRequest deserialize = new Gson().fromJson(request.body(), JoinGameRequest.class);
+		JoinGameRequest joinRequest = new JoinGameRequest(authToken, deserialize.playerColor, deserialize.gameID);
+
+		try
+		{
+			gameManager.joinGame(joinRequest);
+			return http200(response);
+		}
+		catch(DataAccessException e)
+		{
+
+			return http400s(e, response);
+		}
+	}
 
 	private Object http400s(DataAccessException e, Response response)
 	{
-		if(e.getMessage().contains("must provide"))
+		String message = e.getMessage();
+		if(message.contains("must provide") || message.contains("A game with") || message.contains("Invalid team color"))
 		{
 			response.status(400);
 			return new Gson().toJson(new JSONResponse("Error: bad request"));
 		}
-		else if(e.getMessage().contains("no authorization token") || e.getMessage().contains("Incorrect password") ||
-				e.getMessage().contains("does not exist"))
+		else if(message.contains("no authorization token") || message.contains("Incorrect password") ||
+				message.contains("does not exist"))
 		{
 			response.status(401);
 			return new Gson().toJson(new JSONResponse("Error: unauthorized"));
 		}
-		else if(e.getMessage().contains("already exists."))
+		else if(message.contains("already exists.") || message.contains("Another user has"))
 		{
 			response.status(403);
 			return new Gson().toJson(new JSONResponse("Error: already taken"));
