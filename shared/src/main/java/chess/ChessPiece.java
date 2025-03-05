@@ -1,6 +1,6 @@
 package chess;
 
-import chess.moveCalculators.*;
+import chess.move_calculators.*;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -31,6 +31,14 @@ public class ChessPiece
 		this.color = color;
 		this.type = type;
 		this.hasMoved = moved;
+		this.calculator = createCalculator();
+	}
+
+	public ChessPiece(ChessPiece p)
+	{
+		this.color = p.getTeamColor();
+		this.type = p.getPieceType();
+		this.hasMoved = p.getHasMoved();
 		this.calculator = createCalculator();
 	}
 

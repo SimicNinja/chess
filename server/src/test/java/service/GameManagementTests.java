@@ -77,7 +77,8 @@ public class GameManagementTests
 	@DisplayName("Missing Game Name")
 	public void missingName()
 	{
-		Exception e = assertThrows(DataAccessException.class, () ->	gameManager.makeGame(new Server.NewGameRequest(authToken, "")));
+		Exception e = assertThrows(DataAccessException.class, () ->
+				gameManager.makeGame(new Server.NewGameRequest(authToken, "")));
 
 		assertTrue(e.getMessage().contains("You must provide a game name"));
 	}
@@ -86,7 +87,8 @@ public class GameManagementTests
 	@DisplayName("Duplicate Game")
 	public void duplicateTest()
 	{
-		Exception e = assertThrows(DataAccessException.class, () ->	gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame")));
+		Exception e = assertThrows(DataAccessException.class, () ->
+				gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame")));
 
 		assertTrue(e.getMessage().contains("already exists"));
 	}
@@ -95,7 +97,8 @@ public class GameManagementTests
 	@DisplayName("Invalid User Creates Game")
 	public void unauthorizedToMakeGameTest()
 	{
-		Exception e = assertThrows(DataAccessException.class, () ->	gameManager.makeGame(new Server.NewGameRequest("FakeToken", "TestGame")));
+		Exception e = assertThrows(DataAccessException.class, () ->
+				gameManager.makeGame(new Server.NewGameRequest("FakeToken", "TestGame")));
 
 		assertTrue(e.getMessage().contains("no authorization"));
 	}

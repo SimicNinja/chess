@@ -21,14 +21,6 @@ public class ChessMove
 		this.promote = promotionPiece;
 	}
 
-//	public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, boolean flag)
-//	{
-//		this.start = startPosition;
-//		this.end = endPosition;
-//		this.promote = promotionPiece;
-//		this.specialMove = flag;
-//	}
-
 	/**
 	 * @return ChessPosition of starting location
 	 */

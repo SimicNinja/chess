@@ -36,9 +36,9 @@ public class GameDAO
 	{
 		final boolean[] flag = {false};
 
-		idMap.forEach((gameID, GameData) ->
+		idMap.forEach((gameID, gameData) ->
 		{
-			if(GameData.gameName().equals(gameName))
+			if(gameData.gameName().equals(gameName))
 			{
 				flag[0] = true;
 			}

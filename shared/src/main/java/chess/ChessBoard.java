@@ -280,20 +280,25 @@ public class ChessBoard
 			switch(col)
 			{
 				case 1:
-					addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.ROOK));
-					addPiece(new ChessPosition(row, symmetry(col)), new ChessPiece(determineColor(row), ChessPiece.PieceType.ROOK));
+					ChessPiece rook = new ChessPiece(determineColor(row), ChessPiece.PieceType.ROOK);
+					addPiece(new ChessPosition(row, col), rook);
+					addPiece(new ChessPosition(row, symmetry(col)), new ChessPiece(rook));
 					break;
 				case 2:
-					addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.KNIGHT));
-					addPiece(new ChessPosition(row, symmetry(col)), new ChessPiece(determineColor(row), ChessPiece.PieceType.KNIGHT));
+					ChessPiece knight = new ChessPiece(determineColor(row), ChessPiece.PieceType.KNIGHT);
+					addPiece(new ChessPosition(row, col), knight);
+					addPiece(new ChessPosition(row, symmetry(col)), new ChessPiece(knight));
 					break;
 				case 3:
-					addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.BISHOP));
-					addPiece(new ChessPosition(row, symmetry(col)), new ChessPiece(determineColor(row), ChessPiece.PieceType.BISHOP));
+					ChessPiece bishop = new ChessPiece(determineColor(row), ChessPiece.PieceType.BISHOP);
+					addPiece(new ChessPosition(row, col), bishop);
+					addPiece(new ChessPosition(row, symmetry(col)), new ChessPiece(bishop));
 					break;
 				case 4:
-					addPiece(new ChessPosition(row, col), new ChessPiece(determineColor(row), ChessPiece.PieceType.QUEEN));
-					addPiece(new ChessPosition(row, symmetry(col)), new ChessPiece(determineColor(row), ChessPiece.PieceType.KING));
+					ChessPiece queen = new ChessPiece(determineColor(row), ChessPiece.PieceType.QUEEN);
+					ChessPiece king = new ChessPiece(determineColor(row), ChessPiece.PieceType.KING);
+					addPiece(new ChessPosition(row, col), queen);
+					addPiece(new ChessPosition(row, symmetry(col)), king);
 					break;
 			}
 		}
