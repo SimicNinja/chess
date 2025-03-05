@@ -27,6 +27,7 @@ public class Server
 		Spark.post("/session", this::login);
 		Spark.delete("/session", this::logout);
 		Spark.post("/game", this::newGame);
+//		Spark.put("/game", this::joinGame);
 
 		//This line initializes the server and can be removed once you have a functioning endpoint
 		Spark.init();
@@ -59,20 +60,7 @@ public class Server
 		}
 		catch(DataAccessException e)
 		{
-			if(e.getMessage().contains("must provide"))
-			{
-				response.status(400);
-				return new Gson().toJson(new JSONResponse("Error: bad request"));
-			}
-			else if(e.getMessage().contains("already exists."))
-			{
-				response.status(403);
-				return new Gson().toJson(new JSONResponse("Error: already taken"));
-			}
-			else
-			{
-				return http500(e, response);
-			}
+			return http400s(e, response);
 		}
 	}
 
@@ -88,15 +76,7 @@ public class Server
 		}
 		catch(DataAccessException e)
 		{
-			if(e.getMessage().contains("correct password") || e.getMessage().contains("does not exist"))
-			{
-				response.status(401);
-				return new Gson().toJson(new JSONResponse("Error: unauthorized"));
-			}
-			else
-			{
-				return http500(e, response);
-			}
+			return http400s(e, response);
 		}
 	}
 
@@ -111,15 +91,7 @@ public class Server
 		}
 		catch(DataAccessException e)
 		{
-			if(e.getMessage().contains("no authorization token"))
-			{
-				response.status(401);
-				return new Gson().toJson(new JSONResponse("Error: unauthorized"));
-			}
-			else
-			{
-				return http500(e, response);
-			}
+			return http400s(e, response);
 		}
 	}
 
@@ -137,20 +109,52 @@ public class Server
 		}
 		catch(DataAccessException e)
 		{
-			if(e.getMessage().contains("must provide"))
-			{
-				response.status(400);
-				return new Gson().toJson(new JSONResponse("Error: bad request"));
-			}
-			else if(e.getMessage().contains("no authorization token"))
-			{
-				response.status(401);
-				return new Gson().toJson(new JSONResponse("Error: unauthorized"));
-			}
-			else
-			{
-				return http500(e, response);
-			}
+			return http400s(e, response);
+		}
+	}
+
+//	private Object joinGame(Request request, Response response)
+//	{
+//		String authToken = request.headers("authorization");
+//		JoinGameRequest deserialize = new Gson().fromJson(request.body(), JoinGameRequest.class);
+//		JoinGameRequest joinRequest = new JoinGameRequest(authToken, deserialize.playerColor, deserialize.gameID);
+//
+//		try
+//		{
+//			gameManager.joinGame(joinRequest);
+//			return http200(response);
+//		}
+//		catch(DataAccessException e)
+//		{
+//			if(e.getMessage().contains("no authorization token"))
+//			{
+//				response.status(401);
+//				return new Gson().toJson(new JSONResponse("Error: unauthorized"));
+//			}
+//		}
+//	}
+
+	private Object http400s(DataAccessException e, Response response)
+	{
+		if(e.getMessage().contains("must provide"))
+		{
+			response.status(400);
+			return new Gson().toJson(new JSONResponse("Error: bad request"));
+		}
+		else if(e.getMessage().contains("no authorization token") || e.getMessage().contains("Incorrect password") ||
+				e.getMessage().contains("does not exist"))
+		{
+			response.status(401);
+			return new Gson().toJson(new JSONResponse("Error: unauthorized"));
+		}
+		else if(e.getMessage().contains("already exists."))
+		{
+			response.status(403);
+			return new Gson().toJson(new JSONResponse("Error: already taken"));
+		}
+		else
+		{
+			return http500(e, response);
 		}
 	}
 
@@ -169,5 +173,5 @@ public class Server
 	public record JSONResponse(String message) {}
 	public record LoginRequest(String username, String password) {}
 	public record NewGameRequest(String authToken, String gameName) {}
-	public record JoinGameRequest(String authToken, ChessGame.TeamColor color, int gameID) {}
+	public record JoinGameRequest(String authToken, ChessGame.TeamColor playerColor, int gameID) {}
 }

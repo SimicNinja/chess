@@ -37,7 +37,7 @@ public class GameManagement
 
 		GameData game = games.getGame(request.gameID());
 
-		games.joinGame(game.gameID(), teamJoin(game, request.color()), username);
+		games.joinGame(game.gameID(), teamJoin(game, request.playerColor()), username);
 	}
 
 	private ChessGame.TeamColor teamJoin(GameData game, ChessGame.TeamColor color) throws DataAccessException

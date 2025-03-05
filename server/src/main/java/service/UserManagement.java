@@ -38,7 +38,7 @@ public class UserManagement
 		}
 		else if(!users.getUser(username).password().equals(password))
 		{
-			throw new DataAccessException("You must provide the correct password for " + username);
+			throw new DataAccessException("Incorrect password for " + username);
 		}
 		else
 		{
