@@ -27,7 +27,7 @@ public class UserManagementTests
 	{
 		try
 		{
-			userManager.clearApplication();
+			daoManager.clearApplication();
 			userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 		}
 		catch(DataAccessException e)
@@ -40,7 +40,7 @@ public class UserManagementTests
 	@DisplayName("Successful User Registration")
 	public void lickyFrog()
 	{
-		userManager.clearApplication();
+		daoManager.clearApplication();
 
 		try
 		{
@@ -120,7 +120,7 @@ public class UserManagementTests
 	@DisplayName("Successful Logout")
 	public void logoutTest()
 	{
-		userManager.clearApplication();
+		daoManager.clearApplication();
 
 		try
 		{
@@ -141,7 +141,7 @@ public class UserManagementTests
 	@DisplayName("Double Logout")
 	public void doubleLogoutTest()
 	{
-		userManager.clearApplication();
+		daoManager.clearApplication();
 
 		try
 		{

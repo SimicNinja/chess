@@ -1,21 +1,18 @@
 package service;
 
+import model.UserData;
 import dataaccess.AuthDAO;
 import dataaccess.UserDAO;
-import model.UserData;
-
 import dataaccess.DataAccessException;
 import server.Server.LoginRequest;
 
 public class UserManagement
 {
-	private DAOManagement daoManager;
-	private UserDAO users;
-	private AuthDAO authorizations;
+	private final AuthDAO authorizations;
+	private final UserDAO users;
 
 	public UserManagement(DAOManagement daoManager)
 	{
-		this.daoManager = daoManager;
 		this.users = daoManager.getUsers();
 		this.authorizations = daoManager.getAuthorizations();
 	}
@@ -30,10 +27,10 @@ public class UserManagement
 		}
 		throw new DataAccessException("User " + username + "already exists.");
 	}
-	public LoginResult login(LoginRequest loginRequest) throws DataAccessException
+	public LoginResult login(LoginRequest request) throws DataAccessException
 	{
-		String username = loginRequest.username();
-		String password = loginRequest.password();
+		String username = request.username();
+		String password = request.password();
 
 		if(users.getUser(username) == null)
 		{
@@ -57,12 +54,6 @@ public class UserManagement
 	public void logout(String authToken) throws DataAccessException
 	{
 		authorizations.deleteAuthData(authToken);
-	}
-
-	public void clearApplication()
-	{
-		users.clear();
-		authorizations.clear();
 	}
 
 	public record LoginResult(String username, String authToken){}

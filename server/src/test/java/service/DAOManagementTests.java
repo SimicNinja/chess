@@ -26,7 +26,7 @@ public class DAOManagementTests
 			throw new RuntimeException(e);
 		}
 
-		userManager.clearApplication();
+		daoManager.clearApplication();
 
 		assertTrue(daoManager.getUsers().isEmpty(), "Users isn't empty.");
 		assertTrue(daoManager.getAuthorizations().isEmpty(), "Authorizations isn't empty.");

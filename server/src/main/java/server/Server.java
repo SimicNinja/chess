@@ -39,8 +39,7 @@ public class Server
 
 	private Object clear(Request request, Response response)
 	{
-		userManager.clearApplication();
-		//gameService.clearApplication();
+		daoManager.clearApplication();
 		return http200(response);
 	}
 
