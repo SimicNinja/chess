@@ -11,8 +11,7 @@ public class UserDAO
 
 	public UserData getUser(String username)
 	{
-		UserData user = userMap.get(username);
-		return user;
+		return userMap.get(username);
 	}
 
 	public void createUser(String username, String password, String email) throws DataAccessException

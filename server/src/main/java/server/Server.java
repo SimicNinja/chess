@@ -133,4 +133,5 @@ public class Server
 
 	public record JSONResponse(String message) {}
 	public record LoginRequest(String username, String password) {}
+	public record NewGameRequest(String authToken, String gameName) {}
 }
