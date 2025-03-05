@@ -1,5 +1,6 @@
 package server;
 
+import chess.ChessGame;
 import dataaccess.DataAccessException;
 import model.UserData;
 import service.DAOManagement;
@@ -168,4 +169,5 @@ public class Server
 	public record JSONResponse(String message) {}
 	public record LoginRequest(String username, String password) {}
 	public record NewGameRequest(String authToken, String gameName) {}
+	public record JoinGameRequest(String authToken, ChessGame.TeamColor color, int gameID) {}
 }

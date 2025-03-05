@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.DataAccessException;
 import model.UserData;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,6 +18,7 @@ public class GameManagementTests
 	private static UserManagement userManager;
 	private static GameManagement gameManager;
 	String authToken;
+	int gameID;
 
 	@BeforeAll
 	public static void init()
@@ -36,7 +38,8 @@ public class GameManagementTests
 			UserManagement.LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 			authToken = result.authToken();
 
-			gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame"));
+			GameManagement.NewGameResult result2 = gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame"));
+			gameID = result2.gameID();
 		}
 		catch(DataAccessException e)
 		{
@@ -80,8 +83,92 @@ public class GameManagementTests
 	@DisplayName("Duplicate Game")
 	public void duplicateTest()
 	{
-		Exception exception = assertThrows(DataAccessException.class, () ->	gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame")));
+		Exception e = assertThrows(DataAccessException.class, () ->	gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame")));
 
-		assertTrue(exception.getMessage().contains("already exists"));
+		assertTrue(e.getMessage().contains("already exists"));
 	}
+
+	@Test
+	@DisplayName("Invalid User Creates Game")
+	public void unauthorizedToMakeGameTest()
+	{
+		Exception e = assertThrows(DataAccessException.class, () ->	gameManager.makeGame(new Server.NewGameRequest("FakeToken", "TestGame")));
+
+		assertTrue(e.getMessage().contains("no authorization"));
+	}
+
+	@Test
+	@DisplayName("LickyFrog Joins White")
+	public void joinWhiteTest()
+	{
+		try
+		{
+			gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, gameID));
+
+			assertEquals("LickyFrog", daoManager.getGames().getGame(gameID).whiteUsername());
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Test
+	@DisplayName("LickyFrog Joins Black")
+	public void joinBlackTest()
+	{
+		try
+		{
+			gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.BLACK, gameID));
+
+			assertEquals("LickyFrog", daoManager.getGames().getGame(gameID).blackUsername());
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Test
+	@DisplayName("Invalid GameID to Join")
+	public void badGameIDTest()
+	{
+		Exception e = assertThrows(DataAccessException.class, () ->
+				gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, -1)));
+
+		assertTrue(e.getMessage().contains("A game with"));
+	}
+
+	@Test
+	@DisplayName("Invalid User Joins Game")
+	public void unauthorizedToJoinGameTest()
+	{
+		Exception e = assertThrows(DataAccessException.class, () ->
+				gameManager.joinGame(new Server.JoinGameRequest("FakeToken", ChessGame.TeamColor.WHITE, gameID)));
+
+		assertTrue(e.getMessage().contains("no authorization"));
+	}
+
+	@Test
+	@DisplayName("Try to Join Occupied Team")
+	public void occupiedTeamTest()
+	{
+		try
+		{
+			UserManagement.LoginResult result = userManager.register(new UserData("SecondFrog", "1234", "nu@gmail.com"));
+			String secondAuthToken = result.authToken();
+
+			gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, gameID));
+
+			Exception e = assertThrows(DataAccessException.class, () ->
+					gameManager.joinGame(new Server.JoinGameRequest(secondAuthToken, ChessGame.TeamColor.WHITE, gameID)));
+
+			assertTrue(e.getMessage().contains("Another user has already claimed"));
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class AuthDAO
 {
-	private Map<String, AuthData> authMap = new HashMap<>();
+	private final Map<String, AuthData> authMap = new HashMap<>();
 
 	public String createAuth(String username)
 	{
@@ -18,12 +18,13 @@ public class AuthDAO
 		return authToken;
 	}
 
-	public void authorizeToken(String authToken) throws DataAccessException
+	public String authorizeToken(String authToken) throws DataAccessException
 	{
 		if(!authMap.containsKey(authToken))
 		{
-			throw new DataAccessException("There is no authorization token " + authToken + " stored in cache.");
+			throw new DataAccessException("There is no authorization token " + authToken + " stored in cache; please login.");
 		}
+		return authMap.get(authToken).username();
 	}
 
 	public void deleteAuthData(String authToken) throws DataAccessException
