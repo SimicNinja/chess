@@ -8,6 +8,8 @@ import model.GameData;
 import server.Server.JoinGameRequest;
 import server.Server.NewGameRequest;
 
+import java.util.List;
+
 public class GameManagement
 {
 	private final AuthDAO authorizations;
@@ -42,11 +44,11 @@ public class GameManagement
 
 	private ChessGame.TeamColor teamJoin(GameData game, ChessGame.TeamColor color) throws DataAccessException
 	{
-		if(color == ChessGame.TeamColor.BLACK && game.blackUsername().isEmpty())
+		if(color == ChessGame.TeamColor.BLACK && game.blackUsername() == null)
 		{
 			return ChessGame.TeamColor.BLACK;
 		}
-		else if(color == ChessGame.TeamColor.WHITE && game.whiteUsername().isEmpty())
+		else if(color == ChessGame.TeamColor.WHITE && game.whiteUsername() == null)
 		{
 			return ChessGame.TeamColor.WHITE;
 		}
@@ -57,5 +59,13 @@ public class GameManagement
 		throw new DataAccessException("Another user has already claimed the " + color + " team in this game.");
 	}
 
+	public List<ListedGame> listGames(String authToken) throws DataAccessException
+	{
+		authorizations.authorizeToken(authToken);
+
+		return games.getGames();
+	}
+
 	public record NewGameResult(int gameID) {}
+	public record ListedGame(int gameID, String whiteUsername, String blackUsername, String gameName) {}
 }

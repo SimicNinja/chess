@@ -103,7 +103,7 @@ public class UserManagementTests
 		Server.LoginRequest wrongPassword = new Server.LoginRequest("LickyFrog", "brownTreeFrog");
 
 		Exception e = assertThrows(DataAccessException.class, () ->	userManager.login(wrongPassword));
-		assertTrue(e.getMessage().contains("You must provide the correct password for LickyFrog"));
+		assertTrue(e.getMessage().contains("Incorrect password for LickyFrog"));
 	}
 
 	@Test

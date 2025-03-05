@@ -2,10 +2,8 @@ package dataaccess;
 
 import chess.ChessGame;
 import model.GameData;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import service.GameManagement.ListedGame;
+import java.util.*;
 import static java.lang.Math.abs;
 
 public class GameDAO
@@ -19,6 +17,19 @@ public class GameDAO
 			throw new DataAccessException("A game with ID " + gameID + " does not exist.");
 		}
 		return idMap.get(gameID);
+	}
+
+	public List<ListedGame> getGames()
+	{
+		ArrayList<GameData> games = new ArrayList<>(idMap.values());
+		ArrayList<ListedGame> listedGames = new ArrayList<>();
+
+		for(GameData game : games)
+		{
+			listedGames.add(new ListedGame(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName()));
+		}
+
+		return listedGames;
 	}
 
 	public boolean duplicateGame(String gameName)
@@ -45,7 +56,7 @@ public class GameDAO
 			throw new DataAccessException("You must provide a game name.");
 		}
 
-		idMap.put(gameID, new GameData(gameID, "", "", gameName, new ChessGame()));
+		idMap.put(gameID, new GameData(gameID, null, null, gameName, new ChessGame()));
 		return gameID;
 	}
 

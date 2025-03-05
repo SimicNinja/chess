@@ -9,6 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import server.Server;
 
+import java.util.HashSet;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -171,4 +174,28 @@ public class GameManagementTests
 		}
 	}
 
+	@Test
+	@DisplayName("Successfully List Games")
+	public void listGamesTest()
+	{
+		try
+		{
+			//Setup Conditions
+			GameManagement.NewGameResult result2 = gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame2"));
+			int gameID2 = result2.gameID();
+
+			//Setup Expected
+			GameManagement.ListedGame game1 = new GameManagement.ListedGame(gameID, null, null, "TestGame");
+			GameManagement.ListedGame game2 = new GameManagement.ListedGame(gameID2, null, null, "TestGame2");
+
+			//Calculate Actual
+			List<GameManagement.ListedGame> gameList = gameManager.listGames(authToken);
+
+			assertEquals(new HashSet<>(List.of(game1, game2)), new HashSet<>(gameList));
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 }

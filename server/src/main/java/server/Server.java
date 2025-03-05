@@ -9,6 +9,10 @@ import service.UserManagement;
 import spark.*;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Server
 {
 	private final DAOManagement daoManager = new DAOManagement();
@@ -28,6 +32,7 @@ public class Server
 		Spark.delete("/session", this::logout);
 		Spark.post("/game", this::newGame);
 		Spark.put("/game", this::joinGame);
+		Spark.get("/game", this::listGames);
 
 		//This line initializes the server and can be removed once you have a functioning endpoint
 		Spark.init();
@@ -97,9 +102,9 @@ public class Server
 
 	private Object newGame(Request request, Response response)
 	{
-		String gameName = request.body();
 		String authToken = request.headers("authorization");
-		NewGameRequest newGameRequest = new NewGameRequest(authToken, gameName);
+		NewGameRequest deserialize = new Gson().fromJson(request.body(), NewGameRequest.class);
+		NewGameRequest newGameRequest = new NewGameRequest(authToken, deserialize.gameName);
 
 		try
 		{
@@ -127,6 +132,26 @@ public class Server
 		catch(DataAccessException e)
 		{
 
+			return http400s(e, response);
+		}
+	}
+
+	private Object listGames(Request request, Response response)
+	{
+		String authToken = request.headers("authorization");
+
+		try
+		{
+			List<GameManagement.ListedGame> result = gameManager.listGames(authToken);
+			response.status(200);
+
+			Map<String, Object> jsonWrapper = new HashMap<>();
+			jsonWrapper.put("games", result);
+
+			return new Gson().toJson(jsonWrapper);
+		}
+		catch(DataAccessException e)
+		{
 			return http400s(e, response);
 		}
 	}
