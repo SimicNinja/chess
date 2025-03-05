@@ -2,15 +2,15 @@ package server;
 
 import dataaccess.DataAccessException;
 import model.UserData;
+import service.DAOManagement;
 import service.UserManagement;
 import spark.*;
 import com.google.gson.Gson;
 
-import java.io.Reader;
-
 public class Server
 {
-	private UserManagement userService = new UserManagement();
+	private final DAOManagement daoManager = new DAOManagement();
+	private final UserManagement userManager = new UserManagement(daoManager);
 
 	public int run(int desiredPort)
 	{
@@ -39,7 +39,7 @@ public class Server
 
 	private Object clear(Request request, Response response)
 	{
-		userService.clearApplication();
+		userManager.clearApplication();
 		//gameService.clearApplication();
 		return http200(response);
 	}
@@ -50,7 +50,7 @@ public class Server
 
 		try
 		{
-			UserManagement.LoginResult result = userService.register(registerRequest);
+			UserManagement.LoginResult result = userManager.register(registerRequest);
 			response.status(200);
 			return new Gson().toJson(result);
 		}
@@ -79,7 +79,7 @@ public class Server
 
 		try
 		{
-			UserManagement.LoginResult result = userService.login(loginRequest);
+			UserManagement.LoginResult result = userManager.login(loginRequest);
 			response.status(200);
 			return new Gson().toJson(result);
 		}
@@ -103,7 +103,7 @@ public class Server
 
 		try
 		{
-			userService.logout(authToken);
+			userManager.logout(authToken);
 			return http200(response);
 		}
 		catch(DataAccessException e)

@@ -1,20 +1,24 @@
 package service;
 
 import dataaccess.AuthDAO;
-import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
-import model.AuthData;
 import model.UserData;
-import org.eclipse.jetty.util.log.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import dataaccess.DataAccessException;
 import server.Server.LoginRequest;
 
 public class UserManagement
 {
-	private static final Logger log = LoggerFactory.getLogger(UserManagement.class);
-	public UserDAO users = new UserDAO();
-	public AuthDAO authorizations = new AuthDAO();
+	private DAOManagement daoManager;
+	private UserDAO users;
+	private AuthDAO authorizations;
+
+	public UserManagement(DAOManagement daoManager)
+	{
+		this.daoManager = daoManager;
+		this.users = daoManager.getUsers();
+		this.authorizations = daoManager.getAuthorizations();
+	}
 
 	public LoginResult register(UserData registerRequest) throws DataAccessException
 	{

@@ -12,12 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserManagementTests
 {
-	private static UserManagement userService;
+	private static DAOManagement daoManager;
+	private static UserManagement userManager;
 
 	@BeforeAll
 	public static void init()
 	{
-		userService = new UserManagement();
+		daoManager = new DAOManagement();
+		userManager = new UserManagement(daoManager);
 	}
 
 	@BeforeEach
@@ -25,8 +27,8 @@ public class UserManagementTests
 	{
 		try
 		{
-			userService.clearApplication();
-			userService.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
+			userManager.clearApplication();
+			userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 		}
 		catch(DataAccessException e)
 		{
@@ -38,11 +40,11 @@ public class UserManagementTests
 	@DisplayName("Successful User Registration")
 	public void lickyFrog()
 	{
-		userService.clearApplication();
+		userManager.clearApplication();
 
 		try
 		{
-			UserManagement.LoginResult result = userService.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
+			UserManagement.LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 
 			assertNotNull(result, "Result should not be null.");
 			assertEquals("LickyFrog", result.username(), "Username should match the registered user.");
@@ -60,7 +62,7 @@ public class UserManagementTests
 	{
 		UserData noPasswordStan = new UserData("Stan", "", "stan.lee@hotmail.com");
 
-		Exception e= assertThrows(DataAccessException.class, () ->	userService.register(noPasswordStan));
+		Exception e= assertThrows(DataAccessException.class, () ->	userManager.register(noPasswordStan));
 
 		assertTrue(e.getMessage().contains("You must provide a username, password, & email."));
 	}
@@ -71,7 +73,7 @@ public class UserManagementTests
 	{
 		UserData secondFrog = new UserData("LickyFrog", "brownTreeFrog", "florida@gmail.com");
 
-		Exception exception = assertThrows(DataAccessException.class, () ->	userService.register(secondFrog));
+		Exception exception = assertThrows(DataAccessException.class, () ->	userManager.register(secondFrog));
 
 		assertTrue(exception.getMessage().contains("already exists"));
 	}
@@ -82,7 +84,7 @@ public class UserManagementTests
 	{
 		try
 		{
-			UserManagement.LoginResult result = userService.login(new Server.LoginRequest("LickyFrog", "greenTreeFrog"));
+			UserManagement.LoginResult result = userManager.login(new Server.LoginRequest("LickyFrog", "greenTreeFrog"));
 
 			assertNotNull(result);
 			assertEquals("LickyFrog", result.username());
@@ -100,7 +102,7 @@ public class UserManagementTests
 	{
 		Server.LoginRequest wrongPassword = new Server.LoginRequest("LickyFrog", "brownTreeFrog");
 
-		Exception e = assertThrows(DataAccessException.class, () ->	userService.login(wrongPassword));
+		Exception e = assertThrows(DataAccessException.class, () ->	userManager.login(wrongPassword));
 		assertTrue(e.getMessage().contains("You must provide the correct password for LickyFrog"));
 	}
 
@@ -110,7 +112,7 @@ public class UserManagementTests
 	{
 		Server.LoginRequest unregisteredUser = new Server.LoginRequest("JohnDoe", "brownTreeFrog");
 
-		Exception e = assertThrows(DataAccessException.class, () ->	userService.login(unregisteredUser));
+		Exception e = assertThrows(DataAccessException.class, () ->	userManager.login(unregisteredUser));
 		assertTrue(e.getMessage().contains("User JohnDoe does not exist."));
 	}
 
@@ -118,16 +120,16 @@ public class UserManagementTests
 	@DisplayName("Successful Logout")
 	public void logoutTest()
 	{
-		userService.clearApplication();
+		userManager.clearApplication();
 
 		try
 		{
-			userService.users.createUser("Stan", "1324", "stan.lee@hotmail.com");
-			String authToken = userService.authorizations.createAuth("Stan");
+			UserManagement.LoginResult result = userManager.register(new UserData("Stan", "1324", "stan.lee@hotmail.com"));
+			String authToken = result.authToken();
 
-			userService.logout(authToken);
+			userManager.logout(authToken);
 
-			assertTrue(userService.authorizations.isEmpty(), "Authorizations isn't empty.");
+			assertTrue(daoManager.getAuthorizations().isEmpty(), "Authorizations isn't empty.");
 		}
 		catch(DataAccessException e)
 		{
@@ -139,16 +141,16 @@ public class UserManagementTests
 	@DisplayName("Double Logout")
 	public void doubleLogoutTest()
 	{
-		userService.clearApplication();
+		userManager.clearApplication();
 
 		try
 		{
-			userService.users.createUser("Stan", "1324", "stan.lee@hotmail.com");
-			String authToken = userService.authorizations.createAuth("Stan");
+			UserManagement.LoginResult result = userManager.register(new UserData("Stan", "1324", "stan.lee@hotmail.com"));
+			String authToken = result.authToken();
 
-			userService.logout(authToken);
+			userManager.logout(authToken);
 
-			Exception e = assertThrows(DataAccessException.class, () ->	userService.logout(authToken));
+			Exception e = assertThrows(DataAccessException.class, () ->	userManager.logout(authToken));
 			assertTrue(e.getMessage().contains("no authorization token"));
 		}
 		catch(DataAccessException e)
