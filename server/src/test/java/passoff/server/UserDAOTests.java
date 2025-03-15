@@ -3,13 +3,12 @@ package passoff.server;
 import dataaccess.*;
 import dataaccess.MySQLDAOs.UserDAO_MySQL;
 import dataaccess.interfaces.UserDAO;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserDAOTests
 {
@@ -34,17 +33,19 @@ public class UserDAOTests
 	{
 		conn = DatabaseManager.getConnection();
 
-		String[] auths = {"qwerty", "12345", "asdf;"};
 		String[] usernames = {"LickyFrog", "SimicNinja", "JOA"};
+		String[] passwords = {"kitchenTime", "codingTime", "animeTime"};
+		String[] emails = {"1@gmail.com", "2@gmail.com", "3@gmail.com"};
 
-		String insert = "INSERT INTO authData (authToken, username) VALUES (?, ?)";
+		String insert = "INSERT INTO userData (username, password, email) VALUES(?, ?, ?)";
 
 		try(PreparedStatement statement = conn.prepareStatement(insert))
 		{
 			for(int i = 0; i < 3; i++)
 			{
-				statement.setString(1, auths[i]);
-				statement.setString(2, usernames[i]);
+				statement.setString(1, usernames[i]);
+				statement.setString(2, passwords[i]);
+				statement.setString(3, emails[i]);
 				statement.executeUpdate();
 			}
 		}
@@ -53,7 +54,34 @@ public class UserDAOTests
 	@AfterAll
 	public static void tearDown() throws SQLException
 	{
+		try(PreparedStatement statement = conn.prepareStatement("TRUNCATE TABLE userData"))
+		{
+			statement.executeUpdate();
+		}
+
 		conn.close();
 		conn = null;
+	}
+
+	@Test
+	public void testCreateUser() throws DataAccessException, SQLException
+	{
+		dao.createUser("Asuna", "artTime", "4@gmail.com");
+
+		List<String> usernames = AuthDAOTests.getItems("userData", "username", conn);
+
+		Assertions.assertTrue(usernames.contains("Asuna"));
+	}
+
+	@Test
+	public void testCreateUserFail() throws DataAccessException, SQLException
+	{
+		dao.createUser("Asuna", "artTime", "4@gmail.com");
+
+		Assertions.assertThrows(DataAccessException.class, () ->
+			dao.createUser(null, "motorcycleTime", "5@gmail.com"));
+
+		Assertions.assertThrows(RuntimeException.class, () ->
+				dao.createUser("Asuna", "motorcycleTime", "5@gmail.com"));
 	}
 }

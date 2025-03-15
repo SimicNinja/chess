@@ -55,15 +55,20 @@ public class AuthDAOTests
 	@AfterAll
 	public static void tearDown() throws SQLException
 	{
+		try(PreparedStatement statement = conn.prepareStatement("TRUNCATE TABLE userData"))
+		{
+			statement.executeUpdate();
+		}
+
 		conn.close();
 		conn = null;
 	}
 
-	private List<String> getItems(String tableName, String column) throws SQLException
+	public static List<String> getItems(String tableName, String column, Connection connect) throws SQLException
 	{
 		String sql = "SELECT " + column + " from " + tableName;
 
-		try(PreparedStatement statement = conn.prepareStatement(sql))
+		try(PreparedStatement statement = connect.prepareStatement(sql))
 		{
 			List<String> output = new ArrayList<>();
 			try(ResultSet set = statement.executeQuery())
@@ -84,7 +89,7 @@ public class AuthDAOTests
 	{
 		dao.createAuth("Asuna");
 
-		List<String> usernames = getItems("authData", "username");
+		List<String> usernames = getItems("authData", "username", conn);
 
 		Assertions.assertTrue(usernames.contains("Asuna"));
 	}
@@ -115,11 +120,11 @@ public class AuthDAOTests
 		List<String> usernames;
 
 		dao.deleteAuthData("asdf;");
-		usernames = getItems("authData", "username");
+		usernames = getItems("authData", "username", conn);
 		Assertions.assertFalse(usernames.contains("JOA"));
 
 		dao.deleteAuthData("12345");
-		usernames = getItems("authData", "username");
+		usernames = getItems("authData", "username", conn);
 		Assertions.assertFalse(usernames.contains("SimicNinja"));
 	}
 
@@ -134,7 +139,7 @@ public class AuthDAOTests
 	{
 		dao.clear();
 
-		List<String> usernames = getItems("authData", "username");
+		List<String> usernames = getItems("authData", "username", conn);
 
 		Assertions.assertTrue(usernames.isEmpty());
 	}
