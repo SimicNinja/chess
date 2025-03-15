@@ -61,14 +61,41 @@ public class DatabaseManager
 					authToken varchar(255) NOT NULL,
 					username varchar(255) NOT NULL
 					)""";
+			var createUserTable = """
+					CREATE TABLE IF NOT EXISTS userData(
+					username varchar(255) NOT NULL,
+					password varchar(255) NOT NULL,
+					email varchar(255) NOT NULL
+					)""";
+			var createGameTable = """
+					CREATE TABLE IF NOT EXISTS gameData(
+					    gameID INT NOT NULL AUTO_INCREMENT,
+					    whiteUsername VARCHAR(255),
+					    blackUsername VARCHAR(255),
+					    gameName VARCHAR(255) NOT NULL ,
+					    game LONGTEXT NOT NULL,
+					    PRIMARY KEY (gameID)
+					)""";
 
-			try (var createTableStatement = conn.prepareStatement(createAuthTable)) {
-				createTableStatement.executeUpdate();
-			}
+			createTable(conn, createAuthTable);
+			createTable(conn, createUserTable);
+			createTable(conn, createGameTable);
 		}
 		catch(SQLException e)
 		{
 			throw new DataAccessException(e.getMessage());
+		}
+	}
+
+	public static void createTable(Connection conn, String sql)
+	{
+		try (var createTableStatement = conn.prepareStatement(sql))
+		{
+			createTableStatement.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			throw new RuntimeException(e);
 		}
 	}
 

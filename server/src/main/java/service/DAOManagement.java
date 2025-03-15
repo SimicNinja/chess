@@ -1,17 +1,14 @@
 package service;
 
 import dataaccess.*;
-import dataaccess.MySQLDAOs.AuthDAO_MySQL;
-import dataaccess.interfaces.AuthDAO;
-import dataaccess.interfaces.GameDAO;
-import dataaccess.interfaces.UserDAO;
-import dataaccess.memoryDAOs.GameDAO_Memory;
-import dataaccess.memoryDAOs.UserDAO_Memory;
+import dataaccess.interfaces.*;
+import dataaccess.memoryDAOs.*;
+import dataaccess.MySQLDAOs.*;
 
 public class DAOManagement
 {
 	private final GameDAO_Memory games = new GameDAO_Memory();
-	private final UserDAO users = new UserDAO_Memory();
+	private final UserDAO users = new UserDAO_MySQL();
 	private final AuthDAO authorizations = new AuthDAO_MySQL();
 
 	public DAOManagement()

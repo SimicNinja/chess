@@ -1033,41 +1033,79 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_bin</CollationName>
     </table>
-    <table id="298" parent="288" name="userdata">
+    <table id="298" parent="288" name="gamedata">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </table>
+    <table id="299" parent="288" name="userdata">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_bin</CollationName>
     </table>
-    <column id="299" parent="297" name="authToken">
+    <column id="300" parent="297" name="authToken">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="300" parent="297" name="username">
+    <column id="301" parent="297" name="username">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="301" parent="298" name="username">
+    <column id="302" parent="298" name="gameID">
+      <AutoIncrement>1</AutoIncrement>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int|0s</StoredType>
+    </column>
+    <column id="303" parent="298" name="whiteUsername">
+      <Position>2</Position>
+      <StoredType>varchar(255)|0s</StoredType>
+    </column>
+    <column id="304" parent="298" name="blackUsername">
+      <Position>3</Position>
+      <StoredType>varchar(255)|0s</StoredType>
+    </column>
+    <column id="305" parent="298" name="gameName">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>varchar(255)|0s</StoredType>
+    </column>
+    <column id="306" parent="298" name="game">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>longtext|0s</StoredType>
+    </column>
+    <index id="307" parent="298" name="PRIMARY">
+      <ColNames>gameID</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="308" parent="298" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="309" parent="299" name="username">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="302" parent="298" name="password">
+    <column id="310" parent="299" name="password">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="303" parent="298" name="email">
+    <column id="311" parent="299" name="email">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <index id="304" parent="298" name="constraint_name">
+    <index id="312" parent="299" name="constraint_name">
       <ColNames>username</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="305" parent="298" name="constraint_name">
+    <key id="313" parent="299" name="constraint_name">
       <UnderlyingIndexName>constraint_name</UnderlyingIndexName>
     </key>
   </database-model>

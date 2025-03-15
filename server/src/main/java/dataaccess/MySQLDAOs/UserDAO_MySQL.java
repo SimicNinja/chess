@@ -16,7 +16,7 @@ public class UserDAO_MySQL extends DAO_MySQL implements UserDAO
 	@Override
 	public UserData getUser(String username)
 	{
-		String sql = "SELECT * FROM " + tableName + "  WHERE username = ?";
+		String sql = "SELECT * FROM " + tableName + " WHERE username = ?";
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
