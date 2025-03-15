@@ -6,6 +6,7 @@ import dataaccess.interfaces.UserDAO;
 import model.UserData;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO_MySQL implements UserDAO
@@ -13,7 +14,33 @@ public class UserDAO_MySQL implements UserDAO
 	@Override
 	public UserData getUser(String username)
 	{
-		return null;
+		String sql = "SELECT * FROM userData WHERE username = ?";
+
+		try(Connection conn = DatabaseManager.getConnection())
+		{
+			try(var statement = conn.prepareStatement(sql))
+			{
+				statement.setString(1, username);
+
+				try(var rs = statement.executeQuery())
+				{
+					if(rs.next())
+					{
+						return new UserData(rs.getString("username"),
+											rs.getString("password"),
+											rs.getString("email"));
+					}
+					else
+					{
+						return null;
+					}
+				}
+			}
+		}
+		catch(SQLException | DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -52,12 +79,37 @@ public class UserDAO_MySQL implements UserDAO
 	@Override
 	public void clear()
 	{
+		String sql = "TRUNCATE TABLE userData";
 
+		try(Connection conn = DatabaseManager.getConnection())
+		{
+			try(var statement = conn.prepareStatement(sql))
+			{
+				statement.executeUpdate();
+			}
+		}
+		catch(SQLException | DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public boolean isEmpty()
 	{
-		return false;
+		String sql = "SELECT 1 FROM userData LIMIT 1";
+
+		try(Connection conn = DatabaseManager.getConnection())
+		{
+			try(var statement = conn.prepareStatement(sql))
+			{
+				ResultSet set = statement.executeQuery();
+				return !set.next();
+			}
+		}
+		catch(SQLException | DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

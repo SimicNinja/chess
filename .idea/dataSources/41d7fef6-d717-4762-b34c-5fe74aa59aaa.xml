@@ -1031,11 +1031,11 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </user>
     <table id="297" parent="288" name="authdata">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb4_bin</CollationName>
     </table>
     <table id="298" parent="288" name="userdata">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb4_bin</CollationName>
     </table>
     <column id="299" parent="297" name="authToken">
       <NotNull>1</NotNull>

@@ -3,6 +3,7 @@ package passoff.server;
 import dataaccess.*;
 import dataaccess.MySQLDAOs.UserDAO_MySQL;
 import dataaccess.interfaces.UserDAO;
+import model.UserData;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -51,8 +52,8 @@ public class UserDAOTests
 		}
 	}
 
-	@AfterAll
-	public static void tearDown() throws SQLException
+	@AfterEach
+	public void tearDown() throws SQLException
 	{
 		try(PreparedStatement statement = conn.prepareStatement("TRUNCATE TABLE userData"))
 		{
@@ -83,5 +84,33 @@ public class UserDAOTests
 
 		Assertions.assertThrows(RuntimeException.class, () ->
 				dao.createUser("Asuna", "motorcycleTime", "5@gmail.com"));
+	}
+
+	@Test
+	public void testGetUser()
+	{
+		Assertions.assertEquals(new UserData("SimicNinja", "codingTime", "2@gmail.com"),
+				dao.getUser("SimicNinja"));
+		Assertions.assertEquals(new UserData("LickyFrog", "kitchenTime", "1@gmail.com"),
+				dao.getUser("LickyFrog"));
+		Assertions.assertEquals(new UserData("JOA", "animeTime", "3@gmail.com"),
+				dao.getUser("JOA"));
+	}
+
+	@Test
+	public void testGetUserFail()
+	{
+		Assertions.assertNull(dao.getUser("Asuna"));
+		Assertions.assertNull(dao.getUser("lickyfrog")); //Check for case-sensitivity.
+	}
+
+	@Test
+	public void testClear() throws SQLException
+	{
+		dao.clear();
+
+		List<String> usernames = AuthDAOTests.getItems("userData", "username", conn);
+
+		Assertions.assertTrue(usernames.isEmpty());
 	}
 }
