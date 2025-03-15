@@ -9,12 +9,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDAO_MySQL implements UserDAO
+public class UserDAO_MySQL extends DAO_MySQL implements UserDAO
 {
+	private final String tableName = "userData";
+
 	@Override
 	public UserData getUser(String username)
 	{
-		String sql = "SELECT * FROM userData WHERE username = ?";
+		String sql = "SELECT * FROM " + tableName + "  WHERE username = ?";
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
@@ -46,7 +48,7 @@ public class UserDAO_MySQL implements UserDAO
 	@Override
 	public void createUser(String username, String password, String email) throws DataAccessException
 	{
-		String sql = "INSERT INTO userData (username, password, email) VALUES(?, ?, ?)";
+		String sql = "INSERT INTO " + tableName + " (username, password, email) VALUES(?, ?, ?)";
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
@@ -79,37 +81,12 @@ public class UserDAO_MySQL implements UserDAO
 	@Override
 	public void clear()
 	{
-		String sql = "TRUNCATE TABLE userData";
-
-		try(Connection conn = DatabaseManager.getConnection())
-		{
-			try(var statement = conn.prepareStatement(sql))
-			{
-				statement.executeUpdate();
-			}
-		}
-		catch(SQLException | DataAccessException e)
-		{
-			throw new RuntimeException(e);
-		}
+		super.clear(tableName);
 	}
 
 	@Override
 	public boolean isEmpty()
 	{
-		String sql = "SELECT 1 FROM userData LIMIT 1";
-
-		try(Connection conn = DatabaseManager.getConnection())
-		{
-			try(var statement = conn.prepareStatement(sql))
-			{
-				ResultSet set = statement.executeQuery();
-				return !set.next();
-			}
-		}
-		catch(SQLException | DataAccessException e)
-		{
-			throw new RuntimeException(e);
-		}
+		return  super.isEmpty(tableName);
 	}
 }

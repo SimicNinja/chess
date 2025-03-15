@@ -7,8 +7,10 @@ import dataaccess.interfaces.AuthDAO;
 import java.util.UUID;
 import java.sql.*;
 
-public class AuthDAO_MySQL implements AuthDAO
+public class AuthDAO_MySQL extends DAO_MySQL implements AuthDAO
 {
+	private final String tableName = "authData";
+
 	@Override
 	public String createAuth(String username) throws DataAccessException
 	{
@@ -16,7 +18,8 @@ public class AuthDAO_MySQL implements AuthDAO
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
-			try(var preparedStatement = conn.prepareStatement("INSERT INTO authData (authToken, username) VALUES(?, ?)"))
+			try(var preparedStatement = conn.prepareStatement("INSERT INTO " + tableName +
+					" (authToken, username) VALUES(?, ?)"))
 			{
 				preparedStatement.setString(1, authToken);
 				preparedStatement.setString(2, username);
@@ -35,7 +38,7 @@ public class AuthDAO_MySQL implements AuthDAO
 	@Override
 	public String authorizeToken(String authToken) throws DataAccessException
 	{
-		String sql = "SELECT username FROM authData WHERE authToken = ?";
+		String sql = "SELECT username FROM " + tableName + " WHERE authToken = ?";
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
@@ -66,7 +69,7 @@ public class AuthDAO_MySQL implements AuthDAO
 	@Override
 	public void deleteAuthData(String authToken) throws DataAccessException
 	{
-		String sql = "DELETE FROM authData WHERE authToken = ?";
+		String sql = "DELETE FROM " + tableName + " WHERE authToken = ?";
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
@@ -92,36 +95,11 @@ public class AuthDAO_MySQL implements AuthDAO
 	@Override
 	public void clear()
 	{
-		String sql = "TRUNCATE TABLE authData";
-
-		try(Connection conn = DatabaseManager.getConnection())
-		{
-			try(var statement = conn.prepareStatement(sql))
-			{
-				statement.executeUpdate();
-			}
-		}
-		catch(SQLException | DataAccessException e)
-		{
-			throw new RuntimeException(e);
-		}
+		super.clear(tableName);
 	}
 
 	public boolean isEmpty()
 	{
-		String sql = "SELECT 1 FROM authData LIMIT 1";
-
-		try(Connection conn = DatabaseManager.getConnection())
-		{
-			try(var statement = conn.prepareStatement(sql))
-			{
-				ResultSet set = statement.executeQuery();
-				return !set.next();
-			}
-		}
-		catch(SQLException | DataAccessException e)
-		{
-			throw new RuntimeException(e);
-		}
+		return super.isEmpty(tableName);
 	}
 }

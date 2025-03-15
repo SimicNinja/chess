@@ -139,6 +139,7 @@ public class AuthDAOTests
 	{
 		dao.clear();
 
+
 		List<String> usernames = getItems("authData", "username", conn);
 
 		Assertions.assertTrue(usernames.isEmpty());
