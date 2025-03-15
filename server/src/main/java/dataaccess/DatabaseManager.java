@@ -43,7 +43,7 @@ public class DatabaseManager
 	/**
 	 * Creates the database if it does not already exist.
 	 */
-	static void createDatabase() throws DataAccessException
+	public static void createDatabase() throws DataAccessException
 	{
 		try
 		{
@@ -52,6 +52,18 @@ public class DatabaseManager
 			try(var preparedStatement = conn.prepareStatement(statement))
 			{
 				preparedStatement.executeUpdate();
+			}
+
+			conn.setCatalog("chess");
+
+			var createAuthTable = """
+					CREATE TABLE IF NOT EXISTS authData(
+					authToken varchar(255) NOT NULL,
+					username varchar(255) NOT NULL
+					)""";
+
+			try (var createTableStatement = conn.prepareStatement(createAuthTable)) {
+				createTableStatement.executeUpdate();
 			}
 		}
 		catch(SQLException e)
@@ -72,7 +84,7 @@ public class DatabaseManager
 	 * }
 	 * </code>
 	 */
-	static Connection getConnection() throws DataAccessException
+	public static Connection getConnection() throws DataAccessException
 	{
 		try
 		{

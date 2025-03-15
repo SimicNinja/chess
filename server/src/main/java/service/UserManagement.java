@@ -46,7 +46,7 @@ public class UserManagement
 		}
 	}
 
-	private LoginResult login(String username)
+	private LoginResult login(String username) throws DataAccessException
 	{
 		return new LoginResult(username, authorizations.createAuth(username));
 	}

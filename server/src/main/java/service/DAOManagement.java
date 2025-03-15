@@ -1,14 +1,24 @@
 package service;
 
-import dataaccess.AuthDAO;
-import dataaccess.GameDAO;
-import dataaccess.UserDAO;
+import dataaccess.*;
 
 public class DAOManagement
 {
-	private final GameDAO games = new GameDAO();
-	private final UserDAO users = new UserDAO();
-	private final AuthDAO authorizations = new AuthDAO();
+	private final GameDAO_Memory games = new GameDAO_Memory();
+	private final UserDAO users = new UserDAO_Memory();
+	private final AuthDAO authorizations = new AuthDAO_MySQL();
+
+	public DAOManagement()
+	{
+		try
+		{
+			DatabaseManager.createDatabase();
+		}
+		catch(DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
 	protected UserDAO getUsers()
 	{
