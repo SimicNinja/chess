@@ -1,7 +1,7 @@
 package passoff.server;
 
-import dataaccess.AuthDAO;
-import dataaccess.AuthDAO_MySQL;
+import dataaccess.interfaces.AuthDAO;
+import dataaccess.MySQLDAOs.AuthDAO_MySQL;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import org.junit.jupiter.api.*;
@@ -35,7 +35,6 @@ public class AuthDAOTests
 	public void setup() throws DataAccessException, SQLException
 	{
 		conn = DatabaseManager.getConnection();
-//		conn.setAutoCommit(false);
 
 		String[] auths = {"qwerty", "12345", "asdf;"};
 		String[] usernames = {"LickyFrog", "SimicNinja", "JOA"};

@@ -1,4 +1,8 @@
-package dataaccess;
+package dataaccess.MySQLDAOs;
+
+import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
+import dataaccess.interfaces.AuthDAO;
 
 import java.util.UUID;
 import java.sql.*;

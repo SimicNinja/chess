@@ -1,6 +1,7 @@
-package dataaccess;
+package dataaccess.interfaces;
 
 import chess.ChessGame;
+import dataaccess.DataAccessException;
 import model.GameData;
 import service.GameManagement;
 import java.util.List;
