@@ -1,4 +1,4 @@
-package dataaccess.MySQLDAOs;
+package dataaccess.mysqldaos;
 
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
@@ -6,7 +6,6 @@ import dataaccess.interfaces.UserDAO;
 import model.UserData;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO_MySQL extends DAO_MySQL implements UserDAO
@@ -68,7 +67,7 @@ public class UserDAO_MySQL extends DAO_MySQL implements UserDAO
 				}
 				else
 				{
-					throw new SQLException(e);
+					throw e;
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package dataaccess.MySQLDAOs;
+package dataaccess.mysqldaos;
 
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;

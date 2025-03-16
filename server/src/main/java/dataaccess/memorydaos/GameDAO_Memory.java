@@ -1,4 +1,4 @@
-package dataaccess.memoryDAOs;
+package dataaccess.memorydaos;
 
 import chess.ChessGame;
 import dataaccess.DataAccessException;

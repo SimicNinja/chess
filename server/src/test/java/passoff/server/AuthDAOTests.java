@@ -1,7 +1,7 @@
 package passoff.server;
 
 import dataaccess.interfaces.AuthDAO;
-import dataaccess.MySQLDAOs.AuthDAO_MySQL;
+import dataaccess.mysqldaos.AuthDAO_MySQL;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import org.junit.jupiter.api.*;
@@ -52,8 +52,8 @@ public class AuthDAOTests
 		}
 	}
 
-	@AfterAll
-	public static void tearDown() throws SQLException
+	@AfterEach
+	public void tearDown() throws SQLException
 	{
 		try(PreparedStatement statement = conn.prepareStatement("TRUNCATE TABLE userData"))
 		{

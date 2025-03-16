@@ -2,8 +2,8 @@ package service;
 
 import dataaccess.*;
 import dataaccess.interfaces.*;
-import dataaccess.memoryDAOs.*;
-import dataaccess.MySQLDAOs.*;
+import dataaccess.memorydaos.*;
+import dataaccess.mysqldaos.*;
 
 public class DAOManagement
 {

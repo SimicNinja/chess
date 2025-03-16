@@ -1,7 +1,7 @@
 package passoff.server;
 
 import dataaccess.*;
-import dataaccess.MySQLDAOs.UserDAO_MySQL;
+import dataaccess.mysqldaos.UserDAO_MySQL;
 import dataaccess.interfaces.UserDAO;
 import model.UserData;
 import org.junit.jupiter.api.*;
