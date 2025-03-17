@@ -54,7 +54,7 @@ public class DatabaseManager
 				preparedStatement.executeUpdate();
 			}
 
-			conn.setCatalog("chess");
+			conn.setCatalog(DATABASE_NAME);
 
 			var createAuthTable = """
 				CREATE TABLE IF NOT EXISTS authData(

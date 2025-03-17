@@ -15,6 +15,12 @@ public class UserDAOTests
 	private static Connection conn;
 	private final UserDAO dao = new UserDAOMySQL();
 
+	@BeforeAll
+	public static void createDatabase() throws DataAccessException
+	{
+		DatabaseManager.createDatabase();
+	}
+
 	@BeforeEach
 	public void setup() throws DataAccessException, SQLException
 	{
