@@ -58,7 +58,7 @@ public class GameDAO_MySQL extends DAO_MySQL implements GameDAO
 				}
 			}
 		}
-		catch(SQLException | DataAccessException e)
+		catch(SQLException e)
 		{
 			throw new RuntimeException(e);
 		}

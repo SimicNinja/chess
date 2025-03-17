@@ -100,4 +100,10 @@ public class GameDAOTests
 		Assertions.assertEquals(new GameData(3, "JOA",
 				"LickyFrog", "Chest", new ChessGame()), dao.getGame(3));
 	}
+
+	@Test
+	public void testGetGameFail() throws DataAccessException
+	{
+		Assertions.assertThrows(DataAccessException.class, () -> dao.getGame(4));
+	}
 }
