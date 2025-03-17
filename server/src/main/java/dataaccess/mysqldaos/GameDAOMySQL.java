@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static java.lang.Math.abs;
@@ -101,7 +102,28 @@ public class GameDAOMySQL extends DAOMySQL implements GameDAO
 	@Override
 	public boolean duplicateGame(String gameName)
 	{
-		//MySQL table enforces UNIQUE constraint on gameName.
+		String sql = "SELECT gameName FROM gameData";
+
+		try(Connection conn = DatabaseManager.getConnection())
+		{
+			try(var statement = conn.prepareStatement(sql))
+			{
+				ResultSet rs = statement.executeQuery();
+
+				while(rs.next())
+				{
+					if(Objects.equals(rs.getString("gameName"), gameName))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		catch(SQLException | DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+
 		return false;
 	}
 

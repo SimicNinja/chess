@@ -6,8 +6,8 @@
     <file url="file://$PROJECT_DIR$/server/src/main/java/dataaccess/mysqldaos/DAOMySQL.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/server/src/main/java/dataaccess/mysqldaos/GameDAOMySQL.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/server/src/main/java/dataaccess/mysqldaos/UserDAOMySQL.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/server/src/test/java/passoff/server/AuthDAOTests.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/server/src/test/java/passoff/server/GameDAOTests.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/server/src/test/java/passoff/server/UserDAOTests.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/server/src/test/java/dataaccess/AuthDAOTests.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/server/src/test/java/dataaccess/GameDAOTests.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/server/src/test/java/dataaccess/UserDAOTests.java" dialect="GenericSQL" />
   </component>
 </project>

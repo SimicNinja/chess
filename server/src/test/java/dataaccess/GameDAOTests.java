@@ -130,6 +130,15 @@ public class GameDAOTests
 	}
 
 	@Test
+	public void testDuplicateGame()
+	{
+		Assertions.assertTrue(dao.duplicateGame("Frog's first game"));
+		Assertions.assertFalse(dao.duplicateGame("My game"));
+
+		//See note in testListGames().
+	}
+
+	@Test
 	public void testClear()
 	{
 		dao.clear();
