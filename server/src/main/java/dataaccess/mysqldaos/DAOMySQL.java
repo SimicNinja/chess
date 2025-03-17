@@ -28,13 +28,12 @@ public class DAOMySQL
 
 	public boolean isEmpty(String tableName)
 	{
-		String sql = "SELECT 1 FROM ? LIMIT 1";
+		String sql = "SELECT * FROM " + tableName;
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
 			try(var statement = conn.prepareStatement(sql))
 			{
-				statement.setString(1, tableName);
 				ResultSet set = statement.executeQuery();
 				return !set.next();
 			}

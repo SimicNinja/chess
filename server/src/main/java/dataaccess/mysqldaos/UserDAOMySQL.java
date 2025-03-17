@@ -51,7 +51,7 @@ public class UserDAOMySQL extends DAOMySQL implements UserDAO
 		String sql = "INSERT INTO " + table + " (username, password, email) VALUES(?, ?, ?)";
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-		if(password == null)
+		if(password == null || password.equals(""))
 		{
 			throw new DataAccessException("You must provide a username, password, & email.");
 		}

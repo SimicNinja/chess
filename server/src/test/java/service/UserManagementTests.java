@@ -62,7 +62,7 @@ public class UserManagementTests
 	{
 		UserData noPasswordStan = new UserData("Stan", "", "stan.lee@hotmail.com");
 
-		Exception e= assertThrows(DataAccessException.class, () ->	userManager.register(noPasswordStan));
+		Exception e = assertThrows(DataAccessException.class, () ->	userManager.register(noPasswordStan));
 
 		assertTrue(e.getMessage().contains("You must provide a username, password, & email."));
 	}

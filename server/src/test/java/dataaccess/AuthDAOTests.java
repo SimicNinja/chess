@@ -120,10 +120,9 @@ public class AuthDAOTests
 	}
 
 	@Test
-	public void testClear() throws DataAccessException, SQLException
+	public void testClear() throws SQLException
 	{
 		dao.clear();
-
 
 		List<String> usernames = getItems("authData", "username", conn);
 

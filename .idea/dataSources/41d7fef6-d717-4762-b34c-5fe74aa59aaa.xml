@@ -994,20 +994,20 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <collation id="287" parent="1" name="utf8mb4_mn_cyrl_0900_as_cs">
       <Charset>utf8mb4</Charset>
     </collation>
-    <schema id="288" parent="1" name="mysql">
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    <schema id="288" parent="1" name="chess">
+      <LastIntrospectionLocalTimestamp>2025-03-17.09:19:59</LastIntrospectionLocalTimestamp>
+      <CollationName>utf8mb3_bin</CollationName>
     </schema>
     <schema id="289" parent="1" name="information_schema">
       <CollationName>utf8mb3_general_ci</CollationName>
     </schema>
-    <schema id="290" parent="1" name="performance_schema">
+    <schema id="290" parent="1" name="mysql">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="291" parent="1" name="sys">
+    <schema id="291" parent="1" name="performance_schema">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="292" parent="1" name="chess">
-      <LastIntrospectionLocalTimestamp>2025-03-15.03:51:13</LastIntrospectionLocalTimestamp>
+    <schema id="292" parent="1" name="sys">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="293" parent="1" name="mysql.infoschema">
@@ -1029,15 +1029,15 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Host>localhost</Host>
       <Plugin>caching_sha2_password</Plugin>
     </user>
-    <table id="297" parent="292" name="authdata">
+    <table id="297" parent="288" name="authdata">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_bin</CollationName>
     </table>
-    <table id="298" parent="292" name="gamedata">
+    <table id="298" parent="288" name="gamedata">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="299" parent="292" name="userdata">
+    <table id="299" parent="288" name="userdata">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_bin</CollationName>
     </table>
@@ -1095,28 +1095,37 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <key id="311" parent="298" name="gameName">
       <UnderlyingIndexName>gameName</UnderlyingIndexName>
     </key>
-    <column id="312" parent="299" name="username">
+    <check id="312" parent="299" name="email_not_empty">
+      <Predicate>`email` &lt;&gt; _utf8mb4\&apos;\&apos;</Predicate>
+    </check>
+    <check id="313" parent="299" name="password_not_empty">
+      <Predicate>`password` &lt;&gt; _utf8mb4\&apos;\&apos;</Predicate>
+    </check>
+    <check id="314" parent="299" name="username_not_empty">
+      <Predicate>`username` &lt;&gt; _utf8mb4\&apos;\&apos;</Predicate>
+    </check>
+    <column id="315" parent="299" name="username">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="313" parent="299" name="password">
+    <column id="316" parent="299" name="password">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="314" parent="299" name="email">
+    <column id="317" parent="299" name="email">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <index id="315" parent="299" name="constraint_name">
+    <index id="318" parent="299" name="username">
       <ColNames>username</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="316" parent="299" name="constraint_name">
-      <UnderlyingIndexName>constraint_name</UnderlyingIndexName>
+    <key id="319" parent="299" name="username">
+      <UnderlyingIndexName>username</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

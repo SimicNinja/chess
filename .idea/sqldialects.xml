@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/41d7fef6-d717-4762-b34c-5fe74aa59aaa/console.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/server/src/main/java/dataaccess/DatabaseManager.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/server/src/main/java/dataaccess/mysqldaos/AuthDAOMySQL.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/server/src/main/java/dataaccess/mysqldaos/DAOMySQL.java" dialect="GenericSQL" />
@@ -9,5 +10,6 @@
     <file url="file://$PROJECT_DIR$/server/src/test/java/dataaccess/AuthDAOTests.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/server/src/test/java/dataaccess/GameDAOTests.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/server/src/test/java/dataaccess/UserDAOTests.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/server/src/test/java/service/DAOManagementTests.java" dialect="GenericSQL" />
   </component>
 </project>

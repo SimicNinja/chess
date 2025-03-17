@@ -57,26 +57,29 @@ public class DatabaseManager
 			conn.setCatalog("chess");
 
 			var createAuthTable = """
-					CREATE TABLE IF NOT EXISTS authData(
+				CREATE TABLE IF NOT EXISTS authData(
 					authToken varchar(255) NOT NULL,
 					username varchar(255) NOT NULL
-					)""";
+				) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin""";
 			var createUserTable = """
-					CREATE TABLE IF NOT EXISTS userData(
-					username varchar(255) NOT NULL,
+				CREATE TABLE IF NOT EXISTS userData(
+					username varchar(255) NOT NULL UNIQUE,
 					password varchar(255) NOT NULL,
-					email varchar(255) NOT NULL
-					)""";
+					email varchar(255) NOT NULL,
+					CONSTRAINT username_not_empty CHECK (username <> ''),
+					CONSTRAINT password_not_empty CHECK (password <> ''),
+					CONSTRAINT email_not_empty CHECK (email <> '')
+				) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin""";
 			var createGameTable = """
-					CREATE TABLE IF NOT EXISTS gameData(
-					    gameID INT NOT NULL AUTO_INCREMENT,
-					    whiteUsername VARCHAR(255),
-					    blackUsername VARCHAR(255),
-					    gameName VARCHAR(255) NOT NULL UNIQUE,
-					    game LONGTEXT NOT NULL,
-					    PRIMARY KEY (gameID),
-					    CONSTRAINT check_not_empty CHECK (gameName <> '')
-					)""";
+				CREATE TABLE IF NOT EXISTS gameData(
+					gameID INT NOT NULL AUTO_INCREMENT,
+					whiteUsername VARCHAR(255),
+					blackUsername VARCHAR(255),
+					gameName VARCHAR(255) NOT NULL UNIQUE,
+					game LONGTEXT NOT NULL,
+					PRIMARY KEY (gameID),
+					CONSTRAINT check_not_empty CHECK (gameName <> '')
+				) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin""";
 
 			createTable(conn, createAuthTable);
 			createTable(conn, createUserTable);

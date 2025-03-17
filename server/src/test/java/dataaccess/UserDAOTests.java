@@ -18,6 +18,7 @@ public class UserDAOTests
 	@BeforeEach
 	public void setup() throws DataAccessException, SQLException
 	{
+		dao.clear();
 		conn = DatabaseManager.getConnection();
 
 		String[] usernames = {"LickyFrog", "SimicNinja", "JOA"};
@@ -68,6 +69,9 @@ public class UserDAOTests
 		Assertions.assertThrows(DataAccessException.class, () ->
 			dao.createUser(null, "motorcycleTime", "5@gmail.com"));
 
+		Assertions.assertThrows(DataAccessException.class, () ->
+				dao.createUser("Asuna", "", "5@gmail.com"));
+
 		Assertions.assertThrows(RuntimeException.class, () ->
 				dao.createUser("Asuna", "motorcycleTime", "5@gmail.com"));
 	}
@@ -91,7 +95,7 @@ public class UserDAOTests
 	}
 
 	@Test
-	public void testClear() throws SQLException
+	public void testUserClear() throws SQLException
 	{
 		dao.clear();
 
