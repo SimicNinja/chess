@@ -123,7 +123,36 @@ public class GameDAO_MySQL extends DAO_MySQL implements GameDAO
 	@Override
 	public void joinGame(int gameID, ChessGame.TeamColor color, String username) throws DataAccessException
 	{
+		String sql;
 
+		if(color == ChessGame.TeamColor.WHITE)
+		{
+			sql = "UPDATE " + tableName + " SET whiteUsername = ? WHERE gameID = ?";
+		}
+		else
+		{
+			sql = "UPDATE " + tableName + " SET blackUsername = ? WHERE gameID = ?";
+		}
+
+		try(Connection conn = DatabaseManager.getConnection())
+		{
+			try(var statement = conn.prepareStatement(sql))
+			{
+				statement.setString(1, username);
+				statement.setInt(2, gameID);
+
+				int rowsAffected = statement.executeUpdate();
+
+				if(rowsAffected == 0)
+				{
+					throw new DataAccessException("Game with ID " + gameID + " does not exist.");
+				}
+			}
+		}
+		catch(SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

@@ -106,4 +106,21 @@ public class GameDAOTests
 	{
 		Assertions.assertThrows(DataAccessException.class, () -> dao.getGame(4));
 	}
+
+	@Test
+	public void testJoinGame() throws DataAccessException
+	{
+		int gameID = dao.newGame("EmptyGame");
+
+		dao.joinGame(gameID, ChessGame.TeamColor.WHITE, "SimicNinja");
+
+		Assertions.assertEquals(new GameData(gameID, "SimicNinja",
+				null, "EmptyGame", new ChessGame()), dao.getGame(gameID));
+	}
+
+	@Test
+	public void testJoinGameFail() throws DataAccessException
+	{
+		Assertions.assertThrows(DataAccessException.class, () -> dao.joinGame(4, ChessGame.TeamColor.WHITE, "SimicNinja"));
+	}
 }

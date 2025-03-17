@@ -62,7 +62,7 @@ public class GameDAO_Memory implements GameDAO
 		return gameID;
 	}
 
-	public void joinGame(int gameID, ChessGame.TeamColor color, String username) throws DataAccessException
+	public void joinGame(int gameID, ChessGame.TeamColor color, String username)
 	{
 		GameData game = idMap.get(gameID);
 		GameData newGame;
