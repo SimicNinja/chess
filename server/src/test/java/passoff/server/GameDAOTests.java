@@ -6,6 +6,7 @@ import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import dataaccess.mysqldaos.GameDAO_MySQL;
 import dataaccess.interfaces.GameDAO;
+import model.GameData;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -89,5 +90,14 @@ public class GameDAOTests
 		Assertions.assertThrows(DataAccessException.class, () -> dao.newGame(null));
 	}
 
-
+	@Test
+	public void testGetGame() throws DataAccessException
+	{
+		Assertions.assertEquals(new GameData(1, "LickyFrog",
+				"SimicNinja", "Frog's first game", new ChessGame()), dao.getGame(1));
+		Assertions.assertEquals(new GameData(2, "SimicNinja",
+				"JOA", "Water fight", new ChessGame()), dao.getGame(2));
+		Assertions.assertEquals(new GameData(3, "JOA",
+				"LickyFrog", "Chest", new ChessGame()), dao.getGame(3));
+	}
 }

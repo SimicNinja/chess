@@ -1,7 +1,11 @@
 package dataaccess.mysqldaos;
 
 import chess.ChessGame;
+import chess.ChessPiece;
+import chess.movecalculators.MoveCalculator;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dataaccess.ChessPieceAdapter;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import dataaccess.interfaces.GameDAO;
@@ -22,7 +26,42 @@ public class GameDAO_MySQL extends DAO_MySQL implements GameDAO
 	@Override
 	public GameData getGame(int gameID) throws DataAccessException
 	{
-		return null;
+		String sql = "SELECT * FROM " + tableName + " WHERE gameID = ?";
+
+		try(Connection conn = DatabaseManager.getConnection())
+		{
+			try(var statement = conn.prepareStatement(sql))
+			{
+				statement.setInt(1, gameID);
+
+				try(var rs = statement.executeQuery())
+				{
+					if(rs.next())
+					{
+						String json = rs.getString("game");
+						Gson gson = new GsonBuilder().registerTypeAdapter(ChessPiece.class,
+								new ChessPieceAdapter()).create();
+						ChessGame game = gson.fromJson(json, ChessGame.class);
+
+						return new GameData(
+								rs.getInt("gameID"),
+								rs.getString("whiteUsername"),
+								rs.getString("blackUsername"),
+								rs.getString("gameName"),
+								game
+						);
+					}
+					else
+					{
+						throw new DataAccessException("A game with ID " + gameID + " does not exist.");
+					}
+				}
+			}
+		}
+		catch(SQLException | DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
