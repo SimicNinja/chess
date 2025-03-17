@@ -11,12 +11,12 @@ import java.sql.SQLException;
 
 public class UserDAOMySQL extends DAOMySQL implements UserDAO
 {
-	private final String tableName = "userData";
+	private final String table = "userData";
 
 	@Override
 	public UserData getUser(String username)
 	{
-		String sql = "SELECT * FROM " + tableName + " WHERE username = ?";
+		String sql = "SELECT * FROM " + table + " WHERE username = ?";
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
@@ -48,7 +48,7 @@ public class UserDAOMySQL extends DAOMySQL implements UserDAO
 	@Override
 	public void createUser(String username, String password, String email) throws DataAccessException
 	{
-		String sql = "INSERT INTO " + tableName + " (username, password, email) VALUES(?, ?, ?)";
+		String sql = "INSERT INTO " + table + " (username, password, email) VALUES(?, ?, ?)";
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
 		if(password == null)
@@ -87,12 +87,12 @@ public class UserDAOMySQL extends DAOMySQL implements UserDAO
 	@Override
 	public void clear()
 	{
-		super.clear(tableName);
+		super.clear(table);
 	}
 
 	@Override
 	public boolean isEmpty()
 	{
-		return  super.isEmpty(tableName);
+		return  super.isEmpty(table);
 	}
 }

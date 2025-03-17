@@ -18,19 +18,6 @@ public class AuthDAOTests
 	private static Connection conn;
 	private final AuthDAO dao = new AuthDAOMySQL();
 
-	@BeforeAll
-	public static void createDatabase()
-	{
-		try
-		{
-			DatabaseManager.createDatabase();
-		}
-		catch(DataAccessException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-
 	@BeforeEach
 	public void setup() throws DataAccessException, SQLException
 	{
