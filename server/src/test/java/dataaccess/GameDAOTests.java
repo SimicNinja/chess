@@ -1,9 +1,7 @@
-package passoff.server;
+package dataaccess;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
-import dataaccess.DataAccessException;
-import dataaccess.DatabaseManager;
 import dataaccess.mysqldaos.GameDAOMySQL;
 import dataaccess.interfaces.GameDAO;
 import model.GameData;

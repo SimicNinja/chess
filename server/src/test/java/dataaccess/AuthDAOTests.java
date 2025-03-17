@@ -1,9 +1,7 @@
-package passoff.server;
+package dataaccess;
 
 import dataaccess.interfaces.AuthDAO;
 import dataaccess.mysqldaos.AuthDAOMySQL;
-import dataaccess.DataAccessException;
-import dataaccess.DatabaseManager;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;

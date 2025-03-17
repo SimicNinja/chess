@@ -1,6 +1,5 @@
-package passoff.server;
+package dataaccess;
 
-import dataaccess.*;
 import dataaccess.mysqldaos.UserDAOMySQL;
 import dataaccess.interfaces.UserDAO;
 import model.UserData;
