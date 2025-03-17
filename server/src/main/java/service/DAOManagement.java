@@ -7,7 +7,7 @@ import dataaccess.mysqldaos.*;
 
 public class DAOManagement
 {
-	private final GameDAO_Memory games = new GameDAO_Memory();
+	private final GameDAO games = new GameDAO_MySQL();
 	private final UserDAO users = new UserDAO_MySQL();
 	private final AuthDAO authorizations = new AuthDAO_MySQL();
 

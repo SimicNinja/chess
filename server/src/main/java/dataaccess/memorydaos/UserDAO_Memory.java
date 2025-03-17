@@ -3,6 +3,7 @@ package dataaccess.memorydaos;
 import dataaccess.DataAccessException;
 import dataaccess.interfaces.UserDAO;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,10 @@ public class UserDAO_Memory implements UserDAO
 		{
 			throw new DataAccessException("You must provide a username, password, & email.");
 		}
-		userMap.put(username, new UserData(username, password, email));
+
+		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+		userMap.put(username, new UserData(username, hashedPassword, email));
 	}
 
 	public void clear()

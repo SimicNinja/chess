@@ -123,17 +123,31 @@ public class GameDAOTests
 	@Test
 	public void testJoinGameFail()
 	{
-		Assertions.assertThrows(DataAccessException.class, () -> dao.joinGame(4, ChessGame.TeamColor.WHITE, "SimicNinja"));
+		Assertions.assertThrows(DataAccessException.class, () ->
+				dao.joinGame(4, ChessGame.TeamColor.WHITE, "SimicNinja"));
 	}
 
 	@Test
 	public void testListGames()
 	{
 		List<GameManagement.ListedGame> expected = new ArrayList<>();
-		expected.add(new GameManagement.ListedGame(1, "LickyFrog", "SimicNinja", "Frog's first game"));
-		expected.add(new GameManagement.ListedGame(2, "SimicNinja", "JOA", "Water fight"));
-		expected.add(new GameManagement.ListedGame(3, "JOA", "LickyFrog", "Chest"));
+		expected.add(new GameManagement.ListedGame(
+		1, "LickyFrog", "SimicNinja", "Frog's first game"));
+		expected.add(new GameManagement.ListedGame(
+		2, "SimicNinja", "JOA", "Water fight"));
+		expected.add(new GameManagement.ListedGame(
+		3, "JOA", "LickyFrog", "Chest"));
 
 		Assertions.assertEquals(expected, dao.listGames());
+
+		//Note: No fail test written as, similar to clear,
+		// there are no parameter or conditions that will change based on method implementation.
+	}
+
+	@Test
+	public void testClear()
+	{
+		dao.clear();
+		Assertions.assertTrue(dao.listGames().isEmpty());
 	}
 }

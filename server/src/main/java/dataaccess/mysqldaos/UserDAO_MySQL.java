@@ -4,6 +4,7 @@ import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import dataaccess.interfaces.UserDAO;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -48,13 +49,19 @@ public class UserDAO_MySQL extends DAO_MySQL implements UserDAO
 	public void createUser(String username, String password, String email) throws DataAccessException
 	{
 		String sql = "INSERT INTO " + tableName + " (username, password, email) VALUES(?, ?, ?)";
+		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+		if(password == null)
+		{
+			throw new DataAccessException("You must provide a username, password, & email.");
+		}
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
 			try(var preparedStatement = conn.prepareStatement(sql))
 			{
 				preparedStatement.setString(1, username);
-				preparedStatement.setString(2, password);
+				preparedStatement.setString(2, hashedPassword);
 				preparedStatement.setString(3, email);
 
 				preparedStatement.executeUpdate();

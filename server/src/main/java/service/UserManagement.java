@@ -4,6 +4,7 @@ import model.UserData;
 import dataaccess.interfaces.AuthDAO;
 import dataaccess.interfaces.UserDAO;
 import dataaccess.DataAccessException;
+import org.mindrot.jbcrypt.BCrypt;
 import server.Server.LoginRequest;
 
 public class UserManagement
@@ -27,6 +28,8 @@ public class UserManagement
 		}
 		throw new DataAccessException("User " + username + "already exists.");
 	}
+
+
 	public LoginResult login(LoginRequest request) throws DataAccessException
 	{
 		String username = request.username();
@@ -36,7 +39,7 @@ public class UserManagement
 		{
 			throw new DataAccessException("User " + username + " does not exist.");
 		}
-		else if(!users.getUser(username).password().equals(password))
+		else if(!BCrypt.checkpw(password, users.getUser(username).password()))
 		{
 			throw new DataAccessException("Incorrect password for " + username);
 		}
