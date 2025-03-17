@@ -19,15 +19,10 @@ public class GameDAOTests
 	private static Connection conn;
 	private final GameDAO dao = new GameDAOMySQL();
 
-	@BeforeAll
-	public static void createDatabase() throws DataAccessException
-	{
-		DatabaseManager.createDatabase();
-	}
-
 	@BeforeEach
 	public void setup() throws DataAccessException, SQLException
 	{
+		DatabaseManager.createDatabase();
 		conn = DatabaseManager.getConnection();
 
 		int[] ids = {1, 2, 3};
