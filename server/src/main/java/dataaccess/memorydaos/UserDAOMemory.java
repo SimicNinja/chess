@@ -8,7 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserDAO_Memory implements UserDAO
+public class UserDAOMemory implements UserDAO
 {
 	private Map<String, UserData> userMap = new HashMap<>();
 

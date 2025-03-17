@@ -186,7 +186,8 @@ public class DatabaseTests
 			{
 			}
 		}
-		throw new ClassNotFoundException("Unable to load database in order to verify persistence. " + "Are you using DatabaseManager to set your credentials? " + "Did you edit the signature of the getConnection method?");
+		throw new ClassNotFoundException("Unable to load database in order to verify persistence. " +
+				"Are you using DatabaseManager to set your credentials? " + "Did you edit the signature of the getConnection method?");
 	}
 
 	@FunctionalInterface

@@ -1,7 +1,7 @@
 package passoff.server;
 
 import dataaccess.interfaces.AuthDAO;
-import dataaccess.mysqldaos.AuthDAO_MySQL;
+import dataaccess.mysqldaos.AuthDAOMySQL;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import org.junit.jupiter.api.*;
@@ -16,7 +16,7 @@ import java.util.List;
 public class AuthDAOTests
 {
 	private static Connection conn;
-	private final AuthDAO dao = new AuthDAO_MySQL();
+	private final AuthDAO dao = new AuthDAOMySQL();
 
 	@BeforeAll
 	public static void createDatabase()

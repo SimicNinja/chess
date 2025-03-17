@@ -1,7 +1,7 @@
 package passoff.server;
 
 import dataaccess.*;
-import dataaccess.mysqldaos.UserDAO_MySQL;
+import dataaccess.mysqldaos.UserDAOMySQL;
 import dataaccess.interfaces.UserDAO;
 import model.UserData;
 import org.junit.jupiter.api.*;
@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDAOTests
 {
 	private static Connection conn;
-	private final UserDAO dao = new UserDAO_MySQL();
+	private final UserDAO dao = new UserDAOMySQL();
 
 	@BeforeAll
 	public static void createDatabase()

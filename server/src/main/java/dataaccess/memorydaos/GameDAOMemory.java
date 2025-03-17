@@ -8,7 +8,7 @@ import service.GameManagement.ListedGame;
 import java.util.*;
 import static java.lang.Math.abs;
 
-public class GameDAO_Memory implements GameDAO
+public class GameDAOMemory implements GameDAO
 {
 	private Map<Integer, GameData> idMap = new HashMap<>();
 

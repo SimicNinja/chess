@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DAO_MySQL
+public class DAOMySQL
 {
 	public void clear(String tableName)
 	{

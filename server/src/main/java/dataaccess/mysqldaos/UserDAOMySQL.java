@@ -9,7 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class UserDAO_MySQL extends DAO_MySQL implements UserDAO
+public class UserDAOMySQL extends DAOMySQL implements UserDAO
 {
 	private final String tableName = "userData";
 

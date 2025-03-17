@@ -2,7 +2,6 @@ package dataaccess.mysqldaos;
 
 import chess.ChessGame;
 import chess.ChessPiece;
-import chess.movecalculators.MoveCalculator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dataaccess.ChessPieceAdapter;
@@ -21,7 +20,7 @@ import java.util.UUID;
 
 import static java.lang.Math.abs;
 
-public class GameDAO_MySQL extends DAO_MySQL implements GameDAO
+public class GameDAOMySQL extends DAOMySQL implements GameDAO
 {
 	private final String tableName = "gameData";
 

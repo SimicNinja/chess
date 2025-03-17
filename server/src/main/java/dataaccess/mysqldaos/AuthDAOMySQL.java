@@ -7,7 +7,7 @@ import dataaccess.interfaces.AuthDAO;
 import java.util.UUID;
 import java.sql.*;
 
-public class AuthDAO_MySQL extends DAO_MySQL implements AuthDAO
+public class AuthDAOMySQL extends DAOMySQL implements AuthDAO
 {
 	private final String tableName = "authData";
 

@@ -4,7 +4,7 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
-import dataaccess.mysqldaos.GameDAO_MySQL;
+import dataaccess.mysqldaos.GameDAOMySQL;
 import dataaccess.interfaces.GameDAO;
 import model.GameData;
 import org.junit.jupiter.api.*;
@@ -19,7 +19,7 @@ import java.util.List;
 public class GameDAOTests
 {
 	private static Connection conn;
-	private final GameDAO dao = new GameDAO_MySQL();
+	private final GameDAO dao = new GameDAOMySQL();
 
 	@BeforeAll
 	public static void createDatabase()

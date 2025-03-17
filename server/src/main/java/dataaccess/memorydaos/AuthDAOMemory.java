@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 
-public class AuthDAO_Memory implements AuthDAO
+public class AuthDAOMemory implements AuthDAO
 {
 	private final Map<String, AuthData> authMap = new HashMap<>();
 
