@@ -9,7 +9,7 @@ import java.util.List;
 public interface GameDAO
 {
 	public GameData getGame(int gameID) throws DataAccessException;
-	public List<GameManagement.ListedGame> getGames();
+	public List<GameManagement.ListedGame> listGames();
 	public boolean duplicateGame(String gameName);
 	public int newGame(String gameName) throws DataAccessException;
 	public void joinGame(int gameID, ChessGame.TeamColor color, String username) throws DataAccessException;

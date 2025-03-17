@@ -21,7 +21,7 @@ public class GameDAO_Memory implements GameDAO
 		return idMap.get(gameID);
 	}
 
-	public List<ListedGame> getGames()
+	public List<ListedGame> listGames()
 	{
 		ArrayList<GameData> games = new ArrayList<>(idMap.values());
 		ArrayList<ListedGame> listedGames = new ArrayList<>();

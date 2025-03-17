@@ -63,7 +63,7 @@ public class GameManagement
 	{
 		authorizations.authorizeToken(authToken);
 
-		return games.getGames();
+		return games.listGames();
 	}
 
 	public record NewGameResult(int gameID) {}

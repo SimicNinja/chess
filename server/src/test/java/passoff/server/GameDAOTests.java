@@ -8,10 +8,12 @@ import dataaccess.mysqldaos.GameDAO_MySQL;
 import dataaccess.interfaces.GameDAO;
 import model.GameData;
 import org.junit.jupiter.api.*;
+import service.GameManagement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameDAOTests
@@ -85,7 +87,7 @@ public class GameDAOTests
 	}
 
 	@Test
-	public void testNewGameFail() throws DataAccessException
+	public void testNewGameFail()
 	{
 		Assertions.assertThrows(DataAccessException.class, () -> dao.newGame(null));
 	}
@@ -102,7 +104,7 @@ public class GameDAOTests
 	}
 
 	@Test
-	public void testGetGameFail() throws DataAccessException
+	public void testGetGameFail()
 	{
 		Assertions.assertThrows(DataAccessException.class, () -> dao.getGame(4));
 	}
@@ -119,8 +121,19 @@ public class GameDAOTests
 	}
 
 	@Test
-	public void testJoinGameFail() throws DataAccessException
+	public void testJoinGameFail()
 	{
 		Assertions.assertThrows(DataAccessException.class, () -> dao.joinGame(4, ChessGame.TeamColor.WHITE, "SimicNinja"));
+	}
+
+	@Test
+	public void testListGames()
+	{
+		List<GameManagement.ListedGame> expected = new ArrayList<>();
+		expected.add(new GameManagement.ListedGame(1, "LickyFrog", "SimicNinja", "Frog's first game"));
+		expected.add(new GameManagement.ListedGame(2, "SimicNinja", "JOA", "Water fight"));
+		expected.add(new GameManagement.ListedGame(3, "JOA", "LickyFrog", "Chest"));
+
+		Assertions.assertEquals(expected, dao.listGames());
 	}
 }

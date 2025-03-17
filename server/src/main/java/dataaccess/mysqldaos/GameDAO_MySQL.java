@@ -13,7 +13,9 @@ import model.GameData;
 import service.GameManagement;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,14 +67,42 @@ public class GameDAO_MySQL extends DAO_MySQL implements GameDAO
 	}
 
 	@Override
-	public List<GameManagement.ListedGame> getGames()
+	public List<GameManagement.ListedGame> listGames()
 	{
-		return List.of();
+		String sql = "SELECT gameID, whiteUsername, blackUsername, gameName FROM gameData";
+		ArrayList<GameManagement.ListedGame> games = new ArrayList<>();
+
+		try(Connection conn = DatabaseManager.getConnection())
+		{
+			try(var statement = conn.prepareStatement(sql))
+			{
+				ResultSet rs = statement.executeQuery();
+
+				while(rs.next())
+				{
+					GameManagement.ListedGame game = new GameManagement.ListedGame
+					(
+						rs.getInt("gameID"),
+						rs.getString("whiteUsername"),
+						rs.getString("blackUsername"),
+						rs.getString("gameName")
+					);
+					games.add(game);
+				}
+			}
+		}
+		catch(SQLException | DataAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		return games;
 	}
 
 	@Override
 	public boolean duplicateGame(String gameName)
 	{
+		//MySQL table enforces UNIQUE constraint on gameName.
 		return false;
 	}
 
