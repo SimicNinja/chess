@@ -74,7 +74,8 @@ public class DatabaseManager
 					    blackUsername VARCHAR(255),
 					    gameName VARCHAR(255) NOT NULL UNIQUE,
 					    game LONGTEXT NOT NULL,
-					    PRIMARY KEY (gameID)
+					    PRIMARY KEY (gameID),
+					    CONSTRAINT check_not_empty CHECK (gameName <> '')
 					)""";
 
 			createTable(conn, createAuthTable);

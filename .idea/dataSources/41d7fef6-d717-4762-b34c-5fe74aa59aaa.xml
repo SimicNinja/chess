@@ -1051,68 +1051,71 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="302" parent="298" name="gameID">
+    <check id="302" parent="298" name="check_not_empty">
+      <Predicate>`gameName` &lt;&gt; _utf8mb4\&apos;\&apos;</Predicate>
+    </check>
+    <column id="303" parent="298" name="gameID">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="303" parent="298" name="whiteUsername">
+    <column id="304" parent="298" name="whiteUsername">
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="304" parent="298" name="blackUsername">
+    <column id="305" parent="298" name="blackUsername">
       <Position>3</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="305" parent="298" name="gameName">
+    <column id="306" parent="298" name="gameName">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="306" parent="298" name="game">
+    <column id="307" parent="298" name="game">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>longtext|0s</StoredType>
     </column>
-    <index id="307" parent="298" name="PRIMARY">
+    <index id="308" parent="298" name="PRIMARY">
       <ColNames>gameID</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="308" parent="298" name="gameName">
+    <index id="309" parent="298" name="gameName">
       <ColNames>gameName</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="309" parent="298" name="PRIMARY">
+    <key id="310" parent="298" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="310" parent="298" name="gameName">
+    <key id="311" parent="298" name="gameName">
       <UnderlyingIndexName>gameName</UnderlyingIndexName>
     </key>
-    <column id="311" parent="299" name="username">
+    <column id="312" parent="299" name="username">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="312" parent="299" name="password">
+    <column id="313" parent="299" name="password">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="313" parent="299" name="email">
+    <column id="314" parent="299" name="email">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <index id="314" parent="299" name="constraint_name">
+    <index id="315" parent="299" name="constraint_name">
       <ColNames>username</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="315" parent="299" name="constraint_name">
+    <key id="316" parent="299" name="constraint_name">
       <UnderlyingIndexName>constraint_name</UnderlyingIndexName>
     </key>
   </database-model>

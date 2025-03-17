@@ -75,6 +75,7 @@ public class GameDAOTests
 	public void testNewGameFail()
 	{
 		Assertions.assertThrows(DataAccessException.class, () -> dao.newGame(null));
+		Assertions.assertThrows(DataAccessException.class, () -> dao.newGame(""));
 	}
 
 	@Test

@@ -155,7 +155,8 @@ public class GameDAOMySQL extends DAOMySQL implements GameDAO
 			}
 			catch(SQLException e)
 			{
-				if(e.getMessage().contains("gameName") && e.getMessage().contains("null"))
+				if((e.getMessage().contains("gameName") && e.getMessage().contains("null"))
+						|| e.getMessage().contains("empty"))
 				{
 					throw new DataAccessException("You must provide a game name.");
 				}
