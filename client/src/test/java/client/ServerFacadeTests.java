@@ -6,7 +6,6 @@ import server.Server;
 
 public class ServerFacadeTests
 {
-
 	private static Server server;
 
 	@BeforeAll
