@@ -1,6 +1,7 @@
 package serverfacade;
 
 import com.google.gson.Gson;
+import model.AuthData;
 import model.UserData;
 
 import java.io.*;
@@ -16,40 +17,17 @@ public class ServerFacade
 		serverUrl = url;
 	}
 
-	public void register(String username, String password, String email) throws ResponseException
+	public void clear() throws ResponseException
+	{
+		this.makeRequest("DELETE", "/db", null, null);
+	}
+
+	public AuthData register(String username, String password, String email) throws ResponseException
 	{
 		var path = "/user";
 		UserData newUser = new UserData(username, password, email);
-		this.makeRequest("POST", path, newUser, null);
+		return this.makeRequest("POST", path, newUser, AuthData.class);
 	}
-
-//	public Pet addPet(Pet pet) throws ResponseException
-//	{
-//		var path = "/pet";
-//		return this.makeRequest("POST", path, pet, Pet.class);
-//	}
-//
-//	public void deletePet(int id) throws ResponseException
-//	{
-//		var path = String.format("/pet/%s", id);
-//		this.makeRequest("DELETE", path, null, null);
-//	}
-//
-//	public void deleteAllPets() throws ResponseException
-//	{
-//		var path = "/pet";
-//		this.makeRequest("DELETE", path, null, null);
-//	}
-//
-//	public Pet[] listPets() throws ResponseException
-//	{
-//		var path = "/pet";
-//		record listPetResponse(Pet[] pet)
-//		{
-//		}
-//		var response = this.makeRequest("GET", path, null, listPetResponse.class);
-//		return response.pet();
-//	}
 
 	private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass)
 			throws ResponseException
