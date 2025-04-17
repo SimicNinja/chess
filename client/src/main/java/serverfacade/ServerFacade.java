@@ -6,6 +6,8 @@ import model.UserData;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerFacade
 {
@@ -19,22 +21,28 @@ public class ServerFacade
 
 	public void clear() throws ResponseException
 	{
-		this.makeRequest("DELETE", "/db", null, null);
+		this.makeRequest("DELETE", "/db", null, null, null);
 	}
 
 	public AuthData register(String username, String password, String email) throws ResponseException
 	{
 		UserData newUser = new UserData(username, password, email);
-		return this.makeRequest("POST", "/user", newUser, AuthData.class);
+		return this.makeRequest("POST", "/user", newUser, null, AuthData.class);
 	}
 
 	public AuthData login(String username, String password) throws ResponseException
 	{
-		LoginRequest req = new LoginRequest(username, password);
-		return this.makeRequest("POST", "/session", req, AuthData.class);
+		LoginRequest loginInfo = new LoginRequest(username, password);
+		return this.makeRequest("POST", "/session", loginInfo, null, AuthData.class);
 	}
 
-	private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass)
+	public void logout(String authToken) throws ResponseException
+	{
+		this.makeRequest("DELETE", "/session", null, makeAuth(authToken), null);
+	}
+
+	private <T> T makeRequest(String method, String path, Object request,
+							  Map<String, String> headers, Class<T> responseClass)
 			throws ResponseException
 	{
 		try
@@ -43,6 +51,15 @@ public class ServerFacade
 			HttpURLConnection http = (HttpURLConnection) url.openConnection();
 			http.setRequestMethod(method);
 			http.setDoOutput(true);
+
+			if(headers != null)
+			{
+				for(Map.Entry<String, String> header : headers.entrySet())
+				{
+					http.setRequestProperty(header.getKey(), header.getValue());
+				}
+			}
+
 
 			writeBody(request, http);
 			http.connect();
@@ -107,9 +124,17 @@ public class ServerFacade
 		return response;
 	}
 
+	private Map<String, String> makeAuth(String authToken)
+	{
+		Map<String, String> header = new HashMap<>();
+		header.put("Authorization", authToken);
+		return header;
+	}
+
 	private boolean isSuccessful(int status)
 	{
 		return status / 100 == 2;
 	}
+
 	private record LoginRequest(String username, String password) {}
 }

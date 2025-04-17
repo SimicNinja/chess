@@ -55,7 +55,7 @@ public class ServerFacadeTests
 	}
 
 	@Test
-	public void failedRegister() throws ResponseException
+	public void failedRegister()
 	{
 		ResponseException e = Assertions.assertThrows(ResponseException.class, () ->
 				facade.register(existingUser.username(), existingUser.password(), existingUser.email()));
@@ -73,10 +73,27 @@ public class ServerFacadeTests
 	}
 
 	@Test
-	public void failedLogin() throws ResponseException
+	public void failedLogin()
 	{
 		ResponseException e = Assertions.assertThrows(ResponseException.class, () ->
 				facade.login(existingUser.username(), "1234"));
+		Assertions.assertEquals("Error: Unauthorized", e.getMessage());
+	}
+
+	@Test
+	public void successfulLogout() throws ResponseException
+	{
+		facade.logout(existingAuth);
+	}
+
+	@Test
+	public void failedLogout() throws ResponseException
+	{
+		facade.logout(existingAuth);
+
+		ResponseException e = Assertions.assertThrows(ResponseException.class, () ->
+				facade.logout(existingAuth));
+
 		Assertions.assertEquals("Error: Unauthorized", e.getMessage());
 	}
 }
