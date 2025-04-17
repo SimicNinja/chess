@@ -1,11 +1,12 @@
 package server;
 
-import chess.ChessGame;
 import dataaccess.DataAccessException;
 import model.UserData;
 import service.DAOManagement;
 import service.GameManagement;
 import service.UserManagement;
+import model.Records.*;
+
 import spark.*;
 import com.google.gson.Gson;
 
@@ -59,7 +60,7 @@ public class Server
 
 		try
 		{
-			UserManagement.LoginResult result = userManager.register(registerRequest);
+			LoginResult result = userManager.register(registerRequest);
 			response.status(200);
 			return new Gson().toJson(result);
 		}
@@ -75,7 +76,7 @@ public class Server
 
 		try
 		{
-			UserManagement.LoginResult result = userManager.login(loginRequest);
+			LoginResult result = userManager.login(loginRequest);
 			response.status(200);
 			return new Gson().toJson(result);
 		}
@@ -104,11 +105,11 @@ public class Server
 	{
 		String authToken = request.headers("authorization");
 		NewGameRequest deserialize = new Gson().fromJson(request.body(), NewGameRequest.class);
-		NewGameRequest newGameRequest = new NewGameRequest(authToken, deserialize.gameName);
+		NewGameRequest newGameRequest = new NewGameRequest(authToken, deserialize.gameName());
 
 		try
 		{
-			GameManagement.NewGameResult result = gameManager.makeGame(newGameRequest);
+			NewGameResult result = gameManager.makeGame(newGameRequest);
 			response.status(200);
 			return new Gson().toJson(result);
 		}
@@ -122,7 +123,7 @@ public class Server
 	{
 		String authToken = request.headers("authorization");
 		JoinGameRequest deserialize = new Gson().fromJson(request.body(), JoinGameRequest.class);
-		JoinGameRequest joinRequest = new JoinGameRequest(authToken, deserialize.playerColor, deserialize.gameID);
+		JoinGameRequest joinRequest = new JoinGameRequest(authToken, deserialize.playerColor(), deserialize.gameID());
 
 		try
 		{
@@ -194,7 +195,4 @@ public class Server
 	}
 
 	public record JSONResponse(String message) {}
-	public record LoginRequest(String username, String password) {}
-	public record NewGameRequest(String authToken, String gameName) {}
-	public record JoinGameRequest(String authToken, ChessGame.TeamColor playerColor, int gameID) {}
 }

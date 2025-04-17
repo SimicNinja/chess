@@ -3,11 +3,11 @@ package service;
 import chess.ChessGame;
 import dataaccess.DataAccessException;
 import model.UserData;
+import model.Records.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import server.Server;
 
 import java.util.HashSet;
 import java.util.List;
@@ -38,10 +38,10 @@ public class GameManagementTests
 		{
 			daoManager.clearApplication();
 
-			UserManagement.LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
+			LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 			authToken = result.authToken();
 
-			GameManagement.NewGameResult result2 = gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame"));
+			NewGameResult result2 = gameManager.makeGame(new NewGameRequest(authToken, "TestGame"));
 			gameID = result2.gameID();
 		}
 		catch(DataAccessException e)
@@ -60,10 +60,10 @@ public class GameManagementTests
 		{
 			daoManager.clearApplication();
 
-			UserManagement.LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
+			LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 			String authToken = result.authToken();
 
-			GameManagement.NewGameResult actual = gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame"));
+			NewGameResult actual = gameManager.makeGame(new NewGameRequest(authToken, "TestGame"));
 
 			assertNotNull(actual, "Result should not be null.");
 		}
@@ -78,7 +78,7 @@ public class GameManagementTests
 	public void missingName()
 	{
 		Exception e = assertThrows(DataAccessException.class, () ->
-				gameManager.makeGame(new Server.NewGameRequest(authToken, "")));
+				gameManager.makeGame(new NewGameRequest(authToken, "")));
 
 		assertTrue(e.getMessage().contains("You must provide a game name"));
 	}
@@ -88,7 +88,7 @@ public class GameManagementTests
 	public void duplicateTest()
 	{
 		Exception e = assertThrows(DataAccessException.class, () ->
-				gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame")));
+				gameManager.makeGame(new NewGameRequest(authToken, "TestGame")));
 
 		assertTrue(e.getMessage().contains("already exists"));
 	}
@@ -98,7 +98,7 @@ public class GameManagementTests
 	public void unauthorizedToMakeGameTest()
 	{
 		Exception e = assertThrows(DataAccessException.class, () ->
-				gameManager.makeGame(new Server.NewGameRequest("FakeToken", "TestGame")));
+				gameManager.makeGame(new NewGameRequest("FakeToken", "TestGame")));
 
 		assertTrue(e.getMessage().contains("no authorization"));
 	}
@@ -109,7 +109,7 @@ public class GameManagementTests
 	{
 		try
 		{
-			gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, gameID));
+			gameManager.joinGame(new JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, gameID));
 
 			assertEquals("LickyFrog", daoManager.getGames().getGame(gameID).whiteUsername());
 		}
@@ -125,7 +125,7 @@ public class GameManagementTests
 	{
 		try
 		{
-			gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.BLACK, gameID));
+			gameManager.joinGame(new JoinGameRequest(authToken, ChessGame.TeamColor.BLACK, gameID));
 
 			assertEquals("LickyFrog", daoManager.getGames().getGame(gameID).blackUsername());
 		}
@@ -140,7 +140,7 @@ public class GameManagementTests
 	public void badGameIDTest()
 	{
 		Exception e = assertThrows(DataAccessException.class, () ->
-				gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, -1)));
+				gameManager.joinGame(new JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, -1)));
 
 		assertTrue(e.getMessage().contains("A game with"));
 	}
@@ -150,7 +150,7 @@ public class GameManagementTests
 	public void unauthorizedToJoinGameTest()
 	{
 		Exception e = assertThrows(DataAccessException.class, () ->
-				gameManager.joinGame(new Server.JoinGameRequest("FakeToken", ChessGame.TeamColor.WHITE, gameID)));
+				gameManager.joinGame(new JoinGameRequest("FakeToken", ChessGame.TeamColor.WHITE, gameID)));
 
 		assertTrue(e.getMessage().contains("no authorization"));
 	}
@@ -161,13 +161,13 @@ public class GameManagementTests
 	{
 		try
 		{
-			UserManagement.LoginResult result = userManager.register(new UserData("SecondFrog", "1234", "nu@gmail.com"));
+			LoginResult result = userManager.register(new UserData("SecondFrog", "1234", "nu@gmail.com"));
 			String secondAuthToken = result.authToken();
 
-			gameManager.joinGame(new Server.JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, gameID));
+			gameManager.joinGame(new JoinGameRequest(authToken, ChessGame.TeamColor.WHITE, gameID));
 
 			Exception e = assertThrows(DataAccessException.class, () ->
-					gameManager.joinGame(new Server.JoinGameRequest(secondAuthToken, ChessGame.TeamColor.WHITE, gameID)));
+					gameManager.joinGame(new JoinGameRequest(secondAuthToken, ChessGame.TeamColor.WHITE, gameID)));
 
 			assertTrue(e.getMessage().contains("Another user has already claimed"));
 		}
@@ -184,7 +184,7 @@ public class GameManagementTests
 		try
 		{
 			//Setup Conditions
-			GameManagement.NewGameResult result2 = gameManager.makeGame(new Server.NewGameRequest(authToken, "TestGame2"));
+			NewGameResult result2 = gameManager.makeGame(new NewGameRequest(authToken, "TestGame2"));
 			int gameID2 = result2.gameID();
 
 			//Setup Expected

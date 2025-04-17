@@ -5,8 +5,7 @@ import dataaccess.interfaces.AuthDAO;
 import dataaccess.interfaces.GameDAO;
 import dataaccess.DataAccessException;
 import model.GameData;
-import server.Server.JoinGameRequest;
-import server.Server.NewGameRequest;
+import model.Records.*;
 
 import java.util.List;
 
@@ -66,6 +65,5 @@ public class GameManagement
 		return games.listGames();
 	}
 
-	public record NewGameResult(int gameID) {}
 	public record ListedGame(int gameID, String whiteUsername, String blackUsername, String gameName) {}
 }

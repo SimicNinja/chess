@@ -1,6 +1,7 @@
 package client;
 
 import model.AuthData;
+import model.Records;
 import model.UserData;
 import org.junit.jupiter.api.*;
 import server.Server;
@@ -95,5 +96,22 @@ public class ServerFacadeTests
 				facade.logout(existingAuth));
 
 		Assertions.assertEquals("Error: Unauthorized", e.getMessage());
+	}
+
+	@Test
+	public void successfulNewGame() throws ResponseException
+	{
+		Records.NewGameResult result = facade.newGame(existingAuth, "TestGame");
+		Assertions.assertNotNull(result.gameID(), "Result did not return a game ID");
+		Assertions.assertTrue(result.gameID() > 0, "Result returned invalid game ID");
+	}
+
+	@Test
+	public void failedNewGame() throws ResponseException
+	{
+		facade.logout(existingAuth);
+
+		Assertions.assertThrows(ResponseException.class, () ->
+				facade.newGame(existingAuth, "TestGame"));
 	}
 }

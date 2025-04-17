@@ -5,7 +5,7 @@ import dataaccess.interfaces.AuthDAO;
 import dataaccess.interfaces.UserDAO;
 import dataaccess.DataAccessException;
 import org.mindrot.jbcrypt.BCrypt;
-import server.Server.LoginRequest;
+import model.Records.*;
 
 public class UserManagement
 {
@@ -58,6 +58,4 @@ public class UserManagement
 	{
 		authorizations.deleteAuthData(authToken);
 	}
-
-	public record LoginResult(String username, String authToken){}
 }

@@ -2,11 +2,11 @@ package service;
 
 import dataaccess.DataAccessException;
 import model.UserData;
+import model.Records.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import server.Server;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,7 +44,7 @@ public class UserManagementTests
 
 		try
 		{
-			UserManagement.LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
+			LoginResult result = userManager.register(new UserData("LickyFrog", "greenTreeFrog", "amazon@gmail.com"));
 
 			assertNotNull(result, "Result should not be null.");
 			assertEquals("LickyFrog", result.username(), "Username should match the registered user.");
@@ -84,7 +84,7 @@ public class UserManagementTests
 	{
 		try
 		{
-			UserManagement.LoginResult result = userManager.login(new Server.LoginRequest("LickyFrog", "greenTreeFrog"));
+			LoginResult result = userManager.login(new LoginRequest("LickyFrog", "greenTreeFrog"));
 
 			assertNotNull(result);
 			assertEquals("LickyFrog", result.username());
@@ -100,7 +100,7 @@ public class UserManagementTests
 	@DisplayName("Wrong Password")
 	public void badPasswordTest()
 	{
-		Server.LoginRequest wrongPassword = new Server.LoginRequest("LickyFrog", "brownTreeFrog");
+		LoginRequest wrongPassword = new LoginRequest("LickyFrog", "brownTreeFrog");
 
 		Exception e = assertThrows(DataAccessException.class, () ->	userManager.login(wrongPassword));
 		assertTrue(e.getMessage().contains("Incorrect password for LickyFrog"));
@@ -110,7 +110,7 @@ public class UserManagementTests
 	@DisplayName("Non-existent User")
 	public void noUserTest()
 	{
-		Server.LoginRequest unregisteredUser = new Server.LoginRequest("JohnDoe", "brownTreeFrog");
+		LoginRequest unregisteredUser = new LoginRequest("JohnDoe", "brownTreeFrog");
 
 		Exception e = assertThrows(DataAccessException.class, () ->	userManager.login(unregisteredUser));
 		assertTrue(e.getMessage().contains("User JohnDoe does not exist."));
@@ -124,7 +124,7 @@ public class UserManagementTests
 
 		try
 		{
-			UserManagement.LoginResult result = userManager.register(new UserData("Stan", "1324", "stan.lee@hotmail.com"));
+			LoginResult result = userManager.register(new UserData("Stan", "1324", "stan.lee@hotmail.com"));
 			String authToken = result.authToken();
 
 			userManager.logout(authToken);
@@ -145,7 +145,7 @@ public class UserManagementTests
 
 		try
 		{
-			UserManagement.LoginResult result = userManager.register(new UserData("Stan", "1324", "stan.lee@hotmail.com"));
+			LoginResult result = userManager.register(new UserData("Stan", "1324", "stan.lee@hotmail.com"));
 			String authToken = result.authToken();
 
 			userManager.logout(authToken);

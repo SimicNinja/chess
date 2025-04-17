@@ -1,8 +1,8 @@
 package serverfacade;
 
 import com.google.gson.Gson;
-import model.AuthData;
-import model.UserData;
+import model.*;
+import model.Records.*;
 
 import java.io.*;
 import java.net.*;
@@ -39,6 +39,12 @@ public class ServerFacade
 	public void logout(String authToken) throws ResponseException
 	{
 		this.makeRequest("DELETE", "/session", null, makeAuth(authToken), null);
+	}
+
+	public NewGameResult newGame(String authToken, String gameName) throws ResponseException
+	{
+		NewGameRequest req = new NewGameRequest(authToken, gameName);
+		return this.makeRequest("POST", "/game", req, makeAuth(authToken), NewGameResult.class);
 	}
 
 	private <T> T makeRequest(String method, String path, Object request,
@@ -135,6 +141,4 @@ public class ServerFacade
 	{
 		return status / 100 == 2;
 	}
-
-	private record LoginRequest(String username, String password) {}
 }
