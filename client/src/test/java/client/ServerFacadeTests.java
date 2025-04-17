@@ -59,6 +59,17 @@ public class ServerFacadeTests
 	}
 
 	@Test
+	public void ninjaRegister() throws ResponseException
+	{
+		AuthData actual = facade.register("SimicNinja", "1234", "ninja@gmail.com");
+
+		Assertions.assertEquals("SimicNinja", actual.username(),
+				"Response did not have the same username as was registered");
+		Assertions.assertNotNull(actual.authToken(),
+				"Response did not contain an authentication string");
+	}
+
+	@Test
 	public void failedRegister()
 	{
 		ResponseException e = Assertions.assertThrows(ResponseException.class, () ->

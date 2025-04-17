@@ -18,7 +18,7 @@ public class REPL
 	public void run()
 	{
 		System.out.println(SET_TEXT_BOLD + SET_TEXT_UNDERLINE + WHITE_KING + " Welcome to chess game. " + BLACK_KING
-			+ " Sign in to start." + RESET_TEXT_UNDERLINE + RESET_TEXT_UNDERLINE);
+			+ " Sign in to start." + RESET_TEXT_UNDERLINE + RESET_TEXT_UNDERLINE + SET_TEXT_COLOR_BLUE);
 		System.out.print(client.help());
 
 		Scanner scanner = new Scanner(System.in);
@@ -35,8 +35,8 @@ public class REPL
 			}
 			catch(Throwable e)
 			{
-				var msg = e.toString();
-				System.out.print(msg);
+				var msg = e.getMessage();
+				System.out.print(SET_TEXT_COLOR_RED + msg);
 			}
 		}
 		System.out.println();
