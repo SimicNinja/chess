@@ -121,9 +121,31 @@ public class ServerFacadeTests
 	@Test
 	public void successfulJoinGame() throws ResponseException
 	{
-		NewGameResult gameResult = facade.newGame(existingAuth, "1stGame");
+		String gameName = "1stGame";
+		NewGameResult gameResult = facade.newGame(existingAuth, gameName);
+		int gameID = gameResult.gameID();
 
-		facade.joinGame(existingAuth, ChessGame.TeamColor.BLACK, gameResult.gameID());
+		facade.joinGame(existingAuth, ChessGame.TeamColor.BLACK, gameID);
+
+		List<ListedGame> expectedList = new ArrayList<>();
+		expectedList.add(new ListedGame(gameID, null, existingUser.username(), gameName));
+
+		Assertions.assertEquals(expectedList, facade.listGames(existingAuth));
+	}
+
+	@Test
+	public void failedJoinGame() throws ResponseException
+	{
+		String gameName = "2stGame";
+		NewGameResult gameResult = facade.newGame(existingAuth, gameName);
+		int gameID = gameResult.gameID();
+
+		AuthData newAuth = facade.register(newUser.username(), newUser.password(), newUser.email());
+		facade.joinGame(existingAuth, ChessGame.TeamColor.BLACK, gameID);
+
+		ResponseException e = Assertions.assertThrows(ResponseException.class, () ->
+				facade.joinGame(newAuth.authToken(), ChessGame.TeamColor.BLACK, gameID));
+		Assertions.assertEquals("Error: Already Taken", e.getMessage());
 	}
 
 	@Test
