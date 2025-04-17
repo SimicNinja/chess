@@ -7,12 +7,6 @@ import server.Server;
 import serverfacade.ResponseException;
 import serverfacade.ServerFacade;
 
-import java.net.HttpURLConnection;
-import java.util.Locale;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
 public class ServerFacadeTests
 {
 	private static Server server;
@@ -49,13 +43,15 @@ public class ServerFacadeTests
 	}
 
 	@Test
-	public void successRegister() throws ResponseException
+	public void successfulRegister() throws ResponseException
 	{
 		//submit register request
 		AuthData registerResult = facade.register(newUser.username(), newUser.password(), newUser.email());
 
-		Assertions.assertEquals(newUser.username(), registerResult.username(), "Response did not have the same username as was registered");
-		Assertions.assertNotNull(registerResult.authToken(), "Response did not contain an authentication string");
+		Assertions.assertEquals(newUser.username(), registerResult.username(),
+				"Response did not have the same username as was registered");
+		Assertions.assertNotNull(registerResult.authToken(),
+				"Response did not contain an authentication string");
 	}
 
 	@Test
@@ -63,5 +59,24 @@ public class ServerFacadeTests
 	{
 		ResponseException e = Assertions.assertThrows(ResponseException.class, () ->
 				facade.register(existingUser.username(), existingUser.password(), existingUser.email()));
+		Assertions.assertEquals("Error: Already Taken", e.getMessage());
+	}
+
+	@Test
+	public void successfulLogin() throws ResponseException
+	{
+		AuthData loginResult = facade.login(existingUser.username(), existingUser.password());
+		Assertions.assertEquals(existingUser.username(), loginResult.username(),
+				"Response didn't match inputted username.");
+		Assertions.assertNotNull(loginResult.authToken(),
+				"Response did not contain an authentication string");
+	}
+
+	@Test
+	public void failedLogin() throws ResponseException
+	{
+		ResponseException e = Assertions.assertThrows(ResponseException.class, () ->
+				facade.login(existingUser.username(), "1234"));
+		Assertions.assertEquals("Error: Unauthorized", e.getMessage());
 	}
 }

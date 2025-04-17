@@ -24,9 +24,14 @@ public class ServerFacade
 
 	public AuthData register(String username, String password, String email) throws ResponseException
 	{
-		var path = "/user";
 		UserData newUser = new UserData(username, password, email);
-		return this.makeRequest("POST", path, newUser, AuthData.class);
+		return this.makeRequest("POST", "/user", newUser, AuthData.class);
+	}
+
+	public AuthData login(String username, String password) throws ResponseException
+	{
+		LoginRequest req = new LoginRequest(username, password);
+		return this.makeRequest("POST", "/session", req, AuthData.class);
 	}
 
 	private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass)
@@ -71,17 +76,17 @@ public class ServerFacade
 	private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException
 	{
 		var status = http.getResponseCode();
+		String message = "Unknown Error; Please Try Again";
 		if(!isSuccessful(status))
 		{
-			try(InputStream respErr = http.getErrorStream())
+			message = switch(status)
 			{
-				if(respErr != null)
-				{
-					throw ResponseException.fromJson(respErr);
-				}
-			}
-
-			throw new ResponseException(status, "other failure: " + status);
+				case 400 -> "Error: Bad Request";
+				case 401 -> "Error: Unauthorized";
+				case 403 -> "Error: Already Taken";
+				default -> message;
+			};
+			throw new ResponseException(status, message);
 		}
 	}
 
@@ -102,9 +107,9 @@ public class ServerFacade
 		return response;
 	}
 
-
 	private boolean isSuccessful(int status)
 	{
 		return status / 100 == 2;
 	}
+	private record LoginRequest(String username, String password) {}
 }
