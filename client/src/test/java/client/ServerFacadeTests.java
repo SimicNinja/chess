@@ -1,12 +1,15 @@
 package client;
 
+import chess.ChessGame;
 import model.AuthData;
-import model.Records;
+import model.Records.*;
 import model.UserData;
 import org.junit.jupiter.api.*;
 import server.Server;
 import serverfacade.ResponseException;
 import serverfacade.ServerFacade;
+
+import java.util.*;
 
 public class ServerFacadeTests
 {
@@ -101,7 +104,7 @@ public class ServerFacadeTests
 	@Test
 	public void successfulNewGame() throws ResponseException
 	{
-		Records.NewGameResult result = facade.newGame(existingAuth, "TestGame");
+		NewGameResult result = facade.newGame(existingAuth, "TestGame");
 		Assertions.assertNotNull(result.gameID(), "Result did not return a game ID");
 		Assertions.assertTrue(result.gameID() > 0, "Result returned invalid game ID");
 	}
@@ -113,5 +116,69 @@ public class ServerFacadeTests
 
 		Assertions.assertThrows(ResponseException.class, () ->
 				facade.newGame(existingAuth, "TestGame"));
+	}
+
+	@Test
+	public void successfulJoinGame() throws ResponseException
+	{
+		NewGameResult gameResult = facade.newGame(existingAuth, "1stGame");
+
+		facade.joinGame(existingAuth, ChessGame.TeamColor.BLACK, gameResult.gameID());
+	}
+
+	@Test
+	public void listGames() throws ResponseException
+	{
+		//register a few users to create games
+		UserData userA = new UserData("a", "A", "a.A");
+		UserData userB = new UserData("b", "B", "b.B");
+		UserData userC = new UserData("c", "C", "c.C");
+
+		AuthData authA = facade.register(userA.username(), userA.password(), userA.email());
+		AuthData authB = facade.register(userB.username(), userB.password(), userB.email());
+		AuthData authC = facade.register(userC.username(), userC.password(), userC.email());
+
+		//create games
+		List<ListedGame> expectedList = new ArrayList<>();
+
+		//1 as black from A
+		String game1Name = "I'm numbah one!";
+		NewGameResult game1 = facade.newGame(authA.authToken(), game1Name);
+		facade.joinGame(authA.authToken(), ChessGame.TeamColor.BLACK, game1.gameID());
+		expectedList.add(new ListedGame(game1.gameID(), null, authA.username(), game1Name));
+
+
+		//1 as white from B
+		String game2Name = "Lonely";
+		NewGameResult game2 = facade.newGame(authB.authToken(), game2Name);
+		facade.joinGame(authB.authToken(), ChessGame.TeamColor.WHITE, game2.gameID());
+		expectedList.add(new ListedGame(game2.gameID(), authB.username(), null, game2Name));
+
+
+		//1 of each from C
+		String game3Name = "GG";
+		NewGameResult game3 = facade.newGame(authC.authToken(), game3Name);
+		facade.joinGame(authC.authToken(), ChessGame.TeamColor.WHITE, game3.gameID());
+		facade.joinGame(authA.authToken(), ChessGame.TeamColor.BLACK, game3.gameID());
+		expectedList.add(new ListedGame(game3.gameID(), authC.username(), authA.username(), game3Name));
+
+
+		//C play self
+		String game4Name = "All by myself";
+		NewGameResult game4 = facade.newGame(authC.authToken(), game4Name);
+		facade.joinGame(authC.authToken(), ChessGame.TeamColor.WHITE, game4.gameID());
+		facade.joinGame(authC.authToken(), ChessGame.TeamColor.BLACK, game4.gameID());
+		expectedList.add(new ListedGame(game4.gameID(), authC.username(), authC.username(), game4Name));
+
+
+		//list games
+		List<ListedGame> actualList = facade.listGames(existingAuth);
+		Assertions.assertNotNull(actualList, "List result did not contain a list of games");
+		Comparator<ListedGame> gameIdComparator = Comparator.comparingInt(ListedGame::gameID);
+		expectedList.sort(gameIdComparator);
+		actualList.sort(gameIdComparator);
+
+		//check
+		Assertions.assertEquals(expectedList, actualList, "Returned Games list was incorrect");
 	}
 }

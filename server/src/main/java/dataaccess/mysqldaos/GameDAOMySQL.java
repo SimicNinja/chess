@@ -4,12 +4,10 @@ import chess.ChessGame;
 import chess.ChessPiece;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dataaccess.ChessPieceAdapter;
-import dataaccess.DataAccessException;
-import dataaccess.DatabaseManager;
+import dataaccess.*;
 import dataaccess.interfaces.GameDAO;
 import model.GameData;
-import service.GameManagement;
+import model.Records.ListedGame;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -67,10 +65,10 @@ public class GameDAOMySQL extends DAOMySQL implements GameDAO
 	}
 
 	@Override
-	public List<GameManagement.ListedGame> listGames()
+	public List<ListedGame> listGames()
 	{
 		String sql = "SELECT gameID, whiteUsername, blackUsername, gameName FROM gameData";
-		ArrayList<GameManagement.ListedGame> games = new ArrayList<>();
+		ArrayList<ListedGame> games = new ArrayList<>();
 
 		try(Connection conn = DatabaseManager.getConnection())
 		{
@@ -80,7 +78,7 @@ public class GameDAOMySQL extends DAOMySQL implements GameDAO
 
 				while(rs.next())
 				{
-					GameManagement.ListedGame game = new GameManagement.ListedGame
+					ListedGame game = new ListedGame
 					(
 						rs.getInt("gameID"),
 						rs.getString("whiteUsername"),

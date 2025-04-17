@@ -9,4 +9,5 @@ public class Records
 	public record NewGameRequest(String authToken, String gameName) {}
 	public record NewGameResult(int gameID) {}
 	public record JoinGameRequest(String authToken, ChessGame.TeamColor playerColor, int gameID) {}
+	public record ListedGame(int gameID, String whiteUsername, String blackUsername, String gameName) {}
 }

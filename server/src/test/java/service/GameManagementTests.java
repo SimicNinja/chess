@@ -188,11 +188,11 @@ public class GameManagementTests
 			int gameID2 = result2.gameID();
 
 			//Setup Expected
-			GameManagement.ListedGame game1 = new GameManagement.ListedGame(gameID, null, null, "TestGame");
-			GameManagement.ListedGame game2 = new GameManagement.ListedGame(gameID2, null, null, "TestGame2");
+			ListedGame game1 = new ListedGame(gameID, null, null, "TestGame");
+			ListedGame game2 = new ListedGame(gameID2, null, null, "TestGame2");
 
 			//Calculate Actual
-			List<GameManagement.ListedGame> gameList = gameManager.listGames(authToken);
+			List<ListedGame> gameList = gameManager.listGames(authToken);
 
 			assertEquals(new HashSet<>(List.of(game1, game2)), new HashSet<>(gameList));
 		}

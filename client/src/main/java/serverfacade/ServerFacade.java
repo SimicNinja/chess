@@ -1,5 +1,6 @@
 package serverfacade;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import model.*;
 import model.Records.*;
@@ -7,6 +8,7 @@ import model.Records.*;
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServerFacade
@@ -45,6 +47,18 @@ public class ServerFacade
 	{
 		NewGameRequest req = new NewGameRequest(authToken, gameName);
 		return this.makeRequest("POST", "/game", req, makeAuth(authToken), NewGameResult.class);
+	}
+
+	public void joinGame(String authToken, ChessGame.TeamColor color, int gameID) throws ResponseException
+	{
+		JoinGameRequest req = new JoinGameRequest(authToken, color, gameID);
+		this.makeRequest("PUT", "/game", req, makeAuth(authToken), null);
+	}
+
+	public List<ListedGame> listGames(String authToken) throws ResponseException
+	{
+		GamesList gameList = this.makeRequest("GET", "/game", null, makeAuth(authToken), GamesList.class);
+		return gameList.getGames();
 	}
 
 	private <T> T makeRequest(String method, String path, Object request,
@@ -140,5 +154,17 @@ public class ServerFacade
 	private boolean isSuccessful(int status)
 	{
 		return status / 100 == 2;
+	}
+
+	public class GamesList
+	{
+		private List<ListedGame> games;
+
+		public GamesList() {}
+
+		public List<ListedGame> getGames()
+		{
+			return games;
+		}
 	}
 }

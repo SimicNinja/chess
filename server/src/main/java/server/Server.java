@@ -143,7 +143,7 @@ public class Server
 
 		try
 		{
-			List<GameManagement.ListedGame> result = gameManager.listGames(authToken);
+			List<ListedGame> result = gameManager.listGames(authToken);
 			response.status(200);
 
 			Map<String, Object> jsonWrapper = new HashMap<>();

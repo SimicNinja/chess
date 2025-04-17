@@ -65,5 +65,5 @@ public class GameManagement
 		return games.listGames();
 	}
 
-	public record ListedGame(int gameID, String whiteUsername, String blackUsername, String gameName) {}
+
 }

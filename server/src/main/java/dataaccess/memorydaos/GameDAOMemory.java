@@ -4,7 +4,7 @@ import chess.ChessGame;
 import dataaccess.DataAccessException;
 import dataaccess.interfaces.GameDAO;
 import model.GameData;
-import service.GameManagement.ListedGame;
+import model.Records.ListedGame;
 import java.util.*;
 import static java.lang.Math.abs;
 
